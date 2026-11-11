@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>flowkraft Drohnenflug 3D</title>
+<style>
+@font-face{font-family:'Aesthetic Romance';src:url(assets/AestheticRomance.ttf) format('truetype');font-display:block}
+@font-face{font-family:'Open Sans Condensed';src:url(assets/OpenSansCondensed-Bold.ttf) format('truetype');font-weight:700;font-display:block}
+html,body{margin:0;background:#07121e;overflow:hidden}
+canvas{display:block}
+</style>
+<script type="importmap">{"imports": {"three": "./lib/three.module.min.js"}}</script>
+</head>
+<body>
+<script>document.write('<script src="' + new URLSearchParams(location.search).get('post') + '"><\/script>');</script>
+<script type="module">
+// ===== Drohnenflug in echtem 3D (three.js): durchgehende Kamerafahrt, Schrift als Körper mit Licht =====
+import * as THREE from 'three';
+import { TTFLoader } from './lib/addons/loaders/TTFLoader.js';
+import { Font } from './lib/addons/loaders/FontLoader.js';
+import { TextGeometry } from './lib/addons/geometries/TextGeometry.js';
+
+const FPS = 30, W = 1080, H = 1920, params = new URLSearchParams(location.search), POST = window.POST;
+const V = params.get('v') || POST.theme || 'navy', PR = +(params.get('pr') || 1.5);
+const TH = {
+  navy: {bg:'#17324d', fog:'#1b3a58', ink:'#eef3f8', side:'#2f5d86', script:'#9ccbf0', tile:'#10263d', tileSide:'#0a1a2b', dot:'#cfe2f2', img:'assets/aurora-navy.jpg', icon:'#eaf0f5'},
+  dark: {bg:'#07121e', fog:'#0a1a2a', ink:'#eef3f8', side:'#24507a', script:'#3f8fcd', tile:'#0e2236', tileSide:'#06121f', dot:'#9ccbf0', img:'assets/bg-nacht.png', icon:'#eaf0f5'},
+  mist: {bg:'#f4f8fb', fog:'#eef4f9', ink:'#17324d', side:'#6f93b5', script:'#2878b5', tile:'#ffffff', tileSide:'#c9d8e5', dot:'#2878b5', img:'assets/bg-mist.jpg', icon:'#17324d'},
+}[V];
+if (POST.script) TH.script = POST.script;
+const I = {
+  mail:'M22 7l-9 5.7c-.6.4-1.4.4-2 0L2 7|M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
+  chat:'M7.9 20A9 9 0 1 0 4 16.1L2 22Z',
+  clock:'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z|M12 6v6l4 2',
+  calendar:'M8 2v4M16 2v4|M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z|M3 10h18',
+  hourglass:'M5 2h14M5 22h14|M7 2c0 6 10 6 10 10S7 16 7 22M17 2c0 6-10 6-10 10s10 4 10 10',
+  file:'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z|M14 2v4a2 2 0 0 0 2 2h4',
+  folder:'M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z',
+  user:'M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2|M12 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8z',
+  check:'M20 6 9 17l-5-5', bot:'M12 8V4H8|M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z|M2 14h2M20 14h2M15 13v2M9 13v2',
+};
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), lerp = (a, b, x) => a + (b - a) * x;
+const prog = (t, s, d) => clamp((t - s) / d), ss = x => x * x * (3 - 2 * x), cubicOut = x => 1 - Math.pow(1 - x, 3);
+const backOut = (x, s = 1.3) => 1 + (s + 1) * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2);
+
+// ---------- Renderer, Szene, Licht ----------
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setPixelRatio(PR); renderer.setSize(W, H); renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = V === 'mist' ? 1.0 : 1.15;
+document.body.appendChild(renderer.domElement);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(TH.fog, 2600, 9500);
+const camera = new THREE.PerspectiveCamera(2 * Math.atan(960 / 1000) * 180 / Math.PI, W / H, 5, 24000);   // in 1000 Einheiten Abstand = Maßstab 1
+scene.add(new THREE.HemisphereLight(V === 'mist' ? '#ffffff' : '#cfe4f5', V === 'mist' ? '#c9d8e5' : '#0b1c2d', V === 'mist' ? 1.2 : .6));
+const key = new THREE.DirectionalLight('#ffffff', V === 'mist' ? 1.4 : 2.2); key.position.set(-0.55, 0.8, 1.0); scene.add(key); scene.add(key.target);
+key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 6; key.shadow.bias = -0.0004;
+Object.assign(key.shadow.camera, {left: -700, right: 700, top: 1000, bottom: -1000, near: 10, far: 6000}); key.shadow.camera.updateProjectionMatrix();
+// Lichtumgebung für echte Spiegelungen: Verlauf + zwei Softboxen
+{ const env = new THREE.Scene(), pm = new THREE.PMREMGenerator(renderer);
+  const grad = canvasTex(16, 256, (g, w, h) => { const l = g.createLinearGradient(0, 0, 0, h); l.addColorStop(0, '#dfeefa'); l.addColorStop(.45, '#5f8fb8'); l.addColorStop(.6, '#16314c'); l.addColorStop(1, '#050c14'); g.fillStyle = l; g.fillRect(0, 0, w, h); });
+  env.add(new THREE.Mesh(new THREE.SphereGeometry(100, 32, 16), new THREE.MeshBasicMaterial({map: grad, side: THREE.BackSide})));
+  const box = (c, w, h, x, y, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color: c, side: THREE.DoubleSide})); m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m); };
+  box(new THREE.Color('#ffffff').multiplyScalar(6), 60, 30, -40, 60, 50); box(new THREE.Color('#e8eef3').multiplyScalar(3), 20, 60, 70, 0, -40); box(new THREE.Color('#ffffff').multiplyScalar(2), 120, 8, 0, -30, 80);
+  scene.environment = pm.fromScene(env, .02).texture; }
+const rim = new THREE.DirectionalLight('#dfe8f0', .9); rim.position.set(0.8, -0.3, -0.6); scene.add(rim);
+const loadTex = src => new Promise(r => new THREE.TextureLoader().load(src, t => { t.colorSpace = THREE.SRGBColorSpace; r(t); }, undefined, () => r(null)));
+
+// ---------- Hilfen für Texturen ----------
+function canvasTex(w, h, draw) { const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); draw(g, w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+function iconTex(name, color, px = 512) { return canvasTex(px, px, (g, w) => { g.scale(w / 24, w / 24); g.translate(3.6, 3.6); g.scale(.7, .7);
+  g.strokeStyle = color; g.lineWidth = 1.7; g.lineCap = 'round'; g.lineJoin = 'round'; (I[name] || I.file).split('|').forEach(d => g.stroke(new Path2D(d))); }); }
+function labelTex(txt, color, fs, w, h) { return canvasTex(w * 2, h * 2, (g, cw, ch) => { g.fillStyle = color; g.font = `700 ${fs * 2}px 'Open Sans Condensed'`;
+  g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, cw / 2, ch / 2 + fs * .08); }); }
+function roundRect(w, h, r) { const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s; }
+const NAVYSIDE = V === 'mist' ? '#0f2338' : '#c2c7cc';   // weiße Schrift: hellgraue Seiten, keine blauen
+const M = {
+  front: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#17324d' : '#f4f8fc', roughness: .22, metalness: 0, clearcoat: .8, clearcoatRoughness: .12}),
+  side: new THREE.MeshPhysicalMaterial({color: NAVYSIDE, roughness: .5, metalness: 0, clearcoat: .2, clearcoatRoughness: .3, envMapIntensity: .6}),
+  sfront: new THREE.MeshPhysicalMaterial({color: TH.script, roughness: .18, metalness: .1, clearcoat: 1, clearcoatRoughness: .08, emissive: TH.script, emissiveIntensity: V === 'mist' ? 0 : .12}),
+  sside: new THREE.MeshPhysicalMaterial({color: new THREE.Color(TH.script).multiplyScalar(.5), roughness: .3, metalness: .3, clearcoat: .6}),
+  glass: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#b9d4ea' : '#e9f3fb', roughness: .38, metalness: 0, transmission: .6, thickness: 30, ior: 1.4, clearcoat: 1, clearcoatRoughness: .1, emissive: V === 'mist' ? '#000000' : '#2b4f70', emissiveIntensity: .35}),
+  gside: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#9ec4e4' : '#b8d4ea', roughness: .3, transmission: .5, thickness: 30, ior: 1.4, emissive: V === 'mist' ? '#000000' : '#1d3b58', emissiveIntensity: .3}),
+  tile: new THREE.MeshStandardMaterial({color: TH.tile, roughness: .45, metalness: .15}),
+  tileSide: new THREE.MeshStandardMaterial({color: TH.tileSide, roughness: .6}),
+};
+function tile(w, h, depth = 34) {
+  const g = new THREE.ExtrudeGeometry(roundRect(w, h, Math.min(w, h) * .16), {depth, bevelEnabled: true, bevelThickness: 6, bevelSize: 6, bevelSegments: 4, curveSegments: 10});
+  return new THREE.Mesh(g, [M.tile, M.tileSide]);
+}
+function decal(tex, w, h, z) { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({map: tex, transparent: true, fog: true})); m.position.z = z; return m; }
+
+// ---------- Schrift ----------
+const FONT = {};
+const widthOf = m => { m.geometry.computeBoundingBox(); return m.geometry.boundingBox.max.x; };
+const advance = (font, str, size) => str === ' ' ? size * .24 : widthOf(text3d(str, size, font, [], 1, 0));
+function textFlat(str, size, font, mat) { return new THREE.Mesh(new THREE.ShapeGeometry(font.generateShapes(str, size * .72), 10), mat); }   // flache 2D-Schrift im Raum
+function text3d(str, size, font, mats, depth, bevel = 2.4) {
+  // TTFLoader rechnet in Punkt (100/72), deshalb size * .72 = px
+  const g = new TextGeometry(str, {font, size: size * .72, height: depth, curveSegments: 10, bevelEnabled: bevel > 0, bevelThickness: bevel, bevelSize: bevel * .5, bevelSegments: 6});
+  return new THREE.Mesh(g, mats);
+}
+
+// ---------- Welt ----------
+// Jede Station = Szene aus der Engine (Bildfolge mit Ball, transparent) als Fläche im Raum + 3D-Headline an denselben Stellen
+const D = 3600, ALT = [0, -460, 380, -420, 320, -380], LAT = [0, 230, -210, 190, -220, 200];
+const ST = POST.slides.map((sl, i) => ({sl, i, x: LAT[i % LAT.length], y: ALT[i % ALT.length], z: -i * D}));
+const GROUND_Y = -980, DIR = params.get('frames'), PASS = (params.get('mode') || 'pass') === 'pass';   // pass: Szenen seitlich, Drohne fliegt vorbei
+let LAY = [];
+const toLocal = (X, Y) => new THREE.Vector3(X - 540, 960 - Y, 0);
+
+function buildStation(S) {
+  if (PASS) { S.side = S.i % 2 ? 1 : -1; S.x = S.side * 560; S.z = -S.i * 3000; S.y = [0, 220, -160, 200, -140, 180][S.i % 6]; }   // abwechselnd links / rechts
+  const root = new THREE.Group(); root.position.set(S.x, S.y, S.z); if (PASS) root.rotation.y = -S.side * .45; scene.add(root); S.root = root; root.updateMatrixWorld(true);
+  const Wp = (X, Y) => root.localToWorld(toLocal(X, Y).setZ(10));
+  const L = LAY[S.i]; S.L = L; S.f0 = L.stops[0].t; S.fl = L.stops[L.stops.length - 1].t;
+  // Szene als Fläche
+  S.tex = new THREE.Texture(); S.tex.colorSpace = THREE.SRGBColorSpace; S.tex.minFilter = THREE.LinearFilter; S.tex.generateMipmaps = false; S.cur = -1;
+  S.plane = new THREE.Mesh(new THREE.PlaneGeometry(1080, 1920), new THREE.MeshBasicMaterial({map: S.tex, transparent: true, toneMapped: false, depthWrite: false}));
+  S.plane.renderOrder = -1; root.add(S.plane);
+  S.catcher = new THREE.Mesh(new THREE.PlaneGeometry(1080, 1920), new THREE.ShadowMaterial({opacity: V === 'mist' ? .22 : .5})); S.catcher.position.z = 1; S.catcher.receiveShadow = true; root.add(S.catcher);
+  // 3D-Headline genau an den Stellen der flachen Headline
+  S.words = L.words.map(w => {
+    const f = w.script ? FONT.script : FONT.bold, mats = w.script ? [M.sfront, M.sside] : w.ol ? [M.glass, M.gside] : [M.front, M.side];
+    // Tiefe als Anteil der Schrifthöhe: POST.depth für alle, depth pro Slide, scriptDepth nur fürs Script-Wort
+    const dep = w.script ? (S.sl.scriptDepth ?? S.sl.depth ?? POST.depth ?? .04) : (S.sl.depth ?? POST.depth ?? .04);   // Standard 4 % (Entscheidung des Nutzers), 0 = flach
+    const mesh = dep > 0 ? text3d(w.txt, w.fs, f, mats, Math.max(2, Math.round(w.fs * dep)), w.fs * Math.min(.012, dep * .4)) : textFlat(w.txt, w.fs, f, mats[0]);
+    mesh.castShadow = true;
+    const piv = new THREE.Group(); piv.add(mesh); const p = toLocal(w.x, w.base ?? (w.y + w.h * .785)); piv.position.set(p.x, p.y, 6); root.add(piv);
+    return {piv, t: w.t};
+  });
+  S.first = Wp(L.stops[0].x, L.stops[0].y);
+  S.last = Wp(L.stops[L.stops.length - 1].x, L.stops[L.stops.length - 1].y);
+  S.park = Wp(880, 1435);   // wie im Reel: Ball wartet klein am Rand, nicht auf dem Text
+}
+
+// ---------- Landschaft: Wellen-Hügel als Punktraster + Flow-Welle der Homepage ----------
+const hgt = (x, z) => 330 * Math.sin(x / 1150 + z / 1700) + 210 * Math.sin(z / 830 - x / 2100) + 120 * Math.sin(x / 470 + z / 610) + 1400 * ss(clamp((Math.abs(x) - 1500) / 3200));   // Talränder steigen zu Bergen an
+let FLOW = null;
+const flowCol = c => c > .9 ? new THREE.Color('rgb(225,238,250)') : new THREE.Color(`rgb(${(40 + 116 * c) | 0},${(120 + 83 * c) | 0},${(181 + 59 * c) | 0})`);
+function buildLandscape() {
+  const zMax = 2600, zMin = curve.getPointAt(1).z - 7000, gy = GROUND_Y;
+  const pt = []; for (let z = zMax; z > zMin; z -= 170) for (let x = -7000; x <= 7000; x += 170) pt.push(x, gy + hgt(x, z), z);
+  scene.add(points(pt, 12, V === 'mist' ? .6 : .75));
+  const ln = []; for (let z = zMax; z > zMin; z -= 420) for (let x = -7000; x < 7000; x += 85) ln.push(x, gy + hgt(x, z), z, x + 85, gy + hgt(x + 85, z), z);
+  const lg = new THREE.BufferGeometry(); lg.setAttribute('position', new THREE.Float32BufferAttribute(ln, 3));
+  scene.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({color: TH.dot, transparent: true, opacity: V === 'mist' ? .32 : .34, depthWrite: false})));
+  const NS = 44, NP = 700, strands = [];
+  let seed = 9; const r = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+  for (let k = 0; k < NS; k++) {
+    const sv = k / (NS - 1) * 2 - 1 + (r() - .5) * .06, ph = r() * 6.28, c = r() < .07 ? 1 : r(), arr = new Float32Array(NP * 3);
+    for (let i = 0; i < NP; i++) { const u = i / (NP - 1), z = lerp(zMax, zMin + 3000, u), cp = curve.getPointAt(clamp(u, 0, 1));
+      const bx = cp.x * .4 + 760 * Math.sin(u * Math.PI * 5.2 + .6), by = gy + 120 + hgt(bx, z) * .55 + 260 * Math.sin(u * Math.PI * 3.1 + 1.2);
+      arr[i * 3] = bx + sv * 150 + 22 * Math.sin(u * 40 + ph); arr[i * 3 + 1] = by + sv * 55 + 16 * Math.sin(u * 31 + ph * 1.7); arr[i * 3 + 2] = z; }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+    const fl = new THREE.Line(g, new THREE.LineBasicMaterial({color: flowCol(c), transparent: true, opacity: V === 'mist' ? .35 : .22 + .25 * (1 - Math.abs(sv)), blending: V === 'mist' ? THREE.NormalBlending : THREE.AdditiveBlending, depthWrite: false})); fl.renderOrder = -3; scene.add(fl);
+    strands.push(arr);
+  }
+  const NPt = 260, pp = new Float32Array(NPt * 3), meta = Array.from({length: NPt}, () => ({k: (r() * NS) | 0, o: r(), v: .006 + r() * .012}));
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pp, 3));
+  const fp = new THREE.Points(pg, new THREE.PointsMaterial({color: V === 'mist' ? '#2878b5' : '#cfe6fa', size: 14, map: dotTex(), transparent: true, opacity: .9, blending: V === 'mist' ? THREE.NormalBlending : THREE.AdditiveBlending, depthWrite: false})); fp.renderOrder = -3; scene.add(fp);
+  FLOW = {strands, meta, pp, pg, NP};
+}
+function updateFlow(t) {
+  if (!FLOW) return; const {strands, meta, pp, pg, NP} = FLOW;
+  meta.forEach((m, i) => { const u = (m.o + m.v * t) % 1, f = u * (NP - 1), a = f | 0, b = Math.min(NP - 1, a + 1), w = f - a, A = strands[m.k];
+    for (let c = 0; c < 3; c++) pp[i * 3 + c] = A[a * 3 + c] * (1 - w) + A[b * 3 + c] * w; });
+  pg.attributes.position.needsUpdate = true;
+}
+function dotTex() { return canvasTex(64, 64, (g) => { const r = g.createRadialGradient(32, 32, 0, 32, 32, 30); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.5, 'rgba(255,255,255,.6)'); r.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 64, 64); }); }
+function points(arr, size, opacity) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({color: TH.dot, size, map: dotTex(), transparent: true, opacity, depthWrite: false, sizeAttenuation: true})); }
+
+// ---------- Flugpfad: weiche Kurve, Tempo nie null; Zeitplan aus den Szenen ----------
+let curve, Lc, SH = [], T = 0, SEGS = [], VMIN = 45;
+const readT = sl => clamp(.5 + [sl.outline, sl.title, sl.p].filter(Boolean).join(' ').split(/\s+/).length * .09, 1.1, 2.2);
+const LEAD = .6;   // erster Ball-Treffer so lange vor dem Ankommen: die Szene baut sich im Anflug auf
+let TS = [], SSv = [];
+function buildPathPass() {
+  // Flugbahn schlängelt sich an den Szenen vorbei; Tempo aus dem Abstand zur nächsten Szene (nie null)
+  const pts = [], idx = [], P = S => new THREE.Vector3(S.x - S.side * 620, S.y - 30, S.z + 250);
+  const P0 = P(ST[0]); pts.push(new THREE.Vector3(P0.x + ST[0].side * 200, P0.y + 260, P0.z + 3200));
+  ST.forEach((S, i) => { idx.push(pts.length); const c = P(S); pts.push(c);
+    if (i < ST.length - 1) { const N = P(ST[i + 1]); pts.push(new THREE.Vector3((c.x + N.x) / 2, (c.y + N.y) / 2 + (i % 2 ? 160 : -160), (c.z + N.z) / 2)); } });
+  const LS = ST[ST.length - 1], E = P(LS); pts.push(new THREE.Vector3(E.x - LS.side * 150, E.y + 80, E.z - 1600));
+  curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', .5);
+  const n = 6000, lens = curve.getLengths(n); Lc = lens[n];
+  SH = idx.map(k => lens[Math.round(k / (pts.length - 1) * n)] - 1000);   // beste Sicht etwa 1000 vor dem Vorbeiflug
+  const V0 = 300, V1 = 2600, v = s => s < SH[0] ? V0 : V0 + (V1 - V0) * ss(clamp((Math.min(...SH.map(h => Math.abs(s - h))) - 220) / 900));   // Hook: langsamer Anflug
+  const need = ST[0].fl + .45, dur = (a, b) => { let d = 0; for (let x = a; x < b; x += 4) d += 4 / v(x + 2); return d; };
+  let s0 = SH[0] - 300; while (s0 > 0 && dur(s0, SH[0]) < need) s0 -= 20;   // Hook: Anflug so lang, dass er beim besten Blick fertig ist
+  const s1 = SH[SH.length - 1] + 60;   // Ende = bester Blick auf die letzte Szene (Titelbild)
+  TS = [0]; SSv = [s0]; let t = 0; for (let x = s0; x < s1; x += 4) { t += 4 / v(x + 2); TS.push(t); SSv.push(x + 4); }
+  const tAt = x => { let lo = 0, hi = SSv.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (SSv[m] < x) lo = m; else hi = m; } return TS[lo]; };
+  ST.forEach(S => { S.tView = tAt(SH[S.i]); S.tStart = Math.max(0, S.tView - S.fl - .5); S.tA = S.tView - .8; S.tB = S.tView + .9; });
+  T = Math.round(t * FPS) / FPS; window.T = T;
+}
+function buildPath() {
+  if (PASS) return buildPathPass();
+  const pts = [], Hp = S => new THREE.Vector3(S.x, S.y - 20, S.z + 1000), idx = [];
+  const H0 = Hp(ST[0]); pts.push(new THREE.Vector3(H0.x - 220, H0.y + 420, H0.z + 1500));
+  ST.forEach((S, i) => {
+    idx.push(pts.length); pts.push(Hp(S));
+    if (i < ST.length - 1) { const N = Hp(ST[i + 1]), dir = i % 2 ? 1 : -1;     // abwechselnd unter / über der Szene durch
+      const P = new THREE.Vector3(S.x * .3, S.y + dir * 1150, S.z - 250);
+      pts.push(P, new THREE.Vector3((P.x + N.x) / 2, (P.y + N.y) / 2 + dir * 160, (P.z + N.z) / 2)); }
+  });
+  const E = Hp(ST[ST.length - 1]); pts.push(new THREE.Vector3(E.x, E.y + 30, E.z - 600));
+  curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', .5);
+  const n = 4000, lens = curve.getLengths(n); Lc = lens[n];
+  SH = idx.map(k => lens[Math.round(k / (pts.length - 1) * n)]);
+  let t = 0, s;
+  ST.forEach((S, i) => {
+    if (i === 0) { S.tStart = 0; S.tA = Math.max(1.0, S.f0 + .2); }
+    else { const prev = ST[i - 1], last = i === ST.length - 1, hd = S.fl + .4 + readT(S.sl) - LEAD - S.f0 + (last ? .8 : 0);
+      // Lesen zentriert um den Haltepunkt, letzte Station endet genau dort (Titelbild)
+      const a = SH[i] - VMIN * hd * (last ? 1 : .5), dist = a - s, d = clamp(dist / 2300, 1.6, 2.4);
+      SEGS.push({k: 'tr', t0: t, d, s0: s, A: (dist - VMIN * d) / (d / 2)}); t += d; s = a; S.tA = t; S.tStart = S.tA - LEAD - S.f0; }
+    S.tB = S.tStart + S.fl + .4 + readT(S.sl) + (i === ST.length - 1 ? .8 : 0);
+    if (i === 0) { const hold = S.tB - S.tA, a0 = SH[0] - VMIN * hold / 2, s0 = SH[0] - 650;
+      SEGS.push({k: 'in', t0: 0, d: S.tA, s0, A: (a0 - s0 - VMIN * S.tA) / (S.tA / 2)}); s = a0; t = S.tA; }
+    SEGS.push({k: 'hold', t0: t, d: S.tB - S.tA, s0: s}); s += VMIN * (S.tB - S.tA); t = S.tB;
+  });
+  T = Math.round(t * FPS) / FPS; window.T = T;
+}
+function sAt(t) {
+  if (PASS || SPLIT) { let lo = 0, hi = TS.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (TS[m] < t) lo = m; else hi = m; }
+    return lerp(SSv[lo], SSv[hi], clamp((t - TS[lo]) / Math.max(1e-6, TS[hi] - TS[lo]))); }
+  for (let k = SEGS.length - 1; k >= 0; k--) { const g = SEGS[k]; if (t < g.t0 && k) continue; const u = clamp((t - g.t0) / g.d), td = u * g.d;
+    if (g.k === 'hold') return g.s0 + VMIN * td;
+    if (g.k === 'tr') return g.s0 + VMIN * td + g.A * (td / 2 - g.d / (4 * Math.PI) * Math.sin(2 * Math.PI * u));
+    return g.s0 + VMIN * td + g.A / 2 * (td + g.d / Math.PI * Math.sin(Math.PI * u)); }
+  return SEGS[0].s0;
+}
+const at = s => curve.getPointAt(clamp(s / Lc, 0, 1));
+function camAt(t) {
+  if (PASS) { const s = sAt(t), p = at(s), ahead = at(s + 900); let w = 0, look = ahead.clone();
+    ST.forEach((S, i) => { const wi = (1 - ss(clamp(Math.abs(s - SH[i]) / 1600))) * .85; if (wi > w) { w = wi; look = ahead.clone().lerp(S.root.position, wi); } });   // beim Vorbeiflug zur Szene schauen
+    const t1 = at(s + 300).sub(p), t2 = at(s + 900).sub(at(s + 300)); t1.y = 0; t2.y = 0; t1.normalize(); t2.normalize();
+    const turn = Math.atan2(t1.x * t2.z - t1.z * t2.x, t1.x * t2.x + t1.z * t2.z);
+    return {p, look, roll: clamp(-turn * 1.4, -.25, .25)}; }
+  const s = sAt(t), p = at(s), ahead = at(s + 650);
+  let w = 0, look = ahead;
+  ST.forEach((S, i) => { const d = Math.abs(s - SH[i]); const wi = 1 - ss(clamp((d - 150) / 900)); if (wi > w) { w = wi; look = ahead.clone().lerp(new THREE.Vector3(S.x, S.y + 20, S.z), wi); } });
+  const t1 = at(s + 300).sub(p), t2 = at(s + 900).sub(at(s + 300)); t1.y = 0; t2.y = 0; t1.normalize(); t2.normalize();
+  const turn = Math.atan2(t1.x * t2.z - t1.z * t2.x, t1.x * t2.x + t1.z * t2.z);
+  return {p, look, roll: clamp(-turn * 1.6, -.32, .32) * (1 - w * .85)};
+}
+// 3D-Ball: bringt den Ball zur ersten Station der Szene, übernimmt ihn nach der letzten
+function ballAt(t) {
+  for (let k = ST.length - 1; k >= 0; k--) { const S = ST[k], tFirst = S.tStart + S.f0, tLast = S.tStart + S.fl;
+    if (t >= tLast) { const go = S.tB - .35, pu = ss(clamp((t - tLast - .05) / .5)), pk = S.last.clone().lerp(S.park, pu); pk.y += Math.sin(Math.PI * pu) * 120;
+      if (k === ST.length - 1 || t < go) return {p: pk, show: t > tLast + .04, s: lerp(1, .55, pu)};
+      const N = ST[k + 1], u = ss(clamp((t - go) / (N.tStart + N.f0 - go))), p = S.park.clone().lerp(N.first, u); p.y += Math.sin(Math.PI * u) * 500; return {p, show: true, s: lerp(.55, 1, u)}; }
+    if (t >= tFirst) return {p: S.first.clone(), show: false};
+    if (k === 0) { const u = clamp(t / tFirst), A = S.first.clone().add(new THREE.Vector3(0, 1300, 0)); return {p: A.lerp(S.first, u * u), show: true}; }   // fällt von oben herein
+  }
+  return {p: new THREE.Vector3(0, 9000, 0), show: false};
+}
+
+// ---------- Bild = reine Funktion der Zeit (wartet auf das Szenenbild) ----------
+let ball, FTEX, RINGS3 = [];
+const IMG = {};
+function frameImg(i, k, kind = '') { const key = i + kind + '_' + k; if (IMG[key]) return IMG[key];
+  const im = new Image(); im.src = `${DIR}/s${i + 1}${kind}_${String(k).padStart(4, '0')}.png`; IMG[key] = im.decode().then(() => im).catch(() => null); return IMG[key]; }
+async function seek(t) {
+  t = clamp(t, 0, T);
+  const c = camAt(t); camera.position.copy(c.p); camera.up.set(0, 1, 0); camera.lookAt(c.look); camera.rotateZ(c.roll);
+  { let nS = ST[0], best = 1e9; ST.forEach(S => { const d = Math.abs(camera.position.z - 1000 - S.z); if (d < best) { best = d; nS = S; } });
+    key.target.position.set(nS.x, nS.y, nS.z); key.position.set(nS.x - 1100, nS.y + 1600, nS.z + 2000); key.target.updateMatrixWorld(); }
+  const jobs = [];
+  ST.forEach((S, i) => {
+    const tau = t - S.tStart, dz = camera.position.z - S.z;
+    S.root.visible = dz > -200 && dz < 11000;
+    if (S.root.visible) { const k = clamp(Math.round(tau * FPS), 0, S.L.frames - 1);
+      if (k !== S.cur) jobs.push(frameImg(i, k).then(im => { if (im) { S.tex.image = im; S.tex.needsUpdate = true; S.cur = k; } })); }
+    S.words.forEach(w => { const x = prog(tau, w.t, .62), e = backOut(x, 1.2);
+      w.piv.visible = x > 0; w.piv.rotation.x = -(1 - e) * Math.PI * .45; w.piv.position.z = 6 + 60 * (1 - Math.min(1, e)); });
+  });
+  await Promise.all(jobs);
+  // vorladen: nächstes Bild
+  ST.forEach((S, i) => { if (S.root.visible) frameImg(i, clamp(Math.round((t - S.tStart) * FPS) + 1, 0, S.L.frames - 1)); });
+  Object.keys(IMG).forEach(key => { const [i, k] = key.split('_').map(Number); if (Math.abs(k - (t - ST[i].tStart) * FPS) > 6) delete IMG[key]; });
+  const b = ballAt(t); ball.visible = b.show; ball.position.copy(b.p); ball.scale.set(200 * (b.s ?? 1), 200 * (b.s ?? 1), 1);   // 400er-Textur, Ball = 0,66 davon = 132
+  renderer.render(scene, camera);
+}
+
+// ================= Modus split: jede Slide = zwei Stationen (Szene, Schrift), größer, Drohne fliegt vorbei =================
+const SPLIT = (params.get('mode') || 'split') === 'split', KS = 1.3;
+let PARTS = [], STOPS3 = [];
+const FEATHER = (w, h) => { const t = canvasTex(256, 256, (g, W2, H2) => { const fx = Math.min(.12, 70 / w) * W2, fy = Math.min(.12, 70 / h) * H2;   // Ränder weich auslaufen lassen
+    const gx = g.createLinearGradient(0, 0, W2, 0); gx.addColorStop(0, '#000'); gx.addColorStop(fx / W2, '#fff'); gx.addColorStop(1 - fx / W2, '#fff'); gx.addColorStop(1, '#000');
+    g.fillStyle = gx; g.fillRect(0, 0, W2, H2); g.globalCompositeOperation = 'multiply';
+    const gy = g.createLinearGradient(0, 0, 0, H2); gy.addColorStop(0, '#000'); gy.addColorStop(fy / H2, '#fff'); gy.addColorStop(1 - fy / H2, '#fff'); gy.addColorStop(1, '#000');
+    g.fillStyle = gy; g.fillRect(0, 0, W2, H2); }); t.colorSpace = THREE.NoColorSpace; t.channel = 1; return t; };
+function cropPlane(tex, box, K) {
+  const [x0, y0, x1, y1] = box, w = (x1 - x0) * K, h = (y1 - y0) * K, g = new THREE.PlaneGeometry(w, h), uv = g.attributes.uv;
+  const u0 = x0 / 1080, u1 = x1 / 1080, v0 = 1 - y0 / 1920, v1 = 1 - y1 / 1920;
+  uv.setXY(0, u0, v0); uv.setXY(1, u1, v0); uv.setXY(2, u0, v1); uv.setXY(3, u1, v1); uv.needsUpdate = true;
+  g.setAttribute('uv1', new THREE.Float32BufferAttribute([0, 1, 1, 1, 0, 0, 1, 0], 2));   // zweite UV für die weiche Kante
+  return new THREE.Mesh(g, new THREE.MeshBasicMaterial({map: tex, alphaMap: FEATHER(w, h), transparent: true, toneMapped: false, depthWrite: false}));
+}
+function fullPlane(tex, cx, cy, K) {   // ganze Ebene (Szene oder Schrift), nichts angeschnitten; Inhalt (cx, cy) liegt im Ursprung
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(1080 * K, 1920 * K), new THREE.MeshBasicMaterial({map: tex, transparent: true, toneMapped: false, depthWrite: false}));
+  m.position.set((540 - cx) * K, (cy - 960) * K, 0); m.renderOrder = -1; return m;
+}
+function buildSplit() {
+  const pad = 46;
+  ST.forEach(S => {
+    const L = LAY[S.i]; S.L = L;
+    S.tex = {}; S.cur = {}; ['h', 't'].forEach(k => { const x = new THREE.Texture(); x.colorSpace = THREE.SRGBColorSpace; x.minFilter = THREE.LinearFilter; x.generateMipmaps = false; S.tex[k] = x; S.cur[k] = -1; });
+    // Läufe: aufeinanderfolgende Treffer derselben Art (Szene h:, Schrift sonst)
+    const runs = []; L.stops.forEach(st => { const kind = st.key.startsWith('h:') ? 'h' : 't', r = runs[runs.length - 1];
+      if (!r || r.kind !== kind) runs.push({kind, stops: [st]}); else r.stops.push(st); });
+    S.runs = runs;
+    runs.forEach(r => {
+      const tb = L.textBox || [88, 1000, 990, 1600];
+      let box;
+      if (r.kind === 'h') {   // Szene: eng um die getroffenen Elemente, ohne den Textbereich
+        const xs = r.stops.map(q => q.x), ys = r.stops.map(q => q.y), hb = L.heroBox || [0, 0, 1080, 1920];
+        box = [Math.max(hb[0], Math.min(...xs) - 310), Math.max(hb[1], Math.min(...ys) - 310), Math.min(hb[2], Math.max(...xs) + 310), Math.min(hb[3], Math.max(...ys) + 310)];
+        const cyH = (box[1] + box[3]) / 2, cyT = (tb[1] + tb[3]) / 2;
+        if (cyH < cyT) box[3] = Math.min(box[3], tb[1] - 24); else box[1] = Math.max(box[1], tb[3] + 24);
+      } else box = [tb[0] - pad, tb[1] - pad, tb[2] + pad, tb[3] + pad];
+      box = [Math.max(0, box[0]), Math.max(0, box[1]), Math.min(1080, box[2]), Math.min(1920, box[3])];
+      const xs = r.stops.map(q => q.x);
+      const ysr = r.stops.map(q => q.y);
+      if (r.kind === 'h' && r.stops.length >= 3 && Math.max(...xs) - Math.min(...xs) > 520 && Math.max(...ysr) - Math.min(...ysr) < 160) {   // breite Reihe: jedes Element eine eigene kleine Station
+        const G = {box: [Math.max(0, Math.min(...xs) - 240), Math.max(0, Math.min(...ysr) - 260), Math.min(1080, Math.max(...xs) + 240), Math.min(1920, Math.max(...ysr) + 250)], n: r.stops.length};   // ganzes Panel als ein Stück
+        r.parts = r.stops.map((q, k) => { const P = {S, kind: 'h', box: G.box, G, a: q.t, b: q.t, stops: [q], j: PARTS.length, group: true, gk: k}; PARTS.push(P); return P; });
+        r.part = r.parts[0]; return; }
+      const P = {S, kind: r.kind, box, a: r.stops[0].t, b: r.stops[r.stops.length - 1].t, stops: r.stops, j: PARTS.length}; PARTS.push(P); r.part = P; r.parts = [P];
+    });
+  });
+  let zc = 0, sd = -1;
+  PARTS.forEach(P => {
+    if (P.j && !(P.group && P.gk > 0)) { zc -= 1500; sd = -sd; }
+    const side = sd, [x0, y0, x1, y1] = P.box, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, wW = (x1 - x0) * KS, hW = (y1 - y0) * KS;
+    if (P.group) {   // Panel-Reihe: ein durchgehendes Stück, fast parallel zur Flugbahn; die Drohne fliegt langsam daran entlang
+      const G = P.G;
+      if (P.gk === 0) { G.root = new THREE.Group(); G.root.position.set(0, [0, 180, -140, 160, -120, 150][P.S.i % 6], zc); scene.add(G.root);   // frontal: Fahrt von links nach rechts
+        G.root.add(fullPlane(P.S.tex.h, cx, cy, KS));
+        const cat = new THREE.Mesh(new THREE.PlaneGeometry(wW, hW), new THREE.ShadowMaterial({opacity: V === 'mist' ? .22 : .45})); cat.position.z = 1; cat.receiveShadow = true; G.root.add(cat);
+        G.root.updateMatrixWorld(true); }
+      const loc = (X, Y, z = 10) => new THREE.Vector3((X - cx) * KS, (cy - Y) * KS, z);
+      P.side = side; P.root = G.root; P.loc = loc; P.world = (X, Y) => G.root.localToWorld(loc(X, Y)); P.words = [];
+      P.C = P.world(P.stops[0].x, P.stops[0].y); P.D = 880;   // Version, die dem Nutzer gefiel: nah, Kachel für Kachel von links nach rechts
+      P.V = P.C.clone().add(new THREE.Vector3(0, 0, 1).applyQuaternion(G.root.quaternion).multiplyScalar(P.D));
+      return; }
+    P.side = side; P.D = P.group ? Math.max(wW / 1.25, 460) : P.kind === 'h' ? Math.max(wW / .9, hW / 1.1, 800) : Math.max(wW / .8, hW / 1.0, 800);   // Szene füllt das Bild fast ganz   // Abstand beim besten Blick: Element füllt das Bild gut
+    const root = new THREE.Group(); P.root = root; root.rotation.y = -side * .42;
+    P.C = new THREE.Vector3(side * (P.group ? 430 + (P.gk % 2) * 90 : 470), P.group ? [0, 180, -140, 160, -120, 150][P.S.i % 6] + (P.gk % 2 ? 60 : -40) : [0, 180, -140, 160, -120, 150][P.j % 6], zc); root.position.copy(P.C); scene.add(root);
+    root.add(fullPlane(P.S.tex[P.kind], cx, cy, KS));
+    const cat = new THREE.Mesh(new THREE.PlaneGeometry(wW, hW), new THREE.ShadowMaterial({opacity: V === 'mist' ? .22 : .45})); cat.position.z = 1; cat.receiveShadow = true; root.add(cat);
+    root.updateMatrixWorld(true);
+    const loc = (X, Y, z = 10) => new THREE.Vector3((X - cx) * KS, (cy - Y) * KS, z);
+    P.loc = loc; P.world = (X, Y) => root.localToWorld(loc(X, Y));
+    const n = new THREE.Vector3(0, 0, 1).applyQuaternion(root.quaternion); P.V = P.C.clone().add(n.multiplyScalar(P.D));
+    P.words = [];
+    if (P.kind === 't') P.S.L.words.forEach(w => {
+      const f = w.script ? FONT.script : FONT.bold, mats = w.script ? [M.sfront, M.sside] : w.ol ? [M.glass, M.gside] : [M.front, M.side];
+      const dep = w.script ? (P.S.sl.scriptDepth ?? P.S.sl.depth ?? POST.depth ?? .04) : (P.S.sl.depth ?? POST.depth ?? .04), fs = w.fs * KS;
+      const mesh = dep > 0 ? text3d(w.txt, fs, f, mats, Math.max(2, Math.round(fs * dep)), fs * Math.min(.012, dep * .4)) : textFlat(w.txt, fs, f, mats[0]);
+      mesh.castShadow = true; const piv = new THREE.Group(); piv.add(mesh); piv.position.copy(loc(w.x, w.base ?? (w.y + w.h * .785), 6)); root.add(piv);
+      P.words.push({piv, t: w.t});
+    });
+  });
+}
+let TSs = [], SSs = [];
+function pathSplit() {
+  const pts = [], idx = [], V0 = PARTS[0].V;
+  pts.push(new THREE.Vector3(V0.x + 180, V0.y + 220, V0.z + 1800));
+  PARTS.forEach((P, j) => { if (P.group && P.gk === 0) pts.push(P.V.clone().add(new THREE.Vector3(-650, 0, 420)));   // Panel: von links einfahren
+    idx.push(pts.length); pts.push(P.V.clone());
+    if (P.group && P.gk === P.G.n - 1) pts.push(P.V.clone().add(new THREE.Vector3(600, 0, -150)));   // rechts ausfahren
+    if (j < PARTS.length - 1 && !(PARTS[j + 1].group && PARTS[j + 1].gk === 0)) { const N = PARTS[j + 1].V, g = PARTS[j + 1].group && PARTS[j + 1].gk > 0; pts.push(new THREE.Vector3((P.V.x + N.x) / 2 - P.side * (g ? 30 : 120), g ? (P.V.y + N.y) / 2 : (j % 2 ? 560 : -420), (P.V.z + N.z) / 2)); } });   // zwischen den Stationen: abwechselnd tief über die Hügel und hoch hinauf
+  const E = PARTS[PARTS.length - 1].V; pts.push(new THREE.Vector3(E.x, E.y + 40, E.z - 900));
+  curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', .5);
+  { // Bahn glätten: keine harten Kurven (gleitender Mittelwert über ~900 Einheiten), Stationen bleiben erhalten
+    const M = 1600, raw = curve.getSpacedPoints(M), seg = curve.getLength() / M, R = Math.round(450 / seg), out = [];
+    for (let i = 0; i <= M; i++) { const q = new THREE.Vector3(); let ws = 0; for (let k = -R; k <= R; k++) { const j = clamp(i + k, 0, M), w = Math.exp(-(k * k) / (2 * (R / 2) ** 2)); q.addScaledVector(raw[j], w); ws += w; } out.push(q.multiplyScalar(1 / ws)); }
+    // Haltepunkte wieder exakt setzen: Abweichung lokal zurückschieben
+    idx.forEach((kp, j) => { const u = kp / (pts.length - 1); let bi = 0, bd = 1e18; out.forEach((q, i) => { const d = q.distanceToSquared(pts[kp]); if (d < bd) { bd = d; bi = i; } });
+      const off = pts[kp].clone().sub(out[bi]); for (let k = -R * 3; k <= R * 3; k++) { const i = bi + k; if (i < 0 || i > M) continue; out[i].addScaledVector(off, Math.exp(-(k * k) / (2 * (1.4 * R) ** 2))); } });
+    curve = new THREE.CatmullRomCurve3(out, false, 'centripetal', .5); }
+  const n = 8000, lens = curve.getLengths(n); Lc = lens[n];
+  SH = idx.map(k => { let bi = 0, bd = 1e18; for (let i = 0; i <= 2000; i++) { const d = curve.getPointAt(i / 2000).distanceToSquared(pts[k]); if (d < bd) { bd = d; bi = i; } } return Lc * bi / 2000; });
+  // Tempo als weiche Kurve (Hermite) von Station zu Station: an jeder Station langsam (VA), dazwischen sanft schneller, nie stehen
+  const VA = 330, keys = [];
+  const P0 = PARTS[0], need = P0.b + .45;
+  keys.push({t: 0, s: SH[0] - VA * need * 1.3, v: VA * 1.6}); keys.push({t: need, s: SH[0], v: VA});
+  for (let j = 1; j < PARTS.length; j++) { const ds = SH[j] - SH[j - 1], g = PARTS[j].group && PARTS[j].gk > 0;
+    const d = g ? clamp(ds / 420, .9, 1.6) : clamp(ds / 1000, 1.8, 2.5); keys.push({t: keys[keys.length - 1].t + d, s: SH[j], v: VA}); }
+  keys.push({t: keys[keys.length - 1].t + .9, s: SH[SH.length - 1] + VA * .9, v: VA});
+  TSs = []; SSs = [];
+  for (let k = 0; k < keys.length - 1; k++) { const A = keys[k], B = keys[k + 1], d = B.t - A.t;
+    for (let q = 0; q < 120 * d; q++) { const u = q / (120 * d), h00 = 2 * u ** 3 - 3 * u ** 2 + 1, h10 = u ** 3 - 2 * u ** 2 + u, h01 = -2 * u ** 3 + 3 * u ** 2, h11 = u ** 3 - u ** 2;
+      TSs.push(A.t + u * d); SSs.push(h00 * A.s + h10 * d * A.v + h01 * B.s + h11 * d * B.v); } }
+  const KL = keys[keys.length - 1]; TSs.push(KL.t); SSs.push(KL.s); let t = KL.t;
+  TS = TSs; SSv = SSs;   // sAt (Modus pass) nutzt diese Tabelle
+  const tAt = x => { let lo = 0, hi = SSs.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (SSs[m] < x) lo = m; else hi = m; } return TSs[lo]; };
+  PARTS.forEach((P, j) => { P.tView = tAt(SH[j]); P.rs = P.tView - (P.b - P.a) - .45; });
+  // Zeit der Szene (tau) pro Slide: läuft im Anflug, friert zwischen Szene und Schrift ein
+  ST.forEach(S => { S.R = S.runs.flatMap(r => r.parts); });
+  // Treffer-Zeiten für den 3D-Ball
+  STOPS3 = []; PARTS.forEach(P => P.stops.forEach(st => STOPS3.push({t: P.rs + (st.t - P.a), p: P.world(st.x, st.y), P})));
+  STOPS3.sort((x, y) => x.t - y.t);
+  T = Math.round(t * FPS) / FPS; window.T = T;
+}
+function tauOf(S, t) {   // Szenen-Zeit: läuft im Anflug, friert zwischen den beiden Stationen einer Slide ein
+  const R = S.R; let k = 0; while (k + 1 < R.length && t >= R[k + 1].rs) k++;
+  const N = R[k + 1];
+  if (N && R[k].group && N.group && N.G === R[k].G && t >= R[k].rs) return R[k].a + (N.a - R[k].a) * clamp((t - R[k].rs) / (N.rs - R[k].rs));   // am Panel: Szenen-Zeit folgt dem Flug, Linie zeichnet sich mit
+  let tau = R[k].a + (t - R[k].rs); if (N) tau = Math.min(tau, N.a - .02); return Math.max(0, tau);
+}
+function camSplit(t) {   // Blick und Neigung zeitlich geglättet: weiche Kurven statt harter Reaktion
+  const c0 = camSplitRaw(t); const L = new THREE.Vector3(); let r = 0, w = 0;
+  for (let k = -8; k <= 8; k++) { const q = camSplitRaw(clamp(t + k * .08, 0, T)), wk = Math.exp(-(k * k) / 28); L.addScaledVector(q.look, wk); r += q.roll * wk; w += wk; }
+  const sNow = sAt(t), ws = Math.max(0, ...SH.map(h => 1 - ss(clamp(Math.abs(sNow - h) / 900))));   // an den Stationen exakt mittig
+  const look = L.multiplyScalar(1 / w); look.y = c0.p.y + (look.y - c0.p.y) * .5;   // Horizont ruhig halten: nur halb so stark nicken
+  return {p: c0.p, look: look.lerp(c0.look, ws), roll: lerp(r / w, c0.roll, ws) * .8};
+}
+function camSplitRaw(t) {
+  // weit vorausschauen: ruhiger Blick
+  const s = sAt(t), p = at(s), ahead = at(s + 1500); let w = 0, look = ahead.clone();
+  const ctr = new THREE.Vector3(); let ws = 0;   // gewichteter Blick: gleitet, springt nicht von Element zu Element
+  PARTS.forEach((P, j) => { const wi = 1 - ss(clamp(Math.abs(s - SH[j]) / 2100)); if (wi > 0) { ctr.addScaledVector(P.LC ?? P.C, wi); ws += wi; } });
+  if (ws > 0) look = ahead.clone().lerp(ctr.multiplyScalar(1 / ws), Math.min(1, ws));   // beim besten Blick genau mittig
+  let gw = 0, gC = null; PARTS.forEach((P, j) => { if (!P.group) return; const wi = 1 - ss(clamp(Math.abs(s - SH[j]) / 700)); if (wi > gw) { gw = wi; gC = P.C; } });
+  if (gC) look.lerp(new THREE.Vector3(p.x + 120, gC.y, gC.z), gw);   // am Panel: frontal draufschauen
+  const t1 = at(s + 300).sub(p), t2 = at(s + 900).sub(at(s + 300)); t1.y = 0; t2.y = 0; t1.normalize(); t2.normalize();
+  const turn = Math.atan2(t1.x * t2.z - t1.z * t2.x, t1.x * t2.x + t1.z * t2.z);
+  return {p, look, roll: clamp(-turn * 1.3, -.22, .22)};
+}
+function ballSplit(t) {
+  const F = STOPS3[0];
+  if (t < F.t) { const u = clamp(t / F.t), p = F.p.clone().add(new THREE.Vector3(0, 1400 * (1 - u * u), 0)); return {p, s: KS, show: true}; }
+  for (let k = 0; k < STOPS3.length - 1; k++) { const A = STOPS3[k], B = STOPS3[k + 1];
+    if (t >= A.t && t < B.t) { const d = A.p.distanceTo(B.p), dw = Math.min(.06, (B.t - A.t) * .2), u = prog(t, A.t + dw, B.t - A.t - dw);
+      const e = A.P === B.P ? u : ss(u), p = A.p.clone().lerp(B.p, e); p.y += Math.min(650, (110 + .32 * d) * (A.P === B.P ? 1 : .6)) * 4 * e * (1 - e) / 1; return {p, s: KS, show: true}; } }
+  const Z = STOPS3[STOPS3.length - 1], h = t - Z.t, u = ss(clamp((h - .1) / .5)), q = Z.p.clone().add(new THREE.Vector3(150 * u, 200 * u + Math.sin(Math.PI * u) * 90, 30 * u));   // zum Schluss vom Wort weg
+  return {p: q, s: KS * lerp(1, .7, u), show: true};
+}
+async function seekSplit(t) {
+  t = clamp(t, 0, T);
+  const c = camSplit(t); camera.position.copy(c.p); camera.up.set(0, 1, 0); camera.lookAt(c.look); camera.rotateZ(c.roll);
+  { let nP = PARTS[0], best = 1e9; PARTS.forEach(P => { const d = Math.abs(camera.position.z - P.V.z); if (d < best) { best = d; nP = P; } });
+    key.target.position.copy(nP.C); key.position.set(nP.C.x - 1100, nP.C.y + 1600, nP.C.z + 2000); key.target.updateMatrixWorld(); }
+  const jobs = [], sNow = sAt(t);
+  PARTS.forEach((P, j) => { if (P.group && P.gk < P.G.n - 1) return;   // vorbei: Element poppt weg, statt angeschnitten aus dem Bild zu laufen
+    const q = j === PARTS.length - 1 ? 0 : clamp((sNow - SH[j] + 60) / 300), e = q * q * (2.7 * q - 1.7), sc = Math.max(0.0001, 1 - Math.max(0, e));
+    P.root.scale.setScalar(sc); P.gone = q >= 1; });
+  ST.forEach((S, i) => {
+    const tau = tauOf(S, t); let vis = false;
+    S.R.forEach(P => { const dz = camera.position.z - P.C.z, nrm = new THREE.Vector3(0, 0, 1).applyQuaternion(P.root.quaternion), front = camera.position.clone().sub(P.C).dot(nrm);
+      P.root.visible = front > 220 && dz < 11000 && !(P.group ? P.G.root.scale.x < .001 : P.gone); vis = vis || P.root.visible;   // nicht durch Flächen fliegen: ausblenden, sobald die Kamera zu nah oder dahinter ist
+      P.words.forEach(w => { const x = prog(tau, w.t, .62), e = backOut(x, 1.2); w.piv.visible = x > 0; w.piv.rotation.x = -(1 - e) * Math.PI * .45; w.piv.position.z = 6 + 60 * (1 - Math.min(1, e)); }); });
+    if (vis) { const k = clamp(Math.round(tau * FPS), 0, S.L.frames - 1); S.kNow = k;
+      ['h', 't'].forEach(kd => { if (k !== S.cur[kd]) jobs.push(frameImg(i, k, kd).then(im => { if (im) { S.tex[kd].image = im; S.tex[kd].needsUpdate = true; S.cur[kd] = k; } })); }); }
+  });
+  await Promise.all(jobs);
+  ST.forEach((S, i) => { if (S.kNow !== undefined) ['h', 't'].forEach(kd => frameImg(i, clamp(S.kNow + 1, 0, S.L.frames - 1), kd)); });
+  Object.keys(IMG).forEach(key => { const i = parseInt(key), k = +key.split('_')[1]; if (ST[i].kNow === undefined || Math.abs(k - ST[i].kNow) > 6) delete IMG[key]; });
+  const b = ballSplit(t); ball.visible = b.show; ball.position.copy(b.p); ball.scale.set(200 * b.s, 200 * b.s, 1);
+  // Ringe beim Aufprall in 3D (wie in der Engine: zwei Ringe, 132 -> 392 px, verblassen)
+  RINGS3.forEach(r => r.visible = false); let ri = 0;
+  STOPS3.forEach(st => { for (let k = 0; k < 2; k++) { const x = prog(t, st.t + k * .12, .75); if (x <= 0 || x >= 1 || ri >= RINGS3.length) continue;
+    const r = RINGS3[ri++], d = (132 + 260 * cubicOut(x)) * KS; r.visible = st.P.root.visible !== false && st.P.root.scale.x > .01;
+    r.position.copy(st.p); r.quaternion.copy(st.P.root.quaternion); r.scale.setScalar(d / 2); r.material.opacity = .6 * (1 - x); } });
+  updateFlow(t);
+  renderer.render(scene, camera);
+}
+
+window.FPS = FPS; window.seek = t => SPLIT ? seekSplit(t) : seek(t); window.SIZE = {w: W, h: H};
+window.ready = (async () => {
+  LAY = await (await fetch(`${DIR}/layout.json`)).json();
+  await document.fonts.load("700 40px 'Open Sans Condensed'");
+  const ttf = src => new Promise((res, rej) => new TTFLoader().load(src, j => res(new Font(j)), undefined, rej));
+  FONT.bold = await ttf('assets/OpenSansCondensed-Bold.ttf'); FONT.script = await ttf('assets/AestheticRomance.ttf');
+  const bg = await loadTex(TH.img); scene.background = V === 'mist' ? new THREE.Color(TH.bg) : (bg || new THREE.Color(TH.bg));
+  const img = await new Promise(r => { const im = new Image(); im.onload = () => r(im); im.onerror = () => r(null); im.src = 'assets/bildmarke.svg'; });
+  FTEX = canvasTex(512, 512, (g, w) => { if (img) { const s = w * .58, h = s * img.height / img.width; g.drawImage(img, (w - s) / 2 + 10, (w - h) / 2, s, h); } });
+  if (SPLIT) buildSplit(); else ST.forEach(buildStation);
+  // Ball als Sprite: zeigt immer zur Kamera, keine Verzerrung durch den Weitwinkel am Bildrand
+  const BTEX = canvasTex(400, 400, (g, w) => { const c = w / 2, r = w * .33;
+    g.shadowColor = 'rgba(7,18,30,.5)'; g.shadowBlur = w * .08; g.shadowOffsetY = w * .045;
+    g.fillStyle = '#17324d'; g.beginPath(); g.arc(c, c, r, 0, Math.PI * 2); g.fill(); g.shadowColor = 'transparent';
+    g.strokeStyle = 'rgba(234,240,245,.25)'; g.lineWidth = w * .008; g.beginPath(); g.arc(c, c, r - w * .004, 0, Math.PI * 2); g.stroke();
+    if (img) { const s2 = r * 2 * .58, h2 = s2 * img.height / img.width; g.drawImage(img, c - s2 / 2 + r * .04, c - h2 / 2, s2, h2); } });
+  RINGS3 = Array.from({length: 8}, () => { const m = new THREE.Mesh(new THREE.RingGeometry(.985, 1, 96), new THREE.MeshBasicMaterial({color: '#4A9BD8', transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, toneMapped: false})); m.renderOrder = 4; scene.add(m); return m; });
+  ball = new THREE.Sprite(new THREE.SpriteMaterial({map: BTEX, toneMapped: false, depthWrite: false})); ball.renderOrder = 5; scene.add(ball);
+  if (SPLIT) pathSplit(); else buildPath();
+  buildLandscape();
+  let seed = 5; const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647, du = [];
+  for (let k = 0; k < 700; k++) du.push(-2200 + 4400 * rnd(), -1300 + 2800 * rnd(), 2400 - (ST.length * D + 4000) * rnd());
+  scene.add(points(du, 9, .6));
+  const ev = [{t: 0, k: 'whoosh', d: 1.2}];
+  if (SPLIT) { PARTS.forEach((P, j) => { if (j) ev.push({t: PARTS[j - 1].tView + .3, k: 'whoosh', d: Math.max(.6, P.tView - PARTS[j - 1].tView - .6)}); });
+    window.TL = {T, events: ev, split: ST.map(S => S.R.map(P => ({rs: P.rs, a: P.a, b: P.b}))), gl: 'webgl'};
+    window._dbg = {parts: PARTS.map(P => ({slide: P.S.i + 1, kind: P.kind, tView: +P.tView.toFixed(2), rs: +P.rs.toFixed(2), a: P.a, b: +P.b.toFixed(2), D: Math.round(P.D)}))};
+    await window.seek(+(params.get('t') || 0)); return true; }
+  ST.forEach((S, i) => { if (i) ev.push({t: ST[i - 1].tB - .1, k: 'whoosh', d: S.tA - ST[i - 1].tB + .5}); });
+  window.TL = {T, events: ev, stations: ST.map(S => ({t0: S.tStart, dur: S.tB - S.tStart + .3})), gl: 'webgl'};
+  window._dbg = {ST: ST.map(S => ({tStart: +S.tStart.toFixed(2), tView: +(S.tView ?? 0).toFixed(2), tB: +S.tB.toFixed(2), f0: S.f0, fl: +S.fl.toFixed(2)}))};
+  await seek(+(params.get('t') || 0));
+  return true;
+})();
+</script>
+</body>
+</html>

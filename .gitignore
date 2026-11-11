@@ -1,0 +1,15 @@
+# fertige Videos und Bilder werden erzeugt, nicht eingecheckt
+videos/
+stills/
+cover/
+facebook/
+posts-statisch/
+linkedin/
+verworfen/
+*.mp4
+*-ids.json
+# niemals Schlüssel
+*.env
+.env*
+.DS_Store
+__pycache__/

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>flowkraft Drohnenflug</title>
+<style>
+@font-face{font-family:'Aesthetic Romance';src:url(assets/AestheticRomance.ttf) format('truetype');font-weight:400;font-display:block}
+@font-face{font-family:'Open Sans Condensed';src:url(assets/OpenSansCondensed-Regular.woff2) format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:'Open Sans Condensed';src:url(assets/OpenSansCondensed-Bold.woff2) format('woff2');font-weight:700;font-display:block}
+html,body{margin:0;background:#07121e}
+body{width:1080px;height:1920px;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:'Open Sans Condensed','Arial Narrow',sans-serif;perspective:1000px;perspective-origin:540px 960px}
+#sky{position:absolute;left:-700px;top:-900px;width:2480px;height:3720px;background-size:cover;background-position:center}
+#haze{position:absolute;inset:0;pointer-events:none}
+#world{position:absolute;left:540px;top:960px;width:0;height:0;transform-style:preserve-3d}
+.g{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.w,.o{position:absolute;left:0;top:0}
+.w{white-space:nowrap;line-height:1}
+.tile{position:absolute;box-sizing:border-box;border-radius:36px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.tile svg{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ball{position:absolute;left:-66px;top:-66px;width:132px;height:132px;border-radius:50%;background:#17324d;box-shadow:0 18px 40px rgba(7,18,30,.45),inset 0 0 0 2px rgba(234,240,245,.25);display:flex;align-items:center;justify-content:center}
+.ball img{height:58%;margin-left:4%}
+#measure{position:absolute;left:0;top:0;width:900px;visibility:hidden;font-family:'Open Sans Condensed';font-weight:700;line-height:1.02}
+</style>
+</head>
+<body>
+<div id="stage"><div id="sky"></div><div id="haze"></div><canvas id="gc" width="1080" height="1920" style="position:absolute;left:0;top:0"></canvas><div id="world"></div></div>
+<div id="measure"></div>
+<script>document.write('<script src="' + new URLSearchParams(location.search).get('post') + '"><\/script>');</script>
+<script>
+// ===== Drohnenflug: eine durchgehende Kamerafahrt durch alle Szenen eines Reels =====
+const FPS = 30, params = new URLSearchParams(location.search), POST = window.POST;
+const V = params.get('v') || POST.theme || 'navy';
+const TH = {
+  navy: {ink:'#eaf0f5', side:['#9fb6cb','#3a5f82','#1b3a58'], script:'#eaf0f5', bg:'assets/aurora-navy.jpg', sky:'#17324d', tile:'rgba(11,26,43,.92)', tileSide:'#0a1724', haze:'23,50,77', dot:'234,240,245'},
+  dark: {ink:'#eaf0f5', side:['#9fb6cb','#3a5f82','#132a42'], script:'#3f8fcd', bg:'assets/bg-nacht.png', sky:'#07121e', tile:'rgba(11,26,43,.95)', tileSide:'#050d16', haze:'9,24,40', dot:'156,203,240'},
+  mist: {ink:'#17324d', side:['#5d7f9f','#9db6cc','#c9d8e5'], script:'#2878b5', bg:'assets/bg-mist.jpg', sky:'#ffffff', tile:'#ffffff', tileSide:'#c9d8e5', haze:'244,248,251', dot:'40,120,181'},
+}[V];
+if (POST.script) TH.script = POST.script;
+const I = {
+  mail:'<path d="M22 7l-9 5.7c-.6.4-1.4.4-2 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
+  chat:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  calendar:'<path d="M8 2v4M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/>',
+  hourglass:'<path d="M5 2h14M5 22h14"/><path d="M7 2c0 6 10 6 10 10S7 16 7 22M17 2c0 6-10 6-10 10s10 4 10 10"/>',
+  file:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>',
+  folder:'<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  euro:'<path d="M4 10h12M4 14h9"/><path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/>',
+  bot:'<path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/>',
+};
+const FMARK = V === 'mist' ? 'assets/bildmarke-dunkel.svg' : 'assets/bildmarke.svg';
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), lerp = (a, b, x) => a + (b - a) * x;
+const prog = (t, s, d) => clamp((t - s) / d), ss = x => x * x * (3 - 2 * x), sm = x => x * x * x * (x * (6 * x - 15) + 10);
+const cubicOut = x => 1 - Math.pow(1 - x, 3), backOut = (x, s = 1.4) => 1 + (s + 1) * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2);
+const TAU = Math.PI * 2, el = (tag, cls, css, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (css) e.style.cssText = css; if (html) e.innerHTML = html; return e; };
+const svg = (name, size, color) => `<svg viewBox="0 0 24 24" width="${size}" height="${size}" style="stroke:${color}">${I[name] || I.file}</svg>`;
+
+const stage = document.getElementById('stage'), world = document.getElementById('world');
+stage.style.background = TH.sky;
+const sky = document.getElementById('sky'); sky.style.backgroundImage = `url(${TH.bg})`; sky.style.backgroundColor = TH.sky; if (V === 'mist') sky.style.opacity = .45;
+document.getElementById('haze').style.background = `linear-gradient(to bottom, rgba(${TH.haze},0) 0%, rgba(${TH.haze},.35) 55%, rgba(${TH.haze},.0) 100%)`;
+
+// ---------- Welt: Stationen hintereinander im Raum ----------
+const D = 3400, HOLD_Z = 1000;               // Abstand der Stationen, Kamera-Abstand beim Lesen (= Maßstab 1)
+const ALT = [0, 520, -380, 460, -300, 420];  // Höhen: abtauchen, steigen, abtauchen ...
+const LAT = [0, 220, -200, 180, -220, 200];
+const ST = POST.slides.map((sl, i) => ({sl, i, x: LAT[i % LAT.length], y: ALT[i % ALT.length], z: -i * D}));
+
+// Boden (Punktraster als Gelände) und Staub: selbst projiziert auf einer Zeichenfläche, nicht als 3D-Ebene
+const GROUND_Y = 1500, gc = document.getElementById('gc').getContext('2d');
+const DUST = []; { let seed = 11; const r = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+  for (let k = 0; k < 220; k++) DUST.push({x: -1800 + 3600 * r(), y: -1500 + 2800 * r(), z: 2500 - (ST.length * D + 3000) * r(), s: .6 + 1.8 * r()}); }
+function project(c) {   // gleiche Mathematik wie die CSS-Kamera
+  const R = a => a * Math.PI / 180, cy = Math.cos(R(c.ry)), sy = Math.sin(R(c.ry)), cx = Math.cos(R(c.rx)), sx = Math.sin(R(c.rx)), cz = Math.cos(R(c.rz)), sz = Math.sin(R(c.rz));
+  return (X, Y, Z) => { let x = X - c.x, y = Y - c.y, z = Z - c.z;
+    let x1 = x * cy + z * sy, z1 = -x * sy + z * cy;            // rotateY
+    let y2 = y * cx - z1 * sx, z2 = y * sx + z1 * cx;           // rotateX
+    let x3 = x1 * cz - y2 * sz, y3 = x1 * sz + y2 * cz;         // rotateZ
+    if (z2 > -60) return null; const k = 1000 / -z2; return {x: 540 + x3 * k, y: 960 + y3 * k, k, d: -z2}; };
+}
+function drawGround(c) {
+  gc.clearRect(0, 0, 1080, 1920); const P = project(c), G = 200;
+  const x0 = Math.floor((c.x - 3400) / G) * G, z0 = Math.floor(c.z / G) * G;
+  for (let gz = z0; gz > c.z - 9000; gz -= G) for (let gx = x0; gx < c.x + 3400; gx += G) {
+    const q = P(gx, GROUND_Y, gz); if (!q || q.x < -20 || q.x > 1100 || q.y < -20 || q.y > 1940) continue;
+    const a = .5 * clamp((9000 - q.d) / 5000) * clamp((q.d - 80) / 300);
+    gc.fillStyle = `rgba(${TH.dot},${a.toFixed(3)})`; gc.beginPath(); gc.arc(q.x, q.y, Math.max(.6, 5 * q.k), 0, TAU); gc.fill(); }
+  DUST.forEach(p => { const q = P(p.x, p.y, p.z); if (!q) return; const a = .8 * clamp((q.d - 120) / 300) * clamp((5000 - q.d) / 2500);
+    if (a <= 0) return; const g = gc.createRadialGradient(q.x, q.y, 0, q.x, q.y, 7 * p.s * q.k + 1);
+    g.addColorStop(0, `rgba(${TH.dot},${a.toFixed(3)})`); g.addColorStop(1, `rgba(${TH.dot},0)`); gc.fillStyle = g; gc.fillRect(q.x - 8 * p.s * q.k - 1, q.y - 8 * p.s * q.k - 1, 16 * p.s * q.k + 2, 16 * p.s * q.k + 2); });
+}
+
+// 3D-Wort: eine Ebene, Tiefe als gestaffelter Schatten (stabil, keine Tiefensortierung im Browser)
+const EXT = (sides, K, sx = 1.1, sy = 1.9) => Array.from({length: K}, (_, k) => `${((k + 1) * sx).toFixed(1)}px ${((k + 1) * sy).toFixed(1)}px 0 ${sides[Math.min(sides.length - 1, Math.floor(k / K * sides.length))]}`).join(',')
+  + `,${(K * sx + 6).toFixed(0)}px ${(K * sy + 14).toFixed(0)}px 26px rgba(0,0,0,${V === 'mist' ? .12 : .35})`;
+function word3d(txt, size, color, sides, opts = {}) {
+  const w = el('div', 'w', `font-size:${size}px;font-weight:${opts.weight ?? 700};font-family:${opts.font ?? "'Open Sans Condensed'"};color:${color}`);
+  w.textContent = txt;
+  if (opts.outline) { w.style.color = 'transparent'; w.style.webkitTextStroke = `3px ${color}`; }
+  else w.style.textShadow = EXT(sides, opts.layers ?? 12);
+  return w;
+}
+function tile(x, y, w, h, inner, z = 0) {
+  const o = el('div', 'o', `transform:translate3d(${x - w / 2}px,${y - h / 2}px,${z}px)`);
+  o.appendChild(el('div', 'tile', `width:${w}px;height:${h}px;background:${TH.tile};border:2px solid rgba(${V === 'mist' ? '23,50,77,.12' : '234,240,245,.16'});`
+    + `box-shadow:${[1,2,3,4,5,6].map(k => `${(k * 1.4).toFixed(1)}px ${(k * 2.4).toFixed(1)}px 0 ${TH.tileSide}`).join(',')},18px 40px 50px rgba(0,0,0,${V === 'mist' ? .14 : .4})`, inner));
+  return o;
+}
+// Szenen-Objekte (vereinfacht für den Flug)
+function sceneObj(sl) {
+  const P = sl.props || {}, ink = TH.ink, objs = [], Y = -430;
+  const lab = (t, fs = 34) => `<div style="font-size:${fs}px;font-weight:700;color:${ink};letter-spacing:.02em">${t}</div>`;
+  switch (sl.scene) {
+    case 'calendar': objs.push(tile(-230, Y, 300, 300, svg('calendar', 150, ink)));
+      (P.items || []).forEach((t, k) => objs.push(tile(200, Y - 120 + k * 120, 330, 92, `<div style="display:flex;gap:14px;align-items:center">${svg('mail', 40, ink)}${lab(t, 32)}</div>`, 60 + k * 70))); break;
+    case 'hourglass': objs.push(tile(-210, Y, 300, 300, svg('hourglass', 160, ink)));
+      objs.push(tile(210, Y, 340, 190, lab(`${P.value ?? ''} ${P.unit ?? ''}`, 120), 90)); break;
+    case 'clock': objs.push(tile(150, Y, 360, 360, svg('clock', 220, ink)));
+      [[-260, Y - 90], [-150, Y + 40], [-300, Y + 110]].forEach(([x, y], k) => objs.push(tile(x, y, 120, 120, lab(P.coin || '€', 64), 80 + k * 60))); break;
+    case 'flowpanel': (P.nodes || []).forEach(([ic, t], k, a) => { const x = -330 + k * 660 / Math.max(1, a.length - 1);
+      objs.push(tile(x, Y, 160, 160, ic ? svg(ic, 80, ink) : `<img src="${FMARK}" style="height:80px">`, k % 2 ? 70 : 0));
+      const l = el('div', 'o', `transform:translate3d(${x - 100}px,${Y + 100}px,0);width:200px;text-align:center`, lab(t, 30)); objs.push(l); }); break;
+    default: objs.push(tile(0, Y, 300, 300, svg({chaos: 'chat', mailscan: 'mail', extract: 'file', folders: 'folder', dochub: 'bot', beforeafter: 'check'}[sl.scene] || 'file', 150, ink)));
+  }
+  return objs;
+}
+
+// Station aufbauen: Objekte oben, 3D-Headline darunter (links bündig, wie im Reel)
+const meas = document.getElementById('measure');
+function buildStation(S) {
+  const g = el('div', 'g', `transform:translate3d(${S.x}px,${S.y}px,${S.z}px)`); world.appendChild(g);
+  S.g = g; S.objs = sceneObj(S.sl); S.objs.forEach(o => g.appendChild(o));
+  const sl = S.sl, size = sl.hook ? 150 : 120, lines = [];
+  if (sl.outline) lines.push({t: sl.outline, outline: true});
+  lines.push({t: sl.title + (sl.script ? ' §' + sl.script : '')});
+  meas.style.fontSize = size + 'px';
+  meas.innerHTML = lines.map(l => `<div>${l.t.split(' ').map(x => x.startsWith('§') ? `<span data-s style="font-family:'Aesthetic Romance';font-weight:400;font-size:${Math.round(size * 1.13)}px">${x.slice(1)}</span>` : `<span>${x}</span>`).join(' ')}</div>`).join('');
+  const top = -110; S.words = [];
+  meas.querySelectorAll('div').forEach((line, li) => line.querySelectorAll('span').forEach(sp => {
+    const isS = sp.hasAttribute('data-s'), out = lines[li].outline;
+    const w = isS ? word3d(sp.textContent, Math.round(size * 1.13), TH.script, [TH.side[0], TH.side[1]], {font: "'Aesthetic Romance'", weight: 400, layers: 6})
+                  : word3d(sp.textContent, size, TH.ink, TH.side, {outline: out, layers: out ? 0 : 12});
+    const zx = li * 55;   // Zeilen leicht gestaffelt in der Tiefe
+    w.dataset.x = sp.offsetLeft - 450; w.dataset.y = top + sp.offsetTop; w.dataset.z = zx;
+    g.appendChild(w); S.words.push(w);
+  }));
+  S.textBottom = top + meas.offsetHeight;
+  if (sl.p) { S.p = el('div', 'o', `width:880px;font-size:40px;line-height:1.3;color:${TH.ink};transform:translate3d(-450px,${S.textBottom + 40}px,0)`); S.p.textContent = sl.p; g.appendChild(S.p); }
+  S.anchor = {x: S.x + 400, y: S.y - 640, z: S.z + 120};   // Ballplatz an der Station
+}
+
+// ---------- Zeitplan ----------
+const TI = 1.5, TT = 1.75;   // Anflug am Anfang, Transit zwischen Stationen
+const readT = sl => clamp(1.1 + [sl.outline, sl.title, sl.p].filter(Boolean).join(' ').split(/\s+/).length * .15, 2.0, 3.6);
+let T = 0; const SEG = [];
+function plan() {
+  let t = 0;
+  ST.forEach((S, i) => {
+    const tin = i ? TT : TI; S.tArrive = t + tin; S.tReveal = i ? t + tin * .12 : -.35; S.tLeave = S.tArrive + readT(S.sl) + (i === ST.length - 1 ? .9 : 0);
+    SEG.push({i, t0: t, t1: S.tArrive}); t = S.tLeave;
+  });
+  T = Math.round(t * FPS) / FPS; window.T = T;
+}
+const hold = S => ({x: S.x, y: S.y, z: S.z + HOLD_Z});
+function camAt(t) {
+  // Lesen: langsames Schweben; Transit: Tempo-Rampe mit Bogen (unter/über die Schrift), Neigung und Querlage aus der Bewegung
+  for (let k = ST.length - 1; k >= 0; k--) {
+    const S = ST[k], H = hold(S);
+    if (t >= S.tArrive) { const h = t - S.tArrive;
+      return {x: H.x + 10 * Math.sin(h * .9), y: H.y + 8 * Math.sin(h * 1.3), z: H.z - 40 * h, rx: .8 * Math.sin(h * 1.1), ry: 1.5 * Math.sin(h * .7), rz: 0}; }
+    if (t >= (k ? ST[k - 1].tLeave : 0)) {
+      const t0 = k ? ST[k - 1].tLeave : 0, d = S.tArrive - t0, u = clamp((t - t0) / d);
+      const A = k ? (() => { const P = hold(ST[k - 1]), hh = ST[k - 1].tLeave - ST[k - 1].tArrive; return {x: P.x + 10 * Math.sin(hh * .9), y: P.y, z: P.z - 40 * hh}; })()
+                  : {x: H.x - 160, y: H.y - 420, z: H.z + 1500};   // Start: etwas höher und weiter weg, Hook sofort lesbar
+      const e = sm(u), dir = k % 2 ? 1 : -1;
+      const bump = k ? dir * 560 * Math.sin(Math.PI * clamp(u * 1.15)) : 0;   // unter bzw. über der Schrift durch
+      const x = lerp(A.x, H.x, e), y = lerp(A.y, H.y, k ? e : cubicOut(u)) + bump, z = lerp(A.z, H.z, k ? e : cubicOut(u));
+      const du = .004, e2 = sm(clamp(u + du)), y2 = lerp(A.y, H.y, k ? e2 : cubicOut(clamp(u + du))) + (k ? dir * 560 * Math.sin(Math.PI * clamp((u + du) * 1.15)) : 0);
+      const z2 = lerp(A.z, H.z, k ? e2 : cubicOut(clamp(u + du))), x2 = lerp(A.x, H.x, e2);
+      const vz = Math.max(1, z - z2), pitch = Math.atan2(y2 - y, vz) * 180 / Math.PI, yaw = -Math.atan2(x2 - x, vz) * 180 / Math.PI;
+      return {x, y, z, rx: clamp(-pitch * .55, -28, 28) + (k ? 0 : 9 * (1 - cubicOut(u))), ry: clamp(yaw * .6, -14, 14), rz: clamp(yaw * 1.2, -14, 14) * Math.sin(Math.PI * u)};
+    }
+  }
+  return hold(ST[0]);
+}
+function ballAt(t) {
+  for (let k = ST.length - 1; k >= 0; k--) {
+    const S = ST[k];
+    const tStart = k ? ST[k - 1].tLeave - .15 : .2, tEnd = S.tArrive - (k ? .35 : .25);
+    if (t >= tEnd) { const h = t - tEnd, b = Math.abs(Math.sin(h * 3.2)) * 26 * Math.exp(-h * 2.4);
+      return {x: S.anchor.x, y: S.anchor.y - b, z: S.anchor.z, hit: h}; }
+    if (t >= tStart) { const u = sm(clamp((t - tStart) / (tEnd - tStart)));
+      const A = k ? ST[k - 1].anchor : {x: S.anchor.x - 200, y: S.anchor.y - 1500, z: S.anchor.z + 3500};
+      return {x: lerp(A.x, S.anchor.x, u), y: lerp(A.y, S.anchor.y, u) - (k ? 420 : 0) * Math.sin(Math.PI * u), z: lerp(A.z, S.anchor.z, u), hit: -1}; }
+  }
+  return {x: 0, y: -3000, z: 4000, hit: -1};
+}
+
+// ---------- Bild = reine Funktion der Zeit ----------
+let ball, rings = [];
+function seek(t) {
+  t = clamp(t, 0, T);
+  const c = camAt(t);
+  world.style.transform = `translateZ(1000px) rotateZ(${c.rz.toFixed(3)}deg) rotateX(${c.rx.toFixed(3)}deg) rotateY(${c.ry.toFixed(3)}deg) translate3d(${(-c.x).toFixed(1)}px,${(-c.y).toFixed(1)}px,${(-c.z).toFixed(1)}px)`;
+  sky.style.transform = `translate(${clamp(-c.ry * 9 - c.x * .04, -380, 380).toFixed(1)}px,${clamp(c.rx * 9 - c.y * .05, -500, 500).toFixed(1)}px) rotate(${c.rz.toFixed(2)}deg)`;
+  drawGround(c);
+  ST.forEach(S => {
+    const dz = c.z - S.z;   // Abstand Kamera zur Station
+    const near = clamp((dz - 160) / 340), far = clamp((7200 - dz) / 2600);
+    S.g.style.opacity = (dz < 160 ? 0 : near * far).toFixed(3);
+    S.g.style.visibility = dz < 160 || far <= 0 ? 'hidden' : 'visible';
+    // Wörter stehen auf, während man anfliegt
+    S.words.forEach((w, k) => { const x = prog(t, S.tReveal + k * .07, .75), e = backOut(x, 1.2);
+      w.style.opacity = clamp(x * 3).toFixed(3);
+      w.style.transform = `translate3d(${w.dataset.x}px,${(+w.dataset.y).toFixed(1)}px,${w.dataset.z}px) translateY(${(90 * (1 - e)).toFixed(1)}px) rotateX(${(-80 * (1 - e)).toFixed(2)}deg)`;
+      w.style.transformOrigin = '0 100%'; });
+    S.objs.forEach((o, k) => { const x = prog(t, S.tReveal - .25 + k * .09, .8), e = backOut(x, 1.1);
+      if (!o.dataset.base) o.dataset.base = o.style.transform;
+      o.style.opacity = clamp(x * 2.5).toFixed(3);
+      o.style.transform = `${o.dataset.base} translateY(${(260 * (1 - e)).toFixed(1)}px) rotateY(${(35 * (1 - e)).toFixed(2)}deg)`; });
+    if (S.p) { const x = prog(t, S.tReveal + S.words.length * .07 + .35, .6); S.p.style.opacity = ss(x).toFixed(3);
+      if (!S.p.dataset.base) S.p.dataset.base = S.p.style.transform; S.p.style.transform = `${S.p.dataset.base} translateY(${(40 * (1 - cubicOut(x))).toFixed(1)}px)`; }
+  });
+  const b = ballAt(t), bdz = c.z - b.z;
+  ball.style.opacity = bdz < 140 ? 0 : clamp((bdz - 140) / 200).toFixed(3);
+  ball.style.transform = `translate3d(${b.x.toFixed(1)}px,${b.y.toFixed(1)}px,${b.z.toFixed(1)}px) rotateY(${(-c.ry).toFixed(2)}deg) rotateX(${(-c.rx).toFixed(2)}deg)`;
+  rings.forEach((r, k) => { const S = ST[k], h = t - (S.tArrive - (k ? .35 : .25)), x = clamp(h / .8);
+    r.style.opacity = h < 0 || h > .8 ? 0 : (.6 * (1 - x)).toFixed(3);
+    const d = 132 + 300 * cubicOut(x); r.style.width = r.style.height = d + 'px';
+    r.style.transform = `translate3d(${S.anchor.x - d / 2}px,${S.anchor.y - d / 2}px,${S.anchor.z - 2}px)`; });
+}
+
+window.FPS = FPS; window.seek = seek; window.SIZE = {w: 1080, h: 1920};
+window.ready = (async () => {
+  await document.fonts.load("700 120px 'Open Sans Condensed'"); await document.fonts.load("400 120px 'Aesthetic Romance'"); await document.fonts.ready;
+  ST.forEach(buildStation);
+  ball = el('div', 'ball', '', `<img src="assets/bildmarke.svg" alt="">`); world.appendChild(ball);
+  rings = ST.map(() => { const r = el('div', '', `position:absolute;left:0;top:0;border:4px solid #4A9BD8;border-radius:50%;box-shadow:0 0 30px rgba(40,120,181,.5)`); world.appendChild(r); return r; });
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  plan();
+  // Ton-Ereignisse für flight.py
+  const ev = [];
+  ST.forEach((S, i) => {
+    const t0 = i ? ST[i - 1].tLeave : 0; ev.push({t: t0, k: 'whoosh', d: (S.tArrive - t0) + .2});
+    ev.push({t: S.tArrive - (i ? .35 : .25), k: 'drop', i});
+    S.words.forEach((w, k) => ev.push({t: S.tReveal + k * .07 + .25, k: 'tick', f: 1800 + 180 * (k % 6)}));
+    if (S.sl.script) ev.push({t: S.tReveal + S.words.length * .07, k: 'sparkle'});
+  });
+  window.TL = {T, events: ev};
+  seek(+(params.get('t') || 0));
+  return true;
+})();
+</script>
+</body>
+</html>
