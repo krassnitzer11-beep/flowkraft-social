@@ -12,17 +12,10 @@ import argparse, json, math, pathlib, shutil, subprocess, sys, tempfile, wave
 import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import sfx
+from render import launch, shot   # gleicher Browserstart und Screenshot-Retry wie render.py
 from playwright.sync_api import sync_playwright
 import shutil as _sh
 
-
-def launch(p, args):
-    """Mac: Google Chrome. Cloud/Linux ohne Chrome: mitgeliefertes Chromium mit Software-WebGL."""
-    extra = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
-    try:
-        return p.chromium.launch(channel="chrome", args=args)
-    except Exception:
-        return p.chromium.launch(args=args + extra)
 
 HERE = pathlib.Path(__file__).resolve().parent
 ARGS = ["--force-color-profile=srgb", "--font-render-hinting=none", "--allow-file-access-from-files", "--ignore-gpu-blocklist"]
@@ -48,7 +41,7 @@ def scene_layers(b, post, n, tmp, theme, dsf):
             frames = int(math.ceil((lay["H0"] + .4) * 30))
             for k in range(frames):
                 pg.evaluate(f"window.seek({k / 30})")
-                pg.screenshot(path=str(tmp / f"s{sid}{part}_{k:04d}.png"), omit_background=True)
+                shot(pg, path=str(tmp / f"s{sid}{part}_{k:04d}.png"), omit_background=True)
         lay["frames"] = frames
         lays.append(lay); pg.close()
         print("Szene", sid, f"{frames} Bilder")
@@ -109,14 +102,14 @@ def main():
         T, fps, tl, name = pg.evaluate("[window.T, window.FPS, window.TL, POST.name]")
         if a.stills is not None:
             for t in (a.stills or [T * k / 8 for k in range(9)]):
-                pg.evaluate(f"window.seek({t})"); pg.screenshot(path=str(out / f"{name}-flug_{t:05.2f}.png"))
+                pg.evaluate(f"window.seek({t})"); shot(pg, path=str(out / f"{name}-flug_{t:05.2f}.png"))
             print("stills", name, f"T={T}", json.dumps(pg.evaluate("window._dbg")))
         else:
             silent = tmp / "v.mp4"; wav = tmp / "a.wav"; mux = tmp / "o.mp4"; dst = out / f"{name}-flug.mp4"
             ff = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(fps), "-i", "-", "-vf", "scale=1080:-2:flags=lanczos", "-c:v", "libx264", "-preset", "slow",
                                    "-crf", "12", "-tune", "film", "-maxrate", "25M", "-bufsize", "50M", "-pix_fmt", "yuv420p", "-profile:v", "high", "-level", "4.2", "-r", str(fps), str(silent)], stdin=subprocess.PIPE)
             for i in range(int(round(T * fps))):
-                pg.evaluate(f"window.seek({i / fps})"); ff.stdin.write(pg.screenshot(type="png"))
+                pg.evaluate(f"window.seek({i / fps})"); ff.stdin.write(shot(pg, type="png"))
             ff.stdin.close(); ff.wait()
             sound(tl, tmp, wav)
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(silent), "-i", str(wav), "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac",

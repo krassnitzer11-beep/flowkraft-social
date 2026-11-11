@@ -13,3 +13,4 @@ verworfen/
 .env*
 .DS_Store
 __pycache__/
+out/

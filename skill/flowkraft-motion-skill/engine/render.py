@@ -16,12 +16,26 @@ import shutil as _sh
 
 
 def launch(p, args):
-    """Mac: Google Chrome. Cloud/Linux ohne Chrome: mitgeliefertes Chromium mit Software-WebGL."""
+    """Mac: Google Chrome. Linux/Cloud: Chrome oder mitgeliefertes Chromium, immer mit Software-WebGL (keine GPU)."""
     extra = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
+    if sys.platform != "darwin":
+        args = args + extra
     try:
         return p.chromium.launch(channel="chrome", args=args)
     except Exception:
         return p.chromium.launch(args=args + extra)
+
+
+def shot(page, tries=5, **kw):
+    """Screenshot mit Wiederholung: Headless-Chromium ohne GPU meldet bei 2x-Supersampling
+    gelegentlich 'Unable to capture screenshot'; ein zweiter Versuch klappt."""
+    for k in range(tries):
+        try:
+            return page.screenshot(**kw)
+        except Exception as e:
+            if k == tries - 1 or "capture screenshot" not in str(e):
+                raise
+            print("  Screenshot-Retry", k + 1, file=sys.stderr); page.wait_for_timeout(250 * (k + 1))
 
 ENGINE = pathlib.Path(__file__).resolve().parent / "engine.html"
 SS = 2   # Render-Faktor; Ausgabe bleibt 1080 breit
@@ -57,7 +71,7 @@ def video(page, dst):
                            "-r", str(fps), str(silent)], stdin=subprocess.PIPE)
     for i in range(int(round(T * fps))):
         page.evaluate(f"window.seek({i / fps})")
-        ff.stdin.write(page.screenshot(type="png"))
+        ff.stdin.write(shot(page, type="png"))
     ff.stdin.close(); ff.wait()
     mux(silent, tl, dst)
     print("ok", dst.name, f"{T}s")
@@ -84,7 +98,7 @@ def main():
             if a.stills:
                 T = pg.evaluate("window.T")
                 for t in (1.2, 2.4, 3.6, T - .4):
-                    pg.evaluate(f"window.seek({t})"); big = out / f"_{name}.png"; pg.screenshot(path=str(big)); shrink(big, out / f"{name}_{t:04.1f}.png", 2160 if a.hd else 1080); big.unlink()
+                    pg.evaluate(f"window.seek({t})"); big = out / f"_{name}.png"; shot(pg, path=str(big)); shrink(big, out / f"{name}_{t:04.1f}.png", 2160 if a.hd else 1080); big.unlink()
                 print("stills", name)
             elif a.audio_only:
                 dst = out / f"{name}.mp4"; mux(dst, pg.evaluate("window.TL"), dst); print("audio ok", dst.name)
