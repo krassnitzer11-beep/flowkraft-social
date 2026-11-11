@@ -90,7 +90,7 @@ def main():
     tmp = pathlib.Path(a.keep).resolve() if a.keep else pathlib.Path(tempfile.mkdtemp())
     tmp.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
-        b = launch(p, ARGS)
+        b = launch(p, ARGS, webgl=True)
         if not (tmp / "layout.json").exists():
             pg = b.new_page(); pg.goto((HERE / "engine.html").as_uri() + f"?post={post.as_uri()}&s=1&f=story"); pg.evaluate("window.ready")
             n = pg.evaluate("POST.slides.length"); pg.close()

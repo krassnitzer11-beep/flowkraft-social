@@ -15,10 +15,11 @@ from playwright.sync_api import sync_playwright
 import shutil as _sh
 
 
-def launch(p, args):
-    """Mac: Google Chrome. Linux/Cloud: Chrome oder mitgeliefertes Chromium, immer mit Software-WebGL (keine GPU)."""
+def launch(p, args, webgl=False):
+    """Mac: Google Chrome. Linux/Cloud: Chrome oder mitgeliefertes Chromium; für WebGL (flight.py) mit
+    Software-WebGL, weil es dort keine GPU gibt. Ohne WebGL bleibt SwiftShader aus, das wäre ~2x langsamer."""
     extra = ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
-    if sys.platform != "darwin":
+    if webgl and sys.platform != "darwin":
         args = args + extra
     try:
         return p.chromium.launch(channel="chrome", args=args)
