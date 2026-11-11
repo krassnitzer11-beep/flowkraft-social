@@ -8,7 +8,7 @@ Es ist langsamer als auf dem Mac, aber für einen Wochen-Batch völlig ausreiche
 
 ## Umgebung
 
-- ffmpeg 7 (apt), Python 3.13, `scripts/setup.sh` lief ohne Änderung durch (51 s).
+- ffmpeg 6.1 (apt), Python 3.13, `scripts/setup.sh` lief ohne Änderung durch (51 s).
 - Browser: In der Umgebung ist bereits „Chrome for Testing“ (Chromium 153) vorinstalliert, daher nimmt
   `channel="chrome"` diesen Browser und `setup.sh` lädt kein eigenes Chromium. Auf einem Linux-Server
   ohne Chrome lädt `setup.sh` Playwright-Chromium samt Systempaketen (`--with-deps`), das ist unverändert.
