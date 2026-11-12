@@ -53,6 +53,8 @@ Story und Reel sind keine Slides: Die Engine lässt dort Seitenzahl („2 / 6“
 
 **Story:** ohne Logo, ohne Label oben rechts und ohne `flowkraft.at`. Das Wasserzeichen sitzt tiefer und ist unten angeschnitten. Eine Story ist eine Frage oder ein Gedanke zum Post des Tages, meist eine Slide. Sticker setzt der Nutzer in der App, also im Bild Platz dafür lassen.
 
+**Reels nur als Drohnenflug (Entscheidung des Nutzers, 12.11.2026):** Jedes Reel wird mit `engine/flight.py POST.js --out ORDNER` gerendert (Modus split, siehe unten), nicht mehr mit `render.py --format reel`. Die Ball-Übergänge unten gelten nur noch als Altbestand.
+
 **Reel:** Ein Reel ist eine durchgehende Geschichte, kein Karussell am Stück. Am Ende jeder Szene parkt der F-Ball klein am Rand, wächst dann über das ganze Bild und bringt beim Schrumpfen die nächste Szene mit. Der Wechsel dauert rund eine halbe Sekunde: Der Ball beschleunigt beim Wachsen bis zum Schnitt und schrumpft danach schnell, damit das Tempo über den Schnitt weiterläuft und keine Pause entsteht, die nach Ende aussieht. Die Lesezeit richtet sich nach der Wortzahl (1 bis 2,2 s). Nur die letzte Szene endet im Wasserzeichen. Im Reel kein CTA-Button, der nächste Schritt steht in der Caption. Für den Text gilt:
 - Ein Satz pro Szene, jeder Satz führt den vorigen weiter („Ein Termin. Drei Mails.“ → „Bei 30 Terminen sind das 3 Stunden.“ → „Aufs Jahr: 132 Stunden.“ → „Oder es läuft von selbst.“).
 - Keine Nummern (`num`) und fast kein Fließtext (`p`), höchstens ein kurzer Hinweis wie „Beispielrechnung“.
