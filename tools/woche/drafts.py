@@ -47,11 +47,12 @@ for p in plan["posts"]:
         if li["typ"] == "video" and q.get("cover"): item["thumbnail"] = up(q["cover"])
         draft(p["tag"], "linkedin", f"{li['datum']}T{li['zeit']}:00", text(w, li["texte"], "LinkedIn"), [item], None, "Video" if li["typ"] == "video" else "Standbild")
 
-# Storys: mit Sticker postet Daniel selbst; sie stehen zur Kontrolle auf der Freigabeseite (keine Zernio-Entwürfe)
+# Storys: werden automatisch gepostet, ohne Sticker (Instagram und Facebook), gleiche Freigabe wie die Posts
 for p in plan["posts"]:
     k = p.get("story")
     if k and man.get("storys") and k <= len(man["storys"]):
-        res.append({"tag": p["tag"], "kanal": "instagram", "typ": "Story (postest du selbst, mit Sticker)", "zeit": f"{p['datum']}T{p['zeit']}:00",
-                    "id": "", "text": text(w, p["texte"], "Story"), "medien": [up(man["storys"][k - 1])], "manuell": True})
+        sv = {"type": "video", "url": up(man["storys"][k - 1])}; when = f"{p['datum']}T{p['zeit']}:00"
+        draft(p["tag"], "instagram", when, "", [sv], {"platformSpecificData": {"contentType": "story"}}, "Story")
+        draft(p["tag"], "facebook", when, "", [sv], {"platformSpecificData": {"contentType": "story"}}, "Story")
 (out / "drafts.json").write_text(json.dumps(res, indent=1, ensure_ascii=False))
 print(len(res), "Entwürfe angelegt ->", out / "drafts.json")

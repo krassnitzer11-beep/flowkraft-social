@@ -20,6 +20,6 @@
 
 - `format`: `reel` (Drohnenflug), `karussell` (Video-Slides; Facebook bekommt die Bildergalerie), `post` (Standbild, `clean: true`).
 - `texte`: Überschrift des Tages in `texte.md` (`## Mo 23.11. · …`), daraus kommen Caption und LinkedIn-Text.
-- `story`: Nummer der Slide in `storys.js`. Storys mit Sticker setzt Daniel in der App, sie werden nicht automatisch gepostet.
+- `story`: Nummer der Slide in `storys.js`. Storys werden **automatisch und ohne Sticker** gepostet (Instagram und Facebook), zur selben Zeit wie der Post. Die Frage steht als Text in der Story.
 - `linkedin`: nur Di (`typ: video`, 4:5 aus dem genannten Reel) und Do (`typ: bild`, Standbild); `quelle` = Tag, dessen Post die Medien liefert; `texte` = Abschnitt mit dem LinkedIn-Text.
 - **Alle Posts um 18:00** Ortszeit Wien, auch LinkedIn (Entscheidung von Daniel, 12.11.2026).
