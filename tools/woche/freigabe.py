@@ -10,13 +10,29 @@ Make setzt bei ok den Zernio-Entwurf auf eingeplant (PUT /v1/posts/{id} mit isDr
 import html, json, os, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
-from common import upload, week
+from common import CTX, week
+import io, secrets, urllib.request, zipfile
 
 w, plan, out = week(sys.argv[1]); lokal = "--lokal" in sys.argv
 drafts = json.loads((out / "drafts.json").read_text())
 hook = os.environ.get("MAKE_APPROVE_URL", "")
 if not hook and not lokal: sys.exit("MAKE_APPROVE_URL fehlt.")
 bericht = (w / "pruefbericht.md").read_text() if (w / "pruefbericht.md").exists() else ""
+def netlify_deploy(f, kw):
+    """Lädt die Seite zu Netlify (NETLIFY_TOKEN, NETLIFY_SITE_ID). Pfad mit Zufallsteil: nicht erratbar, nicht in Suchmaschinen."""
+    tok, site = os.environ.get("NETLIFY_TOKEN"), os.environ.get("NETLIFY_SITE_ID")
+    if not (tok and site): sys.exit("NETLIFY_TOKEN oder NETLIFY_SITE_ID fehlt.")
+    slug = f"kw{kw}-{secrets.token_urlsafe(9)}"; buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr(f"{slug}/index.html", f.read_text()); z.writestr("robots.txt", "User-agent: *\nDisallow: /\n")
+        z.writestr("index.html", "<!doctype html><meta name=robots content=noindex><title>flowkraft</title>")
+        z.writestr("_headers", "/*\n  X-Robots-Tag: noindex\n  Referrer-Policy: no-referrer\n")
+    req = urllib.request.Request(f"https://api.netlify.com/api/v1/sites/{site}/deploys", data=buf.getvalue(), method="POST",
+                                 headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/zip"})
+    with urllib.request.urlopen(req, timeout=120, context=CTX) as r: d = json.loads(r.read())
+    base = d.get("ssl_url") or d.get("url"); return f"{base.rstrip('/')}/{slug}/"
+
+
 KAN = {"instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn"}
 
 
@@ -75,4 +91,4 @@ document.getElementById('allok').onclick = async () => {{ for (const c of docume
 
 f = out / "freigabe.html"; f.write_text(page)
 if lokal: print("lokal:", f); sys.exit()
-link = upload(f, "text/html"); (out / "freigabe-link.txt").write_text(link + "\n"); print("Freigabeseite:", link)
+link = netlify_deploy(f, plan["kw"]); (out / "freigabe-link.txt").write_text(link + "\n"); print("Freigabeseite:", link)

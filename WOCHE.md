@@ -32,6 +32,7 @@ Arbeite im Repository-Wurzelordner. KW = die kommende Woche (Mo–Sa).
 - `ZERNIO_API_KEY`
 - `MAKE_NOTIFY_URL` – Make-Webhook „Woche bereit“ → E-Mail an Daniel
 - `MAKE_APPROVE_URL` – Make-Webhook „Freigabe“ → setzt den Zernio-Entwurf auf eingeplant
+- `NETLIFY_TOKEN`, `NETLIFY_SITE_ID` – Netlify hostet die Freigabeseite (Pfad mit Zufallsteil, noindex)
 
 ## Regeln, die nie verletzt werden
 
