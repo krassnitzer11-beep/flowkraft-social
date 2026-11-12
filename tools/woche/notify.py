@@ -10,8 +10,9 @@ from common import CTX, text, week
 
 w, plan, out = week(sys.argv[1])
 hook = os.environ.get("MAKE_NOTIFY_URL") or sys.exit("MAKE_NOTIFY_URL fehlt.")
-link_f = out / "freigabe-link.txt"
-link = link_f.read_text().strip() if link_f.exists() else ""
+# Montag läuft in einer frischen Cloud-Kopie: der Link kommt aus dem Wochen-Branch (content/KWnn/freigabe-link.txt)
+link_f = next((f for f in (w / "freigabe-link.txt", out / "freigabe-link.txt") if f.exists()), None)
+link = link_f.read_text().strip() if link_f else ""
 hooks = [f"{p['tag']} · {p['format']} · {text(w, p['texte'], 'Hook') or text(w, p['texte'], 'Text im Bild')}" for p in plan["posts"]]
 offen = ""
 if (w / "pruefbericht.md").exists():

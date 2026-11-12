@@ -92,4 +92,4 @@ document.getElementById('allok').onclick = async () => {{ for (const c of [...do
 
 f = out / "freigabe.html"; f.write_text(page)
 if lokal: print("lokal:", f); sys.exit()
-link = netlify_deploy(f, plan["kw"]); (out / "freigabe-link.txt").write_text(link + "\n"); print("Freigabeseite:", link)
+link = netlify_deploy(f, plan["kw"]); (out / "freigabe-link.txt").write_text(link + "\n"); (w / "freigabe-link.txt").write_text(link + "\n"); print("Freigabeseite:", link)

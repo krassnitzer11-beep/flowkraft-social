@@ -55,4 +55,5 @@ for p in plan["posts"]:
         draft(p["tag"], "instagram", when, "", [sv], {"platformSpecificData": {"contentType": "story"}}, "Story")
         draft(p["tag"], "facebook", when, "", [sv], {"platformSpecificData": {"contentType": "story"}}, "Story")
 (out / "drafts.json").write_text(json.dumps(res, indent=1, ensure_ascii=False))
+(w / "drafts.json").write_text(json.dumps(res, indent=1, ensure_ascii=False))
 print(len(res), "Entwürfe angelegt ->", out / "drafts.json")

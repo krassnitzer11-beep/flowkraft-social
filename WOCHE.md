@@ -21,11 +21,21 @@ Arbeite im Repository-Wurzelordner. KW = die kommende Woche (Mo–Sa).
 6. **Rendern:** `python3 tools/woche/build.py content/KWnn` (dauert in der Cloud 1,5–2 h). Ergebnis in `out/KWnn/` plus `out/KWnn/manifest.json`.
 7. **Entwürfe:** `python3 tools/woche/drafts.py content/KWnn` lädt alles zu Zernio hoch und legt jeden Post als **Entwurf** an (nicht eingeplant).
 8. **Freigabeseite:** `python3 tools/woche/freigabe.py content/KWnn` baut die Seite und lädt sie hoch, Link in `out/KWnn/freigabe-link.txt`.
-9. **Sichern:** Texte, Plan, Post-Dateien und Berichte committen (keine Videos), Branch `woche/KWnn`, kurz zusammenfassen.
+9. **Sichern:** Texte, Plan, Post-Dateien, Berichte, `drafts.json` und `freigabe-link.txt` in `content/KWnn/` committen (keine Videos) und auf den Branch `claude/woche-KWnn` pushen. Die Montagsroutine liest den Link von dort. Kurz zusammenfassen.
 
 ## Benachrichtigung (Montag 08:00)
 
-`python3 tools/woche/notify.py content/KWnn` schickt die E-Mail über Make (Webhook `MAKE_NOTIFY_URL`).
+Branch `claude/woche-KWnn` holen (`git fetch origin claude/woche-KWnn && git checkout claude/woche-KWnn`), dann `python3 tools/woche/notify.py content/KWnn`: schickt die E-Mail über Make (Webhook `MAKE_NOTIFY_URL`). Fehlt der Branch oder der Link, geht trotzdem eine Mail raus: „Woche ist NICHT fertig“.
+
+## Übergabe zwischen den Routinen
+
+Jede Routine startet in einer frischen Kopie des Repositorys. Was die nächste braucht, liegt deshalb auf einem Branch:
+
+- Samstag → `claude/analyse-KWnn` (`content/analysen/KWnn.md`, KW = die gerade laufende Woche)
+- Sonntag holt den neuesten `claude/analyse-*`-Branch und schreibt nach `claude/woche-KWnn` (KW = die kommende Woche)
+- Montag liest `claude/woche-KWnn`
+
+Daniel führt die Branches bei Gelegenheit in `main` zusammen.
 
 ## Umgebungsvariablen (in der Cloud-Umgebung hinterlegt, nie im Repository)
 
