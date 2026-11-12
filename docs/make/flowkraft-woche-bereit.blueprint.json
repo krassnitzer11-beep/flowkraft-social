@@ -1,0 +1,82 @@
+{
+ "name": "flowkraft Woche bereit",
+ "flow": [
+  {
+   "id": 1,
+   "module": "gateway:CustomWebHook",
+   "version": 1,
+   "parameters": {
+    "hook": null,
+    "maxResults": 1
+   },
+   "mapper": {},
+   "metadata": {
+    "designer": {
+     "x": 0,
+     "y": 0
+    }
+   }
+  },
+  {
+   "id": 2,
+   "module": "google-email:sendAnEmail",
+   "version": 2,
+   "parameters": {
+    "account": null
+   },
+   "mapper": {
+    "to": [
+     "krassnitzer11@gmail.com"
+    ],
+    "subject": "{{1.betreff}}",
+    "bodyType": "rawHtml",
+    "contentType": "text",
+    "content": "Die Woche ist bereit:<br>{{1.link}}<br><br>Die Posts:<br>{{1.hooks}}<br><br>{{1.offene_einwaende}}<br><br>Ohne Freigabe geht nichts raus.",
+    "attachments": [],
+    "cc": [],
+    "bcc": []
+   },
+   "metadata": {
+    "designer": {
+     "x": 300,
+     "y": 0
+    }
+   }
+  },
+  {
+   "id": 3,
+   "module": "gateway:WebhookRespond",
+   "version": 1,
+   "parameters": {},
+   "mapper": {
+    "status": "200",
+    "body": "ok",
+    "headers": []
+   },
+   "metadata": {
+    "designer": {
+     "x": 600,
+     "y": 0
+    }
+   }
+  }
+ ],
+ "metadata": {
+  "instant": true,
+  "version": 1,
+  "scenario": {
+   "roundtrips": 1,
+   "maxErrors": 3,
+   "autoCommit": true,
+   "autoCommitTriggerLast": true,
+   "sequential": false,
+   "confidential": false,
+   "dataloss": false,
+   "dlq": false,
+   "freshVariables": false
+  },
+  "designer": {
+   "orphans": []
+  }
+ }
+}

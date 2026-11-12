@@ -3,7 +3,7 @@
 
   python3 tools/woche/notify.py content/KW48
 """
-import json, os, ssl, sys, urllib.request
+import html, json, os, ssl, sys, urllib.request
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from common import CTX, text, week
@@ -18,6 +18,7 @@ if (w / "pruefbericht.md").exists():
     t = (w / "pruefbericht.md").read_text(); i = t.find("## Offene Einwände")
     offen = t[i:i + 1500] if i >= 0 else ""
 body = {"betreff": f"flowkraft: Woche KW {plan['kw']} ist bereit zur Freigabe" if link else f"flowkraft: Woche KW {plan['kw']} ist NICHT fertig",
-        "link": link, "hooks": "\n".join(hooks), "offene_einwaende": offen, "kw": plan["kw"]}
+        "link": link, "hooks": "<br>".join(html.escape(h) for h in hooks),
+        "offene_einwaende": html.escape(offen).replace("\n", "<br>"), "kw": plan["kw"]}
 req = urllib.request.Request(hook, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"}, method="POST")
 with urllib.request.urlopen(req, timeout=60, context=CTX) as r: print("Benachrichtigung:", r.status)

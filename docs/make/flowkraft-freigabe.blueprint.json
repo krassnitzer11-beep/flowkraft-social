@@ -1,0 +1,219 @@
+{
+ "name": "flowkraft Freigabe",
+ "flow": [
+  {
+   "id": 1,
+   "module": "gateway:CustomWebHook",
+   "version": 1,
+   "parameters": {
+    "hook": null,
+    "maxResults": 1
+   },
+   "mapper": {},
+   "metadata": {
+    "designer": {
+     "x": 0,
+     "y": 0
+    }
+   }
+  },
+  {
+   "id": 2,
+   "module": "builtin:BasicRouter",
+   "version": 1,
+   "mapper": null,
+   "metadata": {
+    "designer": {
+     "x": 300,
+     "y": 0
+    }
+   },
+   "routes": [
+    {
+     "flow": [
+      {
+       "id": 3,
+       "module": "http:ActionSendData",
+       "version": 3,
+       "parameters": {
+        "handleErrors": false,
+        "useNewZLibDeCompress": true
+       },
+       "mapper": {
+        "url": "https://zernio.com/api/v1/posts/{{1.id}}",
+        "serializeUrl": false,
+        "method": "put",
+        "headers": [
+         {
+          "name": "Authorization",
+          "value": "Bearer ZERNIO_SCHLUESSEL_HIER_EINTRAGEN"
+         },
+         {
+          "name": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "qs": [],
+        "bodyType": "raw",
+        "parseResponse": true,
+        "authUser": "",
+        "authPass": "",
+        "timeout": "",
+        "shareCookies": false,
+        "ca": "",
+        "rejectUnauthorized": true,
+        "followRedirect": true,
+        "useQuerystring": false,
+        "gzip": true,
+        "useMtls": false,
+        "followAllRedirects": false,
+        "contentType": "application/json",
+        "data": "{\"isDraft\": false, \"scheduledFor\": \"{{1.zeit}}\", \"timezone\": \"Europe/Vienna\"}"
+       },
+       "metadata": {
+        "designer": {
+         "x": 600,
+         "y": -150
+        }
+       },
+       "filter": {
+        "name": "Freigeben",
+        "conditions": [
+         [
+          {
+           "a": "{{1.aktion}}",
+           "b": "ok",
+           "o": "text:equal"
+          },
+          {
+           "a": "{{1.id}}",
+           "b": "^[0-9a-f]{24}$",
+           "o": "text:pattern"
+          }
+         ]
+        ]
+       }
+      },
+      {
+       "id": 4,
+       "module": "gateway:WebhookRespond",
+       "version": 1,
+       "parameters": {},
+       "mapper": {
+        "status": "200",
+        "body": "freigegeben",
+        "headers": []
+       },
+       "metadata": {
+        "designer": {
+         "x": 900,
+         "y": -150
+        }
+       }
+      }
+     ]
+    },
+    {
+     "flow": [
+      {
+       "id": 5,
+       "module": "http:ActionSendData",
+       "version": 3,
+       "parameters": {
+        "handleErrors": false,
+        "useNewZLibDeCompress": true
+       },
+       "mapper": {
+        "url": "https://zernio.com/api/v1/posts/{{1.id}}",
+        "serializeUrl": false,
+        "method": "delete",
+        "headers": [
+         {
+          "name": "Authorization",
+          "value": "Bearer ZERNIO_SCHLUESSEL_HIER_EINTRAGEN"
+         },
+         {
+          "name": "Content-Type",
+          "value": "application/json"
+         }
+        ],
+        "qs": [],
+        "bodyType": "",
+        "parseResponse": true,
+        "authUser": "",
+        "authPass": "",
+        "timeout": "",
+        "shareCookies": false,
+        "ca": "",
+        "rejectUnauthorized": true,
+        "followRedirect": true,
+        "useQuerystring": false,
+        "gzip": true,
+        "useMtls": false,
+        "followAllRedirects": false
+       },
+       "metadata": {
+        "designer": {
+         "x": 600,
+         "y": 150
+        }
+       },
+       "filter": {
+        "name": "Nicht posten",
+        "conditions": [
+         [
+          {
+           "a": "{{1.aktion}}",
+           "b": "stop",
+           "o": "text:equal"
+          },
+          {
+           "a": "{{1.id}}",
+           "b": "^[0-9a-f]{24}$",
+           "o": "text:pattern"
+          }
+         ]
+        ]
+       }
+      },
+      {
+       "id": 6,
+       "module": "gateway:WebhookRespond",
+       "version": 1,
+       "parameters": {},
+       "mapper": {
+        "status": "200",
+        "body": "nicht posten",
+        "headers": []
+       },
+       "metadata": {
+        "designer": {
+         "x": 900,
+         "y": 150
+        }
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "metadata": {
+  "instant": true,
+  "version": 1,
+  "scenario": {
+   "roundtrips": 1,
+   "maxErrors": 3,
+   "autoCommit": true,
+   "autoCommitTriggerLast": true,
+   "sequential": false,
+   "confidential": false,
+   "dataloss": false,
+   "dlq": false,
+   "freshVariables": false
+  },
+  "designer": {
+   "orphans": []
+  }
+ }
+}
