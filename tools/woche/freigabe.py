@@ -46,12 +46,12 @@ def media(urls):
 cards = []
 for d in drafts:
     z = d["zeit"].replace("T", " ")[:16]
-    cards.append(f'''<article class="card" data-id="{d['id']}" data-zeit="{d['zeit']}">
+    cards.append(f'''<article class="card{' vorschau' if d.get('vorschau') else ''}" data-id="{d['id']}" data-zeit="{d['zeit']}">
 <header><b>{d['tag']} · {KAN.get(d['kanal'], d['kanal'])}</b><span>{z}</span></header>
 <p class="typ">{html.escape(d.get('typ', ''))}</p>
 <div class="media">{media(d['medien'])}</div>
 <details><summary>Text</summary><pre>{html.escape(d['text'])}</pre></details>
-{'<p class="st">Kein Knopf: Story mit Sticker postest du selbst in der App.</p>' if d.get('manuell') else '<div class="btns"><button class="ok">Freigeben</button><button class="stop">Nicht posten</button><span class="st"></span></div>'}</article>''')
+{'<p class="st vorschau">Nur Vorschau: Instagram ist in Zernio noch nicht verbunden, dieser Post wird nicht gepostet.</p>' if d.get('vorschau') else '<p class="st">Kein Knopf: Story mit Sticker postest du selbst in der App.</p>' if d.get('manuell') else '<div class="btns"><button class="ok">Freigeben</button><button class="stop">Nicht posten</button><span class="st"></span></div>'}</article>''')
 
 page = f'''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Freigabe KW {plan['kw']}</title><style>
@@ -67,11 +67,11 @@ body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-syste
 pre{{white-space:pre-wrap;font:14px/1.4 inherit;color:var(--sub)}}
 button{{font:inherit;padding:9px 14px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}}
 button.ok{{background:var(--acc);color:#fff;border-color:var(--acc)}} .btns{{display:flex;gap:8px;align-items:center;margin-top:10px}}
-.card.done-ok{{outline:3px solid #2e9e6a}} .card.done-stop{{opacity:.5}} .st{{color:var(--sub);font-size:14px}}
+.card.done-ok{{outline:3px solid #2e9e6a}} .card.done-stop{{opacity:.5}} .st{{color:var(--sub);font-size:14px}} .card.vorschau{{border-style:dashed}} .card.vorschau .typ{{background:var(--sub)}}
 details.rep{{margin:24px 0}} details.rep pre{{color:var(--ink)}}
 </style></head><body><div class="wrap">
 <h1>Freigabe KW {plan['kw']}</h1>
-<p class="lead">Nur was du freigibst, wird eingeplant. Ohne Klick geht nichts raus. Storys mit Sticker postest du selbst in der App.</p>
+<p class="lead">Nur was du freigibst, wird eingeplant. Ohne Klick geht nichts raus. Instagram-Karten sind nur Vorschau, solange Instagram in Zernio nicht verbunden ist.</p>
 <div class="all"><button class="ok" id="allok">Alle freigeben</button><span class="st" id="allst"></span></div>
 <div class="grid">{"".join(cards)}</div>
 <details class="rep"><summary>Prüfbericht</summary><pre>{html.escape(bericht)}</pre></details>

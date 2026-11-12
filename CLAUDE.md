@@ -25,7 +25,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 - Kein Voiceover, kein Filmmaterial. Keine Musik, nur Soundeffekte aus Code.
 
 **Kanäle**
-- **Instagram**: Business-Konto. In Zernio absichtlich **nicht verbunden**, bis Daniel ein Firmen-Bankkonto hat (12.11.2026). `drafts.py` überspringt Instagram, nicht „reparieren“.
+- **Instagram**: Business-Konto. In Zernio absichtlich **nicht verbunden**, bis Daniel ein Firmen-Bankkonto hat (12.11.2026). Die Instagram-Posts werden trotzdem jede Woche komplett gebaut: `drafts.py` lädt die Medien hoch und zeigt sie als **Instagram-Vorschau** (ohne Knöpfe) auf der Freigabeseite (Wunsch von Daniel, 12.11.2026). Nicht „reparieren“, Instagram nicht selbst verbinden.
 - **Facebook**: Seite, über Zernio verbunden.
 - **LinkedIn** (persönliches Profil): nur **Di Video 4:5** (1080 × 1350, 9:16 zeigt schwarze Ränder) und **Do Standbild 4:5**. Kein PDF, kein reiner Textpost, kein Link im Post, höchstens 3 Hashtags. Material aus der Instagram-Woche, nur der Text ist neu.
 

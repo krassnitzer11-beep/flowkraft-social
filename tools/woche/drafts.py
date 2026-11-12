@@ -21,7 +21,13 @@ TYPE = lambda p: "video" if p.endswith(".mp4") else "image"
 
 
 def draft(tag, kanal, when, content, media, extra=None, typ=''):
-    if kanal not in acc: print(f"  {kanal} nicht verbunden, übersprungen"); return
+    if kanal not in acc:
+        # Instagram ist (bis zum Firmen-Bankkonto) nicht verbunden: Medien trotzdem hochladen und als Vorschau auf die Freigabeseite
+        if kanal == "instagram":
+            res.append({"tag": tag, "kanal": kanal, "typ": typ, "zeit": when, "id": "", "vorschau": True, "text": content, "medien": [x["url"] for x in media]})
+            print(f"{tag} instagram: nicht verbunden, nur Vorschau")
+        else: print(f"  {kanal} nicht verbunden, übersprungen")
+        return
     plat = {"platform": kanal, "accountId": acc[kanal], **(extra or {})}
     body = {"isDraft": True, "content": content, "mediaItems": media, "platforms": [plat]}
     st, r = call("POST", "/posts", body); pid = r.get("post", {}).get("_id")
