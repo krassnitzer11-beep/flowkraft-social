@@ -48,9 +48,10 @@ for d in drafts:
     z = d["zeit"].replace("T", " ")[:16]
     cards.append(f'''<article class="card" data-id="{d['id']}" data-zeit="{d['zeit']}">
 <header><b>{d['tag']} · {KAN.get(d['kanal'], d['kanal'])}</b><span>{z}</span></header>
+<p class="typ">{html.escape(d.get('typ', ''))}</p>
 <div class="media">{media(d['medien'])}</div>
 <details><summary>Text</summary><pre>{html.escape(d['text'])}</pre></details>
-<div class="btns"><button class="ok">Freigeben</button><button class="stop">Nicht posten</button><span class="st"></span></div></article>''')
+{'<p class="st">Kein Knopf: Story mit Sticker postest du selbst in der App.</p>' if d.get('manuell') else '<div class="btns"><button class="ok">Freigeben</button><button class="stop">Nicht posten</button><span class="st"></span></div>'}</article>''')
 
 page = f'''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Freigabe KW {plan['kw']}</title><style>
@@ -61,7 +62,7 @@ body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-syste
 .all{{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:2;display:flex;gap:10px;align-items:center}}
 .grid{{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}}
 .card{{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}}
-.card header{{display:flex;justify-content:space-between;margin-bottom:10px}} .card header span{{color:var(--sub)}}
+.card header{{display:flex;justify-content:space-between;margin-bottom:10px}} .card header span{{color:var(--sub)}} .typ{{display:inline-block;margin:0 0 10px;padding:3px 10px;border-radius:999px;background:var(--acc);color:#fff;font-size:13px;font-weight:600}}
 .media{{display:flex;gap:6px;overflow-x:auto}} .media video,.media img{{height:260px;border-radius:8px;background:#000}}
 pre{{white-space:pre-wrap;font:14px/1.4 inherit;color:var(--sub)}}
 button{{font:inherit;padding:9px 14px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}}
@@ -82,11 +83,11 @@ function send(card, aktion) {{
   return fetch(u, {{mode: 'no-cors'}}).then(() => {{ card.classList.add('done-' + aktion); st.textContent = aktion === 'ok' ? 'freigegeben ✓' : 'wird nicht gepostet';
     try {{ localStorage.setItem('fk-' + card.dataset.id, aktion); }} catch (e) {{}} }}).catch(() => st.textContent = 'Fehler, bitte nochmal');
 }}
-document.querySelectorAll('.card').forEach(c => {{
+document.querySelectorAll('.card').forEach(c => {{ if (!c.querySelector('.ok')) return;
   c.querySelector('.ok').onclick = () => send(c, 'ok'); c.querySelector('.stop').onclick = () => send(c, 'stop');
   try {{ const v = localStorage.getItem('fk-' + c.dataset.id); if (v) {{ c.classList.add('done-' + v); c.querySelector('.st').textContent = v === 'ok' ? 'freigegeben ✓' : 'wird nicht gepostet'; }} }} catch (e) {{}}
 }});
-document.getElementById('allok').onclick = async () => {{ for (const c of document.querySelectorAll('.card:not(.done-ok):not(.done-stop)')) await send(c, 'ok'); document.getElementById('allst').textContent = 'alles freigegeben ✓'; }};
+document.getElementById('allok').onclick = async () => {{ for (const c of [...document.querySelectorAll('.card:not(.done-ok):not(.done-stop)')].filter(c => c.querySelector('.ok'))) await send(c, 'ok'); document.getElementById('allst').textContent = 'alles freigegeben ✓'; }};
 </script></body></html>'''
 
 f = out / "freigabe.html"; f.write_text(page)

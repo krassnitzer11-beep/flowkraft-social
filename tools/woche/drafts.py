@@ -20,13 +20,13 @@ def up(p):
 TYPE = lambda p: "video" if p.endswith(".mp4") else "image"
 
 
-def draft(tag, kanal, when, content, media, extra=None):
+def draft(tag, kanal, when, content, media, extra=None, typ=''):
     if kanal not in acc: print(f"  {kanal} nicht verbunden, übersprungen"); return
     plat = {"platform": kanal, "accountId": acc[kanal], **(extra or {})}
     body = {"isDraft": True, "content": content, "mediaItems": media, "platforms": [plat]}
     st, r = call("POST", "/posts", body); pid = r.get("post", {}).get("_id")
     print(f"{tag} {kanal}: HTTP {st} {'Entwurf' if pid else r}")
-    if pid: res.append({"tag": tag, "kanal": kanal, "zeit": when, "id": pid, "text": content, "medien": [x["url"] for x in media]})
+    if pid: res.append({"tag": tag, "kanal": kanal, "typ": typ, "zeit": when, "id": pid, "text": content, "medien": [x["url"] for x in media]})
 
 
 for p in plan["posts"]:
@@ -36,14 +36,22 @@ for p in plan["posts"]:
     ig_extra = {}
     if m.get("cover"):
         cu = up(m["cover"]); ig_extra = {"platformSpecificData": {"instagramThumbnail": cu}}; fb[0]["thumbnail"] = cu
-    draft(p["tag"], "instagram", when, cap, ig, ig_extra)
-    draft(p["tag"], "facebook", when, cap, fb)
+    T_IG = {"reel": "Reel", "karussell": "Karussell", "post": "Standbild-Post"}[p["format"]]
+    T_FB = {"reel": "Reel", "karussell": "Bildergalerie", "post": "Standbild-Post"}[p["format"]]
+    draft(p["tag"], "instagram", when, cap, ig, ig_extra, T_IG)
+    draft(p["tag"], "facebook", when, cap, fb, None, T_FB)
     li = p.get("linkedin")
     if li:
         q = man[li["quelle"]]; src = q["linkedin_video"] if li["typ"] == "video" else q["linkedin_bild"]
         item = {"type": TYPE(src), "url": up(src)}
         if li["typ"] == "video" and q.get("cover"): item["thumbnail"] = up(q["cover"])
-        draft(p["tag"], "linkedin", f"{li['datum']}T{li['zeit']}:00", text(w, li["texte"], "LinkedIn"), [item])
+        draft(p["tag"], "linkedin", f"{li['datum']}T{li['zeit']}:00", text(w, li["texte"], "LinkedIn"), [item], None, "Video" if li["typ"] == "video" else "Standbild")
 
+# Storys: mit Sticker postet Daniel selbst; sie stehen zur Kontrolle auf der Freigabeseite (keine Zernio-Entwürfe)
+for p in plan["posts"]:
+    k = p.get("story")
+    if k and man.get("storys") and k <= len(man["storys"]):
+        res.append({"tag": p["tag"], "kanal": "instagram", "typ": "Story (postest du selbst, mit Sticker)", "zeit": f"{p['datum']}T{p['zeit']}:00",
+                    "id": "", "text": text(w, p["texte"], "Story"), "medien": [up(man["storys"][k - 1])], "manuell": True})
 (out / "drafts.json").write_text(json.dumps(res, indent=1, ensure_ascii=False))
 print(len(res), "Entwürfe angelegt ->", out / "drafts.json")
