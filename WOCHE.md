@@ -38,5 +38,6 @@ Arbeite im Repository-Wurzelordner. KW = die kommende Woche (Mo–Sa).
 
 - Keine erfundenen Zahlen, Kundenstimmen, Preise. Beispielrechnungen kennzeichnen.
 - Keyword ROI nur, wenn `docs/lead-magnete.md` es als live führt.
+- Alle Posts um 18:00 Uhr (Wien), Mo–Sa, auf allen Kanälen.
 - Reels nur als Drohnenflug. Einzel-Posts als Standbild. LinkedIn: Di Video 4:5, Do Standbild, kein PDF.
 - Nie selbst veröffentlichen: nur Entwürfe (`isDraft: true`).
