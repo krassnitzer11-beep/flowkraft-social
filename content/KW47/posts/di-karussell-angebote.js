@@ -13,6 +13,6 @@ window.POST = {
       props: { fields: ['Kunde','Leistung','Menge'], file: 'Angebot_Kunde_Datum.pdf' } },
     { layout: 'center', title: 'Lohnt sich das immer?', script: 'Nein.', p: 'Faustregel: Bei 3 Angeboten im Monat lass es. Ab etwa 10 pro Woche rechne nach.', scene: 'none' },
     { layout: 'bottom', title: 'Rechne selbst', script: 'nach.', p: 'Speichere dir den Post. Angebote pro Woche × Minuten ÷ 60 = Stunden pro Woche. Dann × Arbeitswochen × Stundensatz.', cta: 'Speichern', scene: 'calculator', dy: -40, sceneScale: 0.9,
-      props: { steps: ['Stunden/Woche','× Wochen','× Stundensatz'] } },
+      props: { steps: ['Pro Woche','Aufs Jahr','In Euro'] } },
   ],
 };

@@ -46,7 +46,7 @@ A nennt Aufgabe und Zahl und endet auf „Jahr.“, B zeigt den Schmerz, aber oh
 
 Zeit ist das Einzige, das du nicht nachkaufen kannst.
 
-Angebote fallen jeden Tag an, und die Daten stehen meistens schon in der Anfrage. Trotzdem werden sie noch einmal eingetippt.
+Angebote fallen in vielen Betrieben jeden Tag an, und die Daten stehen meistens schon in der Anfrage. Trotzdem werden sie noch einmal eingetippt.
 
 Beispielrechnung: 15 Angebote pro Woche × 20 Minuten sind 5 Stunden pro Woche. Bei 44 Arbeitswochen sind das 220 Stunden im Jahr. Bei einem angenommenen Stundensatz von 45 € kostet das 9.900 € im Jahr.
 
@@ -131,7 +131,7 @@ Termin-Mails, Angebote, Anfragen, die Suche nach Dateien: Bei allen gilt dieselb
 
 Meine Faustregel: Wenn eine Aufgabe selten vorkommt, jedes Mal anders ist oder in 2 Minuten erledigt ist, lass sie, wie sie ist.
 
-Automatisierung lohnt sich bei dem, was oft, gleich und ungeliebt ist. Alles andere kostet mehr, als es bringt.
+Automatisierung lohnt sich bei dem, was oft, gleich und ungeliebt ist. Alles andere kostet meistens mehr, als es bringt.
 
 Deshalb steht bei mir vor jedem Projekt die Rechnung, nicht das Werkzeug.
 
@@ -201,5 +201,5 @@ Für den Designer. Szenenwechsel laut `gegenposition.md` Punkt 2 kommen dazu, hi
 - Di Karussell, Slide 4 (`num: '02'`): `p` neu „Beispielrechnung: 5 Stunden × 44 Arbeitswochen, angenommen 45 € pro Stunde.“
 - Di Karussell, Slide 6 („Lohnt sich das immer? Nein.“): `p` neu „Faustregel: Bei 3 Angeboten im Monat lass es. Ab etwa 10 pro Woche rechne nach.“
 - Fr Karussell, Slide 3: `num` 80 → 73, `p` neu „Beispielrechnung: angenommen 20 Minuten pro Tag × 220 Arbeitstage. Pro Person.“, Szene `yeargrid` mit `title: '220 Arbeitstage'`, `value: 73`.
-- Fr Karussell, letzte Slide: `p` neu „Speichere die Rechnung und setz deine Zahl ein: Minuten pro Tag × 220 Arbeitstage.“
+- Fr Karussell, letzte Slide: `p` neu „Speichere die Rechnung und setz deine Zahl ein: Minuten pro Tag × 220 Arbeitstage ÷ 60 = Stunden im Jahr.“ (Prüfbericht: ohne „÷ 60“ kommen Minuten heraus, nicht Stunden.)
 - Storys (`storys.js`): Fragen bleiben gleich. Jede Story bekommt als `p` den DM-Hinweis: Mo und Di „Schreib mir deine Zahl per DM.“, Mi und Sa „Schreib mir per DM.“, Do „Schreib mir per DM, wo sie bei dir landen.“, Fr „Schreib mir deine Antwort per DM.“ Keine Antwortoptionen, die wie eine Umfrage aussehen (Mo-Szene `calendar` mit Bestätigung/Erinnerung/Verschiebung ist unkritisch, solange es keine Auswahlknöpfe sind). Kommentar „Sticker … setzt Daniel in der App“ entfernen.

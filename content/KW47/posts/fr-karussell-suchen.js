@@ -11,6 +11,6 @@ window.POST = {
       props: { nodes: [['mail','Mail und WA'], [null,'Ablage'], ['folder','Projekt']], status: 'Ordnet automatisch' } },
     { layout: 'bottom', num: '02', title: 'Und du findest es mit einer', script: 'Frage.', p: 'Statt Ordner durchzuklicken: „Was hat der Kunde zum Termin geschrieben?“', scene: 'comment', dy: -400,
       props: { word: 'Kunde zum Termin?', title: 'Mail vom Kunden', sub: 'PROJEKT · TERMIN' } },
-    { layout: 'side', title: 'Wie viele Minuten sind es bei', script: 'dir?', p: 'Speichere die Rechnung und setz deine Zahl ein: Minuten pro Tag × 220 Arbeitstage.', cta: 'Speichern', scene: 'clock', props: { coin: '€' }, sceneScale: 0.6, dy: -200 },
+    { layout: 'side', title: 'Wie viele Minuten sind es bei', script: 'dir?', p: 'Speichere die Rechnung und setz deine Zahl ein: Minuten pro Tag × 220 Arbeitstage ÷ 60 = Stunden im Jahr.', cta: 'Speichern', scene: 'clock', props: { coin: '€' }, sceneScale: 0.6, dy: -200 },
   ],
 };
