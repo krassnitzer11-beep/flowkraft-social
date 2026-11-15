@@ -1,0 +1,26 @@
+{
+  "kw": 47,
+  "jahr": 2026,
+  "theme_default": "dark",
+  "posts": [
+    {"tag": "Mo", "datum": "2026-11-16", "zeit": "18:00", "format": "reel", "saeule": "1 Zeitfresser",
+     "post": "posts/mo-reel-termine.js", "texte": "Mo 16.11.", "story": 1,
+     "linkedin": null},
+    {"tag": "Di", "datum": "2026-11-17", "zeit": "18:00", "format": "karussell", "saeule": "4 Rechnet sich das?",
+     "post": "posts/di-karussell-angebote.js", "texte": "Di 17.11.", "story": 2,
+     "linkedin": {"datum": "2026-11-17", "zeit": "18:00", "typ": "video", "quelle": "Mo", "texte": "Di 17.11."}},
+    {"tag": "Mi", "datum": "2026-11-18", "zeit": "18:00", "format": "post", "saeule": "3 Haltung",
+     "post": "posts/mi-post-excel.js", "texte": "Mi 18.11.", "story": 3,
+     "linkedin": null},
+    {"tag": "Do", "datum": "2026-11-19", "zeit": "18:00", "format": "reel", "saeule": "2 Vorher/Nachher",
+     "post": "posts/do-reel-anfragen.js", "texte": "Do 19.11.", "story": 4,
+     "linkedin": {"datum": "2026-11-19", "zeit": "18:00", "typ": "bild", "quelle": "Sa", "texte": "Do 19.11."}},
+    {"tag": "Fr", "datum": "2026-11-20", "zeit": "18:00", "format": "karussell", "saeule": "1 Zeitfresser",
+     "post": "posts/fr-karussell-suchen.js", "texte": "Fr 20.11.", "story": 5,
+     "linkedin": null},
+    {"tag": "Sa", "datum": "2026-11-21", "zeit": "18:00", "format": "post", "saeule": "4 Rechnet sich das?",
+     "post": "posts/sa-post-drei-fragen.js", "texte": "Sa 21.11.", "story": 6,
+     "linkedin": null}
+  ],
+  "storys": "posts/storys.js"
+}
