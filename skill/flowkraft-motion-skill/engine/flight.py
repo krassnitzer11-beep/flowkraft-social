@@ -86,12 +86,9 @@ def main():
     ap.add_argument("--mode", choices=["split", "pass", "front"], default="split", help="pass: Szenen seitlich, Vorbeiflug; front: frontal mit Halten")
     ap.add_argument("--keep", help="Szenen-Bildfolgen aus diesem Ordner wiederverwenden bzw. dort ablegen")
     a = ap.parse_args()
-    # Daniel 16.11.2026: Reels nie hell (Mist = Weiß auf Weiß). Immer dunkle Variante: Navy oder Dunkel.
+    # Variante immer explizit an Szenen-Ebenen und Flug geben, damit beide gleich aussehen (Mist: dunkle Schrift und Icons)
     import re as _re
-    _t = a.theme or (_re.search(r"theme:\s*'(\w+)'", pathlib.Path(a.post).read_text()) or [None, None])[1]
-    if _t == "mist" or not _t:
-        print("Reel: Variante", _t or "(keine)", "-> dark (Reels immer dunkel)"); a.theme = "dark"
-    else: a.theme = _t
+    a.theme = a.theme or (_re.search(r"theme:\s*'(\w+)'", pathlib.Path(a.post).read_text()) or [None, "navy"])[1]
     post = pathlib.Path(a.post).resolve(); out = pathlib.Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     tmp = pathlib.Path(a.keep).resolve() if a.keep else pathlib.Path(tempfile.mkdtemp())
     tmp.mkdir(parents=True, exist_ok=True)

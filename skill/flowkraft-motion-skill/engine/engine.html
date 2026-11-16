@@ -173,9 +173,9 @@ function scene(rot) {
 }
 const GRAD = 'linear-gradient(120deg,#2878B5,#3F8FCD)';
 const HUB = 'radial-gradient(120% 120% at 30% 20%,#173552,#0A1826)';
-const FACE = V === 'mist' ? 'linear-gradient(160deg,#ffffff,#f3f7fa)' : HUB, SIDE = V === 'mist' ? '#c6d6e3' : '#071320';
+const FACE = V === 'mist' ? 'linear-gradient(160deg,#ffffff,#e4edf5)' : HUB, SIDE = V === 'mist' ? '#9fb7cc' : '#071320';   // Mist: Kacheln sichtbar vom hellen Grund abheben
 const HINK = V === 'mist' ? '#17324d' : '#eaf0f5', HSUB = V === 'mist' ? '#5b7088' : '#8C9DB0';
-const hubStyle = f => { f.style.border = V === 'mist' ? '2px solid rgba(23,50,77,.1)' : '2px solid rgba(74,155,216,.35)'; f.style.boxShadow = V === 'mist' ? '0 30px 70px -22px rgba(23,50,77,.38)' : '0 0 90px -14px rgba(40,120,181,.75)'; };
+const hubStyle = f => { f.style.border = V === 'mist' ? '2px solid rgba(23,50,77,.28)' : '2px solid rgba(74,155,216,.35)'; f.style.boxShadow = V === 'mist' ? '0 30px 70px -22px rgba(23,50,77,.38)' : '0 0 90px -14px rgba(40,120,181,.75)'; };
 const lift = (t, s, d=.55, k=2) => backOut(prog(t, s, d), k);
 
 // ================= Szenen =================

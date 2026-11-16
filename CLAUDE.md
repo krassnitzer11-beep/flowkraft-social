@@ -18,7 +18,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 - Samstag wechselt zwischen Säule 5 (Praxisbeispiel) und Säule 4 („Rechnet sich das?“).
 
 **Formate**
-- **Reels immer dunkel** (`dark` oder `navy`, nie `mist`: Weiß auf Weiß ist unlesbar) und **60 % langsamer** als die erste Fassung (Faktor 1,6), damit man die Texte lesen kann (16.11.2026).
+- **Reels in jeder Variante, aber nie Weiß auf Weiß:** In `mist` sind Schrift, Outline, Schmuckwort und Icons dunkel (Engine angepasst 16.11.2026). Reels laufen **60 % langsamer** als die erste Fassung (Faktor 1,6), damit man die Texte lesen kann (16.11.2026).
 - **Abwechslung** (16.11.2026): kein Thema zweimal in der Woche und keines aus den letzten 4 Wochen. Jede Szene und jedes Icon höchstens einmal pro Woche, Icons immer wieder neu gestalten.
 - **Übersicht für Daniel** (16.11.2026): Mail und Freigabeseite zeigen pro Post eine Ampel (grün, gelb, rot) mit einem kurzen Grund, keinen Prüfbericht als Text. Der Prüfer schreibt dafür `content/KWnn/ampel.json`.
 - **Reels nur als Drohnenflug** (`skill/flowkraft-motion-skill/engine/flight.py`, Modus `split`, Texttiefe 4 %), freigegeben am 12.11.2026. Das KW-47-Reel „Termine“ ist die Referenz.

@@ -10,7 +10,7 @@ Make setzt bei ok den Zernio-Entwurf auf eingeplant (PUT /v1/posts/{id} mit isDr
 import html, json, os, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
-from common import CTX, ampel, ampel_html, week
+from common import CTX, ampel, ampel_html, md_html, probleme_html, week
 import io, secrets, urllib.request, zipfile
 
 w, plan, out = week(sys.argv[1]); lokal = "--lokal" in sys.argv
@@ -69,6 +69,9 @@ button{{font:inherit;padding:9px 14px;border-radius:9px;border:1px solid var(--l
 button.ok{{background:var(--acc);color:#fff;border-color:var(--acc)}} .btns{{display:flex;gap:8px;align-items:center;margin-top:10px}}
 .card.done-ok{{outline:3px solid #2e9e6a}} .card.done-stop{{opacity:.5}} .st{{color:var(--sub);font-size:14px}} .card.vorschau{{border-style:dashed}} .card.vorschau .typ{{background:var(--sub)}}
 details.rep{{margin:24px 0}} details.rep pre{{color:var(--ink)}}
+.prob{{padding:8px 12px;margin:0 0 10px;background:var(--bg);border-radius:8px}} .prob p{{margin:4px 0}} .prob ul{{margin:4px 0 0;padding-left:18px}} .sub{{color:var(--sub)}}
+.md{{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 18px 14px}} .md h3,.md h4{{margin:18px 0 6px}} .md p,.md li{{color:var(--ink)}}
+.tw{{overflow-x:auto}} .md table{{border-collapse:collapse;font-size:14px;margin:8px 0}} .md th,.md td{{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}} .md th{{background:var(--bg)}}
 .uebersicht{{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 18px}} .uebersicht h2{{margin:0 0 8px;font-size:18px}} .uebersicht td{{color:var(--ink)}}
 </style></head><body><div class="wrap">
 <h1>Freigabe KW {plan['kw']}</h1>
@@ -76,7 +79,8 @@ details.rep{{margin:24px 0}} details.rep pre{{color:var(--ink)}}
 <section class="uebersicht"><h2>Die Woche auf einen Blick</h2>{ampel_html(ampel(w, plan))}</section>
 <div class="all"><button class="ok" id="allok">Alle freigeben</button><span class="st" id="allst"></span></div>
 <div class="grid">{"".join(cards)}</div>
-<details class="rep"><summary>Ausführlicher Prüfbericht</summary><pre>{html.escape(bericht)}</pre></details>
+<section class="uebersicht"><h2>Was nicht passt</h2>{probleme_html(w, plan)}</section>
+<details class="rep"><summary>Ausführlicher Prüfbericht</summary><div class="md">{md_html(bericht)}</div></details>
 </div><script>
 const HOOK = {json.dumps(hook)};
 function send(card, aktion) {{

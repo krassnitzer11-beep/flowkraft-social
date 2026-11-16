@@ -80,10 +80,11 @@ const NAVYSIDE = V === 'mist' ? '#0f2338' : '#c2c7cc';   // weiße Schrift: hell
 const M = {
   front: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#17324d' : '#f4f8fc', roughness: .22, metalness: 0, clearcoat: .8, clearcoatRoughness: .12}),
   side: new THREE.MeshPhysicalMaterial({color: NAVYSIDE, roughness: .5, metalness: 0, clearcoat: .2, clearcoatRoughness: .3, envMapIntensity: .6}),
-  sfront: new THREE.MeshPhysicalMaterial({color: TH.script, roughness: .18, metalness: .1, clearcoat: 1, clearcoatRoughness: .08, emissive: TH.script, emissiveIntensity: V === 'mist' ? 0 : .12}),
+  sfront: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#1d5f96' : TH.script, roughness: V === 'mist' ? .4 : .18, metalness: .1, clearcoat: V === 'mist' ? .3 : 1, clearcoatRoughness: .08, emissive: TH.script, emissiveIntensity: V === 'mist' ? 0 : .12}),
   sside: new THREE.MeshPhysicalMaterial({color: new THREE.Color(TH.script).multiplyScalar(.5), roughness: .3, metalness: .3, clearcoat: .6}),
-  glass: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#b9d4ea' : '#e9f3fb', roughness: .38, metalness: 0, transmission: .6, thickness: 30, ior: 1.4, clearcoat: 1, clearcoatRoughness: .1, emissive: V === 'mist' ? '#000000' : '#2b4f70', emissiveIntensity: .35}),
-  gside: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#9ec4e4' : '#b8d4ea', roughness: .3, transmission: .5, thickness: 30, ior: 1.4, emissive: V === 'mist' ? '#000000' : '#1d3b58', emissiveIntensity: .3}),
+  // Mist (Daniel 16.11.2026): Schrift und Outline dunkel, sonst Weiß auf Weiß
+  glass: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#2f5d86' : '#e9f3fb', roughness: .38, metalness: 0, transmission: V === 'mist' ? .12 : .6, thickness: 30, ior: 1.4, clearcoat: 1, clearcoatRoughness: .1, emissive: V === 'mist' ? '#000000' : '#2b4f70', emissiveIntensity: .35}),
+  gside: new THREE.MeshPhysicalMaterial({color: V === 'mist' ? '#17324d' : '#b8d4ea', roughness: .3, transmission: V === 'mist' ? .1 : .5, thickness: 30, ior: 1.4, emissive: V === 'mist' ? '#000000' : '#1d3b58', emissiveIntensity: .3}),
   tile: new THREE.MeshStandardMaterial({color: TH.tile, roughness: .45, metalness: .15}),
   tileSide: new THREE.MeshStandardMaterial({color: TH.tileSide, roughness: .6}),
 };

@@ -91,7 +91,7 @@ Diese Punkte hat der Nutzer im Lauf der Arbeit entschieden. Sie sind der Grund, 
 - **Der F-Ball löst aus.** Weiße Bildmarke im Navy-Kreis hüpft zu den Elementen, jeder Aufprall startet eine Enthüllung. Am Ende taucht er ins Wasserzeichen (Mist: ins Logo, denn Mist hat kein Wasserzeichen).
 - **Enthüllung statt Einblenden.** Outline-Text startet gefüllt, Zahlen rollen, Wörter steigen aus einer Maske.
 - **Homepage-Look.** Neigung `rotateX(4°) rotateY(-9°)`, Perspektive 1800, dunkles Glas, F-Hub, blauer Verlauf `#2878B5 → #3F8FCD`, Kürzel-Chips wie „WA“ und „@“ statt fremder Logos.
-- **Reels immer dunkel und ruhig.** Drohnenflug nur in `dark` oder `navy` (`flight.py` macht aus `mist` automatisch `dark`), Tempo Faktor 1,6 langsamer, damit jeder Text lesbar ist (16.11.2026).
+- **Reels lesbar und ruhig.** Nie Weiß auf Weiß: In `mist` sind Schrift, Outline, Schmuckwort und Kacheln dunkel bzw. abgesetzt. Tempo Faktor 1,6 langsamer, damit jeder Text lesbar ist (16.11.2026).
 - **Keine Flow-Welle** als Zusatz-Element in den flachen Slides. Ausnahme auf Wunsch des Nutzers: im Drohnenflug-Reel fließt die Flow-Welle der Homepage (Lichtsträhnen mit Teilchen) als Fluss durch eine Wellen-Landschaft aus Punktraster und Hügelkämmen.
 - **Ton:** nur Soundeffekte, keine Musik, alle per Code erzeugt und damit lizenzfrei. Die Ball-Töne sind weich und fließend und liegen bei −45 dB (`BALL_DB` in `engine/sfx.py`), übrige Effekte normal. Keine Glocke beim Eintauchen ins Wasserzeichen; das Ding beim Häkchen bleibt.
 - **Marke:** Open Sans Condensed + Aesthetic Romance, Vorlagentexte wörtlich übernehmen. Grundlage sind die Vorlagen im Artifact „flowkraft Instagram Textposts“, die Homepage liegt im Artifact „Büroarbeit automatisieren mit KI | flowkraft“.

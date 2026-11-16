@@ -9,8 +9,11 @@ Ergebnis: `content/KWnn/pruefbericht.md` mit Gegenposition, Tabelle pro Post, Be
 Kein leeres Lob. Jeder Einwand mit Regel, Beleg und konkretem Vorschlag.
 
 **Ampel für Daniel (Pflicht):** Zusätzlich `content/KWnn/ampel.json` schreiben, eine Zeile pro Post:
-`[{"tag": "Mo", "thema": "Terminmails", "ampel": "gruen|gelb|rot", "grund": "höchstens 8 Wörter, verständlich ohne Bericht"}]`
+`[{"tag": "Mo", "thema": "Terminmails", "ampel": "gruen|gelb|rot", "grund": "höchstens 8 Wörter, verständlich ohne Bericht", "punkte": [{"was": "Was genau nicht passt, ein Satz", "vorschlag": "Konkrete Änderung, ein Satz"}]}]`
+- `punkte` nur bei gelb und rot, höchstens 3 pro Post. Daraus entsteht „Was nicht passt“ unten auf der Freigabeseite.
 - gruen = postbereit, gelb = kleiner Hinweis, rot = sollte so nicht raus. Leerer Grund nur bei gruen.
 - Daraus entstehen Mail und Übersicht der Freigabeseite. Keine Dateinamen, keine Regel-Nummern, kein Markdown im Grund.
 
-**Wiederholungen sind ein roter Einwand:** gleiches Thema zweimal in der Woche, Thema aus den letzten 4 Wochen, gleiche Szene oder gleiches Icon zweimal in der Woche, gleiche Szenen-Reihenfolge wie in einem anderen Post. Reels in heller Variante (Mist) sind rot.
+**Wiederholungen sind ein roter Einwand:** gleiches Thema zweimal in der Woche, Thema aus den letzten 4 Wochen, gleiche Szene oder gleiches Icon zweimal in der Woche, gleiche Szenen-Reihenfolge wie in einem anderen Post. Weiß auf Weiß (helle Schrift, Icons oder Kacheln auf hellem Grund) ist rot.
+
+**Schreibweise für Daniel:** Prüfbericht und Ampel in einfacher Sprache. Keine Code-Zeichen (keine Backticks, keine Dateinamen wie `fr-karussell-suchen.js`, keine Zeilennummern, keine Feldnamen wie `p:` oder `steps:`). Statt „Zeile 13, p:“ schreib „Slide 6, Fließtext“. Tabellen kurz: Tag, Urteil, größte Schwäche.

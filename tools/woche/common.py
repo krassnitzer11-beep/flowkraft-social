@@ -86,6 +86,58 @@ def ampel(w, plan):
     return rows
 
 
+def md_html(md):
+    """Prüfbericht lesbar machen: Überschriften, Listen, Tabellen, fett; ohne Code-Zeichen wie `…`."""
+    import html as H
+    def inline(t):
+        t = H.escape(t.replace("`", ""))
+        return re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+    out, rows, lst = [], [], False
+    def flush():
+        nonlocal rows
+        if rows:
+            body = [r for r in rows if not re.fullmatch(r"\|?\s*:?-{2,}.*", r)]
+            cells = [[c.strip() for c in r.strip().strip("|").split("|")] for r in body]
+            head, rest = cells[0], cells[1:]
+            out.append('<div class="tw"><table><tr>' + "".join(f"<th>{inline(c)}</th>" for c in head) + "</tr>" +
+                       "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in rest) + "</table></div>")
+            rows = []
+    for line in md.splitlines():
+        s = line.strip()
+        if s.startswith("|"): rows.append(s); continue
+        flush()
+        if lst and not re.match(r"^([-*]|\d+\.)\s", s): out.append("</ul>"); lst = False
+        if not s: continue
+        m = re.match(r"^(#{1,4})\s+(.*)", s)
+        if m: out.append(f"<h{len(m.group(1)) + 2}>{inline(m.group(2))}</h{len(m.group(1)) + 2}>"); continue
+        m = re.match(r"^([-*]|\d+\.)\s+(.*)", s)
+        if m:
+            if not lst: out.append("<ul>"); lst = True
+            out.append(f"<li>{inline(m.group(2))}</li>"); continue
+        out.append(f"<p>{inline(s)}</p>")
+    flush()
+    if lst: out.append("</ul>")
+    return "".join(out)
+
+
+def probleme_html(w, plan):
+    """„Was nicht passt“: alle gelben und roten Posts mit Grund und den Punkten des Prüfers (ampel.json: punkte)."""
+    import html as H
+    f = w / "ampel.json"
+    if not f.exists(): return ""
+    a = {x["tag"]: x for x in json.loads(f.read_text())}; items = []
+    for p in plan["posts"]:
+        x = a.get(p["tag"])
+        if not x or x.get("ampel") not in ("gelb", "rot"): continue
+        c, lab = FARBE[x["ampel"]]
+        pk = "".join(f"<li>{H.escape(str(q.get('was', q) if isinstance(q, dict) else q).replace('`', ''))}"
+                     f"{'<br><span class=sub>Vorschlag: ' + H.escape(q['vorschlag'].replace('`', '')) + '</span>' if isinstance(q, dict) and q.get('vorschlag') else ''}</li>"
+                     for q in x.get("punkte", []))
+        items.append(f'<div class="prob" style="border-left:4px solid {c}"><b>{p["tag"]} · {FORMAT.get(p["format"], p["format"])}</b> '
+                     f'<span style="color:{c};font-weight:700">{lab}</span><p>{H.escape(x.get("grund", ""))}</p>{"<ul>" + pk + "</ul>" if pk else ""}</div>')
+    return "".join(items) or '<p>Alles grün, nichts offen.</p>'
+
+
 def ampel_html(rows):
     """Tabelle für Mail und Freigabeseite: eine Zeile pro Tag, farbiger Punkt, ein kurzer Grund."""
     import html as H
