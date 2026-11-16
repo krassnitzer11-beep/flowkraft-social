@@ -395,6 +395,9 @@ function pathSplit() {
   for (let j = 1; j < PARTS.length; j++) { const ds = SH[j] - SH[j - 1], g = PARTS[j].group && PARTS[j].gk > 0;
     const d = g ? clamp(ds / 420, .9, 1.6) : clamp(ds / 1000, 1.8, 2.5); keys.push({t: keys[keys.length - 1].t + d, s: SH[j], v: VA}); }
   keys.push({t: keys[keys.length - 1].t + .9, s: SH[SH.length - 1] + VA * .9, v: VA});
+  // Daniel 16.11.2026: Flug 60 % langsamer, damit man die Texte lesen kann (POST.slow oder ?slow= überschreibt)
+  const SLOW = +(params.get('slow') || POST.slow || 1.6);
+  keys.forEach(k => { k.t *= SLOW; k.v /= SLOW; });
   TSs = []; SSs = [];
   for (let k = 0; k < keys.length - 1; k++) { const A = keys[k], B = keys[k + 1], d = B.t - A.t;
     for (let q = 0; q < 120 * d; q++) { const u = q / (120 * d), h00 = 2 * u ** 3 - 3 * u ** 2 + 1, h10 = u ** 3 - 2 * u ** 2 + u, h01 = -2 * u ** 3 + 3 * u ** 2, h11 = u ** 3 - u ** 2;

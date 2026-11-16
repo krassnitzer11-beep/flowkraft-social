@@ -55,3 +55,50 @@ def text(w, day, block):
 def accounts():
     accs = call("GET", "/accounts")[1].get("accounts", [])
     return {a.get("platform"): a["_id"] for a in accs}
+
+
+def hook(w, day):
+    """Bessere Hook-Variante aus texte.md (Zeile mit „(besser)“, sonst die erste Variante)."""
+    t = (w / "texte.md").read_text(); i = t.find(f"## {day}")
+    if i < 0: return ""
+    sec = t[i:]; sec = sec[:sec.index("\n---")] if "\n---" in sec else sec
+    m = re.search(r"\*\*(?:Hook|Text im Bild)[^\n]*\n(.*?)(?=\n\n|\n\*\*|\Z)", sec, re.S)
+    if not m: return ""
+    lines = [l.strip("- ").strip() for l in m.group(1).splitlines() if l.strip()]
+    best = next((l for l in lines if "besser" in l), lines[0] if lines else "")
+    return re.sub(r"^[A-Z]\s*(\([^)]*\))?\s*:\s*", "", best).strip()
+
+
+FARBE = {"gruen": ("#2e9e6a", "bereit"), "gelb": ("#d9a21b", "Hinweis"), "rot": ("#d0453a", "blockiert")}
+FORMAT = {"reel": "Reel", "karussell": "Karussell", "post": "Standbild"}
+
+
+def ampel(w, plan):
+    """Kurze Übersicht pro Post: Tag, Format, Hook, Ampel, Grund. Quelle: content/KWnn/ampel.json vom Prüfer.
+    Fehlt die Datei, gibt es die Liste ohne Ampel."""
+    f = w / "ampel.json"; a = {x["tag"]: x for x in json.loads(f.read_text())} if f.exists() else {}
+    rows = []
+    for p in plan["posts"]:
+        x = a.get(p["tag"], {})
+        rows.append({"tag": p["tag"], "format": FORMAT.get(p["format"], p["format"]), "thema": x.get("thema", ""),
+                     "hook": x.get("hook") or hook(w, p["texte"]), "ampel": x.get("ampel", ""), "grund": x.get("grund", ""),
+                     "linkedin": bool(p.get("linkedin"))})
+    return rows
+
+
+def ampel_html(rows):
+    """Tabelle für Mail und Freigabeseite: eine Zeile pro Tag, farbiger Punkt, ein kurzer Grund."""
+    import html as H
+    n = {k: sum(r["ampel"] == k for r in rows) for k in FARBE}
+    kopf = " · ".join(f'<span style="color:{FARBE[k][0]};font-weight:700">{n[k]} {FARBE[k][1]}</span>' for k in FARBE if n[k]) if any(n.values()) else ""
+    tr = []
+    for r in rows:
+        c, lab = FARBE.get(r["ampel"], ("#9aa7b4", "–"))
+        dot = f'<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:{c}"></span>'
+        sub = H.escape(r["grund"]) if r["grund"] else ""
+        tr.append(f'<tr><td style="padding:8px 10px;vertical-align:top">{dot}</td>'
+                  f'<td style="padding:8px 10px;vertical-align:top;white-space:nowrap"><b>{r["tag"]}</b><br><span style="color:#6b7c8c">{r["format"]}{" + LinkedIn" if r["linkedin"] else ""}</span></td>'
+                  f'<td style="padding:8px 10px;vertical-align:top"><b>{H.escape(r["hook"] or r["thema"])}</b>'
+                  f'{"<br><span style=color:#6b7c8c>" + sub + "</span>" if sub else ""}</td></tr>')
+    return (f'<p style="margin:0 0 8px">{kopf}</p>' if kopf else "") + \
+        '<table style="border-collapse:collapse;font:15px/1.4 -apple-system,Segoe UI,sans-serif">' + "".join(tr) + "</table>"

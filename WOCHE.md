@@ -17,7 +17,7 @@ Arbeite im Repository-Wurzelordner. KW = die kommende Woche (Mo–Sa).
 2. **Recherche:** `recherche` → `content/KWnn/recherche.md`.
 3. **Texte:** `copywriter` → `content/KWnn/texte.md`.
 4. **Design:** `designer` → `content/KWnn/posts/*.js`, Kontrollbilder prüfen.
-5. **Prüfung:** `pruefer` → `content/KWnn/pruefbericht.md`. Höchstens zwei Korrekturrunden, dann entscheidet der Manager.
+5. **Prüfung:** `pruefer` → `content/KWnn/pruefbericht.md` und `content/KWnn/ampel.json` (Ampel pro Post für Mail und Freigabeseite). Rote Posts vor dem Rendern korrigieren. Höchstens zwei Korrekturrunden, dann entscheidet der Manager.
 6. **Rendern:** `python3 tools/woche/build.py content/KWnn` (dauert in der Cloud 1,5–2 h). Ergebnis in `out/KWnn/` plus `out/KWnn/manifest.json`.
 7. **Entwürfe:** `python3 tools/woche/drafts.py content/KWnn` lädt alles zu Zernio hoch und legt jeden Post als **Entwurf** an (nicht eingeplant).
 8. **Freigabeseite:** `python3 tools/woche/freigabe.py content/KWnn` baut die Seite und lädt sie hoch, Link in `out/KWnn/freigabe-link.txt`.
