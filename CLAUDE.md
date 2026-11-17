@@ -20,6 +20,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 **Formate**
 - **Reels in jeder Variante, aber nie Weiß auf Weiß:** In `mist` sind Schrift, Outline, Schmuckwort und Icons dunkel (Engine angepasst 16.11.2026). Reels laufen **60 % langsamer** als die erste Fassung (Faktor 1,6), damit man die Texte lesen kann (16.11.2026).
 - **Abwechslung** (16.11.2026): kein Thema zweimal in der Woche und keines aus den letzten 4 Wochen. Jede Szene und jedes Icon höchstens einmal pro Woche, Icons immer wieder neu gestalten.
+- **Kennzahlen für Daniel** (17.11.2026): Montags-Mail mit Block „Letzte Woche“ (Reichweite, Interaktionen, Speichern + Teilen, Follower je Kanal mit Zuwachs, bester und schwächster Post, ein Lernpunkt), Freigabeseite zusätzlich mit Tabelle pro Post. Quelle: `content/analysen/KWnn-zahlen.json`. Bei wenig Daten steht das offen da, nichts wird schöngerechnet.
 - **Übersicht für Daniel** (16.11.2026): Mail und Freigabeseite zeigen pro Post eine Ampel (grün, gelb, rot) mit einem kurzen Grund, keinen Prüfbericht als Text. Der Prüfer schreibt dafür `content/KWnn/ampel.json`.
 - **Reels nur als Drohnenflug** (`skill/flowkraft-motion-skill/engine/flight.py`, Modus `split`, Texttiefe 4 %), freigegeben am 12.11.2026. Das KW-47-Reel „Termine“ ist die Referenz.
 - **Einzel-Posts als Standbild** (`clean: true`: ohne Logo, Label, „Speichern“, flowkraft.at).

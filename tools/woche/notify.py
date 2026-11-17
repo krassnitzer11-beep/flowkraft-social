@@ -6,7 +6,7 @@
 import html, json, os, ssl, sys, urllib.request
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
-from common import CTX, ampel, ampel_html, week
+from common import CTX, ampel, ampel_html, letzte_zahlen, week, zahlen_html
 
 w, plan, out = week(sys.argv[1])
 hook = os.environ.get("MAKE_NOTIFY_URL") or sys.exit("MAKE_NOTIFY_URL fehlt.")
@@ -18,6 +18,6 @@ rot = sum(r["ampel"] == "rot" for r in rows)
 bereit = f"flowkraft: KW {plan['kw']} ist bereit zur Freigabe" + (f" ({rot} blockiert)" if rot else "")
 body = {"betreff": bereit if link else f"flowkraft: Woche KW {plan['kw']} ist NICHT fertig",
         "link": link, "hooks": ampel_html(rows),
-        "offene_einwaende": "Details zu jedem Punkt stehen auf der Freigabeseite." if rows else "", "kw": plan["kw"]}
+        "offene_einwaende": ("Details zu jedem Punkt stehen auf der Freigabeseite.<br><br>" if rows else "") + "<b>Letzte Woche</b><br>" + zahlen_html(letzte_zahlen(w)), "kw": plan["kw"]}
 req = urllib.request.Request(hook, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"}, method="POST")
 with urllib.request.urlopen(req, timeout=60, context=CTX) as r: print("Benachrichtigung:", r.status)

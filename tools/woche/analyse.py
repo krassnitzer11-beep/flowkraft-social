@@ -56,3 +56,30 @@ f.write_text(json.dumps(list(roh.values()), indent=1, ensure_ascii=False))
 zaehl = {}
 for e in roh.values(): zaehl[e["status"]] = zaehl.get(e["status"], 0) + 1
 print(len(roh), "Posts ->", f); [print(" ", n, "×", s) for s, n in zaehl.items()]
+
+# Wochen-Kennzahlen für Daniel (Mail und Freigabeseite): content/analysen/KWnn-zahlen.json
+# Der Analyst ergänzt danach nur das Feld "lernpunkt" (ein Satz, was das Team daraus ändert).
+heute = datetime.now(timezone.utc)
+kw = heute.astimezone().isocalendar()[1]
+_, fs = call("GET", f"/accounts/follower-stats?fromDate={seit.date()}&toDate={heute.date()}")
+follower = [{"kanal": a["platform"], "aktuell": a.get("currentFollowers"), "zuwachs": a.get("growth")} for a in fs.get("accounts", []) if a.get("isActive")]
+zeilen = []
+for e in roh.values():
+    a = e.get("analytics") or {}
+    if e["status"] != "ok": continue
+    inter = sum(a.get(k) or 0 for k in ("likes", "comments", "shares", "saves"))
+    reich = a.get("reach") or a.get("impressions") or 0
+    zeilen.append({"datum": (e.get("veroeffentlicht") or "")[:10], "kanal": e["kanaele"][0] if e["kanaele"] else "",
+                   "text": e["text"].split("\n")[0][:70], "impressionen": a.get("impressions") or 0, "reichweite": a.get("reach") or 0,
+                   "aufrufe": a.get("views") or 0, "interaktionen": inter, "speichern_teilen": (a.get("saves") or 0) + (a.get("shares") or 0),
+                   "rate": round(100 * inter / reich, 1) if reich else None})
+zeilen.sort(key=lambda z: (z["datum"], z["kanal"]))
+summe = {k: sum(z[k] for z in zeilen) for k in ("impressionen", "reichweite", "aufrufe", "interaktionen", "speichern_teilen")}
+bewertet = [z for z in zeilen if z["reichweite"] or z["impressionen"]]
+rang = sorted(bewertet, key=lambda z: (z["interaktionen"], z["reichweite"] or z["impressionen"]), reverse=True)
+zahlen = {"kw": kw, "von": str(seit.date()), "bis": str(heute.date()), "follower": follower, "posts": len(zeilen), "summe": summe,
+          "top": rang[0] if len(rang) >= 2 else None, "flop": rang[-1] if len(rang) >= 2 else None, "zeilen": zeilen,
+          "ohne_zahlen": [{"text": e["text"].split("\n")[0][:70], "grund": e["status"]} for e in roh.values() if e["status"] != "ok"],
+          "zu_wenig_daten": len(bewertet) < 3, "lernpunkt": ""}
+z = REPO / "content" / "analysen" / f"KW{kw:02d}-zahlen.json"; z.parent.mkdir(parents=True, exist_ok=True)
+z.write_text(json.dumps(zahlen, indent=1, ensure_ascii=False)); print("Wochen-Kennzahlen ->", z)

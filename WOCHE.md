@@ -4,7 +4,7 @@ Läuft automatisch in der Cloud. Daniel gibt nur frei. **Nichts geht live ohne s
 
 | Wann | Routine | Was passiert |
 |---|---|---|
-| Sa 06:00 | Analyse | `analyst` wertet die Vorwoche aus → `content/analysen/KWnn.md` |
+| Sa 06:00 | Analyse | `analyse.py` holt Kennzahlen und Follower → `content/analysen/KWnn-zahlen.json`; `analyst` wertet aus → `content/analysen/KWnn.md` und ergänzt den Lernpunkt |
 | So 05:00 | Produktion | Plan, Texte, Post-Dateien, Prüfung, Rendern, Zernio-Entwürfe, Freigabeseite |
 | Mo 08:00 | Benachrichtigung | E-Mail an Daniel mit Link zur Freigabeseite |
 | Mo–Sa | Posten | Zernio postet nur, was freigegeben ist |

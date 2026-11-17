@@ -154,3 +154,47 @@ def ampel_html(rows):
                   f'{"<br><span style=color:#6b7c8c>" + sub + "</span>" if sub else ""}</td></tr>')
     return (f'<p style="margin:0 0 8px">{kopf}</p>' if kopf else "") + \
         '<table style="border-collapse:collapse;font:15px/1.4 -apple-system,Segoe UI,sans-serif">' + "".join(tr) + "</table>"
+
+
+KANAL = {"instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn"}
+
+
+def letzte_zahlen(w):
+    """Neueste Wochen-Kennzahlen (content/analysen/KWnn-zahlen.json), sonst None."""
+    d = REPO / "content" / "analysen"
+    # nach Enddatum sortieren (Datei-Zeiten sind nach git checkout alle gleich, KW-Nummern springen zum Jahreswechsel)
+    zs = [json.loads(f.read_text()) for f in d.glob("KW*-zahlen.json")] if d.exists() else []
+    return max(zs, key=lambda z: z.get("bis", "")) if zs else None
+
+
+def zahlen_html(z, voll=False):
+    """„Letzte Woche“: Kennzahlen-Kacheln, bester/schwächster Post, Lernpunkt; voll=True zusätzlich Tabelle pro Post."""
+    import html as H
+    if not z: return '<p style="color:#6b7c8c">Noch keine Auswertung vorhanden.</p>'
+    f = lambda n: f"{n:,}".replace(",", ".") if isinstance(n, int) else ("–" if n is None else str(n))
+    kach = [("Reichweite", f(z["summe"]["reichweite"] or z["summe"]["impressionen"]), ""), ("Interaktionen", f(z["summe"]["interaktionen"]), ""),
+            ("Speichern + Teilen", f(z["summe"]["speichern_teilen"]), ""), ("Posts mit Zahlen", f(z["posts"]), "")]
+    for a in z.get("follower", []):
+        zw = a.get("zuwachs") or 0
+        kach.append((f"Follower {KANAL.get(a['kanal'], a['kanal'])}", f(a.get("aktuell")), f"{'+' if zw >= 0 else ''}{zw} diese Woche"))
+    box = "".join(f'<div style="display:inline-block;vertical-align:top;min-width:110px;margin:0 14px 10px 0"><div style="font-size:22px;font-weight:700">{v}</div>'
+                  f'<div style="color:#6b7c8c;font-size:13px">{k}{"<br>" + e if e else ""}</div></div>' for k, v, e in kach)
+    dat = lambda d: f"{d[8:10]}.{d[5:7]}.{d[:4]}" if d and len(d) >= 10 else d
+    out = [f'<p style="margin:0 0 6px;color:#6b7c8c">{dat(z["von"])} bis {dat(z["bis"])}</p><div>{box}</div>']
+    if z.get("zu_wenig_daten"):
+        out.append('<p style="color:#6b7c8c">Noch zu wenig Daten für einen Vergleich. Die Zahlen werden ab mehreren echten Posts aussagekräftig.</p>')
+    else:
+        for lab, c, p in (("Am besten", "#2e9e6a", z.get("top")), ("Am schwächsten", "#d0453a", z.get("flop"))):
+            if p: out.append(f'<p style="margin:6px 0"><span style="color:{c};font-weight:700">{lab}:</span> {H.escape(p["text"])} '
+                             f'<span style="color:#6b7c8c">({KANAL.get(p["kanal"], p["kanal"])}, {f(p["reichweite"] or p["impressionen"])} erreicht, {p["interaktionen"]} Interaktionen)</span></p>')
+    if z.get("lernpunkt"): out.append(f'<p style="margin:8px 0"><b>Was wir ändern:</b> {H.escape(z["lernpunkt"])}</p>')
+    if voll and z.get("zeilen"):
+        mx = max((r["interaktionen"] for r in z["zeilen"]), default=0)
+        tr = "".join(f'<tr><td>{r["datum"][8:10]}.{r["datum"][5:7]}.</td><td>{KANAL.get(r["kanal"], r["kanal"])}</td><td>{H.escape(r["text"])}</td>'
+                     f'<td style="text-align:right">{f(r["reichweite"] or r["impressionen"])}</td><td style="text-align:right">{f(r["aufrufe"])}</td>'
+                     f'<td style="text-align:right;{"color:#2e9e6a;font-weight:700" if mx and r["interaktionen"] == mx else ""}">{r["interaktionen"]}</td>'
+                     f'<td style="text-align:right">{"–" if r["rate"] is None else str(r["rate"]).replace(".", ",") + " %"}</td></tr>' for r in z["zeilen"])
+        out.append('<div class="tw"><table class="zt"><tr><th>Tag</th><th>Kanal</th><th>Post</th><th>Reichweite</th><th>Aufrufe</th><th>Interaktionen</th><th>Rate</th></tr>' + tr + '</table></div>')
+    if voll and z.get("ohne_zahlen"):
+        out.append(f'<p style="color:#6b7c8c;font-size:14px">{len(z["ohne_zahlen"])} Posts ohne Zahlen (z. B. Kanal nicht verbunden oder noch nicht synchronisiert).</p>')
+    return "".join(out)
