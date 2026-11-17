@@ -30,7 +30,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 **Kanäle**
 - **Instagram**: Business-Konto. In Zernio absichtlich **nicht verbunden**, bis Daniel ein Firmen-Bankkonto hat (12.11.2026). Die Instagram-Posts werden trotzdem jede Woche komplett gebaut: `drafts.py` lädt die Medien hoch und zeigt sie als **Instagram-Vorschau** (ohne Knöpfe) auf der Freigabeseite (Wunsch von Daniel, 12.11.2026). Nicht „reparieren“, Instagram nicht selbst verbinden.
 - **Facebook**: Seite, über Zernio verbunden.
-- **LinkedIn** (persönliches Profil): nur **Di Video 4:5** (1080 × 1350, 9:16 zeigt schwarze Ränder) und **Do Standbild 4:5**. Kein PDF, kein reiner Textpost, kein Link im Post, höchstens 3 Hashtags. Material aus der Instagram-Woche, nur der Text ist neu.
+- **LinkedIn** (persönliches Profil): nur **Di Video 4:5** (1080 × 1350, 9:16 zeigt schwarze Ränder) und **Do Standbild 4:5**. Kein PDF, kein reiner Textpost, kein Link im Post, höchstens 3 Hashtags. Material aus der Instagram-Woche, nur der Text ist neu. Das Di-Video bleibt die Reel-Slides als 4:5-Videos hintereinander, kein Drohnenflug (Entscheidung 17.11.2026).
 
 **Inhalte**
 - Keine erfundenen Zahlen, Kundenstimmen, Preise oder Kundenprojekte. Beispielrechnungen kennzeichnen.
@@ -66,6 +66,7 @@ Ablauf im Detail: `WOCHE.md`. Kurz:
 - 12.11.2026: Alle Teile einzeln getestet: Zernio-Entwürfe, Netlify, Make-Mail, „Nicht posten“, Cloud-Rendern, Cloud-Variablen.
 - Noch nie am Stück gelaufen: der erste Durchlauf ist So 15.11.2026 (KW 47) als Trockenlauf. „Freigeben“ wird mit der ersten echten Freigabe zum ersten Mal getestet.
 - **Trockenlauf KW 47: Daniel will danach NICHTS posten** (12.11.2026). Das Make-Szenario „flowkraft Freigabe“ ist dafür **ausgeschaltet**. Die KW-47-Entwürfe bleiben in Zernio liegen und werden nach der Durchsicht gelöscht, nicht eingeplant.
+- 17.11.2026: Alle 14 KW-47-Entwürfe in Zernio gelöscht. Die 16 Testposts vom 09.11. bleiben im Zernio-Verlauf als „veröffentlicht“ stehen: Zernio löscht veröffentlichte Posts nicht, auf den Plattformen sind sie weg. Die Analyse ignoriert sie (älter als 7 Tage).
 - 17.11.2026: Warteschlange geleert (14 KW-47-Klicks gelöscht). „Freigeben“ getestet: Make setzt den Zernio-Entwurf auf eingeplant, 18:00 Wien korrekt; Testpost gelöscht. Szenario danach wieder aus. Vor KW 48 (Mo 23.11.2026) einschalten, nur auf Daniels Ja.
 - Samstags-Analyse fragt Zernio-Kennzahlen jetzt nach (HTTP 202 = wird synchronisiert).
 - Vor dem Wiedereinschalten von „flowkraft Freigabe“: in Make die Webhook-Warteschlange von `flowkraft-freigabe` leeren. Ein ausgeschalteter Webhook sammelt Klicks und würde sie beim Einschalten ausführen. Einschalten nur auf Daniels ausdrückliches Ja.
