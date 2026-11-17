@@ -66,6 +66,8 @@ Ablauf im Detail: `WOCHE.md`. Kurz:
 - 12.11.2026: Alle Teile einzeln getestet: Zernio-Entwürfe, Netlify, Make-Mail, „Nicht posten“, Cloud-Rendern, Cloud-Variablen.
 - Noch nie am Stück gelaufen: der erste Durchlauf ist So 15.11.2026 (KW 47) als Trockenlauf. „Freigeben“ wird mit der ersten echten Freigabe zum ersten Mal getestet.
 - **Trockenlauf KW 47: Daniel will danach NICHTS posten** (12.11.2026). Das Make-Szenario „flowkraft Freigabe“ ist dafür **ausgeschaltet**. Die KW-47-Entwürfe bleiben in Zernio liegen und werden nach der Durchsicht gelöscht, nicht eingeplant.
+- 17.11.2026: Warteschlange geleert (14 KW-47-Klicks gelöscht). „Freigeben“ getestet: Make setzt den Zernio-Entwurf auf eingeplant, 18:00 Wien korrekt; Testpost gelöscht. Szenario danach wieder aus. Vor KW 48 (Mo 23.11.2026) einschalten, nur auf Daniels Ja.
+- Samstags-Analyse fragt Zernio-Kennzahlen jetzt nach (HTTP 202 = wird synchronisiert).
 - Vor dem Wiedereinschalten von „flowkraft Freigabe“: in Make die Webhook-Warteschlange von `flowkraft-freigabe` leeren. Ein ausgeschalteter Webhook sammelt Klicks und würde sie beim Einschalten ausführen. Einschalten nur auf Daniels ausdrückliches Ja.
 - Instagram wartet auf das Firmen-Bankkonto.
 
