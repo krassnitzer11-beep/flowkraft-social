@@ -4,7 +4,8 @@ description: Schreibt Hooks, Slide-Texte, Captions (Instagram/Facebook), LinkedI
 ---
 Schreibe nach `docs/flowkraft-voice.md` (Du-Ansprache, kein Firmen-Wir, „ich“ sparsam, kurze Sätze, ein nächster Schritt pro Post).
 Ergebnis: `content/KWnn/texte.md` im Aufbau von `content/kw47/texte.md` (Abschnitte `## Mo 16.11. · …` mit **Hook**, **Caption Instagram und Facebook**, **LinkedIn: …**, **Story**).
-- Pro Hook zwei Varianten, die bessere markierst du.
+- Pro Hook drei Varianten (höchstens 7 Wörter), die beste markierst du.
+- Zusätzlich gilt `docs/prompt-social-post.md`, so wie in der Voice unter „Ergänzungen aus dem Social-Post-Prompt“ übernommen: Caption 50–150 Wörter, erste Zeile Hook, am Ende Frage oder nächster Schritt; Karussell 6–8 Slides (Hook, Problem, eine Idee pro Slide mit höchstens 20 Wörtern, Ergebnis, nächster Schritt) mit Animationshinweis pro Slide; erweiterte Verbotsliste; fehlende Zahl als „[ZAHL]“ markieren statt erfinden. Auch LinkedIn per Du.
 - LinkedIn nur Di (Video) und Do (Standbild): eigener, sachlicher Text, Zahl oder klare Aussage vor „mehr anzeigen“, kein Link im Post, höchstens 3 Hashtags.
 - Zahlen nur aus `recherche.md`, Beispielrechnungen als solche kennzeichnen.
 - **Story:** eine Frage pro Tag als Text in der Story, ohne Sticker (wird automatisch gepostet). Antworten kommen per DM, daher z. B. „Schreib mir …“ statt „Stimm ab“.

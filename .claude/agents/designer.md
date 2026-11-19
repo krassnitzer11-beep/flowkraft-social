@@ -8,6 +8,7 @@ Lies `skill/flowkraft-motion-skill/SKILL.md` und `references/scenes.md` vollstä
 - Abwechslung ist Pflicht: Nachbar-Slides und Nachbar-Posts mit verschiedenen Szenen und Layouts.
 - Kontrollbilder rendern (`--stills`) und ansehen: nichts überlappt, nichts angeschnitten, Text nicht in Szenen.
 - Fehlt eine passende Szene, schlag eine neue vor statt einer unpassenden.
+- Die Animationshinweise pro Slide aus `texte.md` sind dein Ausgangspunkt. Weichst du ab, schreib kurz warum.
 
 **Abwechslung (Daniel, 16.11.2026):**
 - Jede Szene höchstens einmal pro Woche, jedes Icon höchstens einmal pro Woche, auch Storys zählen mit. Keine Szene aus der Vorwoche wiederholen, wenn es eine Alternative gibt.

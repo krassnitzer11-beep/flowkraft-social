@@ -13,13 +13,14 @@ Der Leser soll nach jedem Post denken: „Der kennt meinen Alltag, und der sagt 
 
 ## 2. Zielgruppe
 
-- Inhaber und Geschäftsführer kleiner Betriebe, 35 bis 60 Jahre, im ganzen DACH-Raum: Österreich, Deutschland, Schweiz
+- Inhaber und Geschäftsführer von Klein- und Mittelbetrieben, 35 bis 60 Jahre, im ganzen DACH-Raum: Österreich, Deutschland, Schweiz
 - Sitz und Herkunft: Kärnten. Das ist Vertrauensanker, aber keine Eingrenzung der Zielgruppe.
-- Betriebsgröße: 5 bis 50 Mitarbeiter, auf allen Kanälen
+- Betriebsgröße: 1 bis 50 Mitarbeiter, auf allen Kanälen (Daniel, 19.11.2026). Auch Ein-Personen-Betriebe gehören dazu: „deine Leute“ passt dort nicht, also nicht in jedem Post voraussetzen, dass es ein Team gibt.
 - Typische Branchen: KFZ-Werkstätten, Friseursalons, Handwerk, Dienstleister
 - Alltag: beim Kunden stehen, das Telefon klingelt, am Abend noch Angebote schreiben
 - Wunsch: Kontrolle, Zeit für Familie und Strategie, Kosten runter ohne Leute zu kündigen
-- Einwände: „Das ist nur was für große Firmen“, „Zu teuer“, „Meine Leute machen da nicht mit“
+- Einwände: „Das ist nur was für große Firmen“, „Zu teuer“, „Meine Leute machen da nicht mit“. Diese Einwände regelmäßig aufgreifen und ehrlich beantworten, auch mit „lohnt sich nicht“.
+- Haltung: wenig Zeit, skeptisch gegenüber KI-Hype. Deshalb Alltag und Rechnung statt Versprechen.
 - Technik: Kein IT-Wissen voraussetzen. Der Leser will Ergebnisse, keine Werkzeuge.
 
 ## 3. Die fünf Werte
@@ -86,10 +87,10 @@ Diese Sätze stammen aus deinem Material und zeigen den Ton:
 | Format | Regel |
 |---|---|
 | Reel | Reiner Text mit Motion und Soundeffekten, ohne Voiceover und ohne Filmmaterial. Ein Gedanke, ohne Ton verständlich. |
-| Karussell | 6 bis 8 Slides. Hook, Wiedererkennen, Rechnung, Perspektive, Lösung, ehrliche Grenze, nächster Schritt. |
+| Karussell | 6 bis 8 Slides. Slide 1 Hook, Slide 2 Problem, dann eine Idee pro Slide (höchstens 20 Wörter), vorletzte Slide Ergebnis, letzte Slide nächster Schritt. Inhaltlich: Wiedererkennen, Rechnung, Perspektive, Lösung, ehrliche Grenze. Pro Slide ein kurzer Animationshinweis für den Designer. |
 | Post | Ein Satz, der hängen bleibt. Teilbar, ohne Erklärung verständlich. |
 | Story | Ein Gedanke oder eine Frage zum Post des Tages. |
-| Caption | Erster Satz ist Haltung, nicht Produkt. Dann kurz der Alltag, dann ein nächster Schritt. 3 bis 5 Hashtags. |
+| Caption | 50 bis 150 Wörter. Erste Zeile ist der Hook, als Haltung, nicht Produkt. Dann kurz der Alltag, am Ende eine Frage oder der nächste Schritt. 3 bis 5 Hashtags. |
 | Facebook | Wie Instagram. Regionaler Bezug nur, wo er zum Thema passt. |
 | LinkedIn | Eigener Text, sachlicher. Persönliches Profil, „ich“ darf hier öfter vorkommen, der Leser bleibt trotzdem im Mittelpunkt. Die ersten zwei Zeilen sind der Hook. Karussell als PDF. |
 
@@ -104,10 +105,13 @@ Jeder Post endet mit genau einem nächsten Schritt: folgen, speichern, teilen, o
 | Kostenloser ROI-Check (Tool auf der Homepage) | ROI | **Nicht live.** Website und Tool fehlen noch |
 | Förder-PDF zu KMU.DIGITAL | FÖRDERUNG | **Nicht live.** Noch nicht erstellt |
 | Zeitfresser-Check | ZEIT | Vorerst gestrichen |
+| KI-Check („Link in Bio“) | – | **Nicht live.** Sobald live: mindestens ein Post pro Woche mit diesem nächsten Schritt |
 
 Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich Daniel. Vor dem ersten Post muss die Homepage online sein. Erst dann sind Links zu flowkraft.at erlaubt.
 
 ## 10. Belegpflicht
+
+- Zahlen nur, wenn sie aus der Recherche kommen. Sonst als Beispielrechnung oder Schätzung kennzeichnen oder als Platzhalter „[ZAHL]“ stehen lassen, damit der Prüfer es sieht. Ein Platzhalter darf nie in einen fertigen Post.
 
 **Niemals erfinden:** Kundenstimmen, Kundennamen, Projektzahlen, Erfolgsquoten, Studien, Einblicke oder Learnings.
 
@@ -122,7 +126,9 @@ Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich D
 
 ## 11. Verbotsliste
 
-**Wörter:** revolutionieren, disruptiv, Game-Changer, Next Level, innovativ, ganzheitlich, maßgeschneidert, nahtlos, Synergien, Effizienz steigern, Prozesse optimieren, KI-Power, Zukunft gestalten, Mehrwert.
+**Wörter:** revolutionieren, revolutionär, disruptiv, Game-Changer, Next Level, nächstes Level, innovativ, ganzheitlich, maßgeschneidert, nahtlos, Synergien, Effizienz steigern, Prozesse optimieren, KI-Power, Zukunft gestalten, Mehrwert, „Lass uns eintauchen“, „letzte Chance“.
+
+**Stil:** keine Gedankenstriche als Stilmittel, keine Emojis als Aufzählungszeichen, keine Dreierlisten aus Gewohnheit (eine Aufzählung braucht einen Grund), nie mehr als 5 Hashtags (LinkedIn höchstens 3).
 
 **Fachbegriffe** nur mit Erklärung im selben Satz: RAG, LLM, Prompt, API, n8n, Make, Vektordatenbank.
 
@@ -143,9 +149,17 @@ Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich D
 4. Ist der Nutzen in Stunden, Euro oder Feierabend greifbar?
 5. Ist jede Zahl belegt oder als Beispiel gekennzeichnet?
 6. Steht genau ein nächster Schritt da, und ist er wirklich möglich?
-7. Ist nichts auf der Verbotsliste?
+7. Ist nichts auf der Verbotsliste, auch nicht bei Stil (Gedankenstriche, Emoji-Aufzählungen, Dreierlisten, Hashtags)?
 8. Bleiben die Menschen im Betrieb vorne?
 
-## 13. Offene Entscheidungen von Daniel
+## 13. Ergänzungen aus dem Social-Post-Prompt
+
+Daniel, 19.11.2026: `docs/prompt-social-post.md` gilt zusätzlich. Übernommen sind oben: Haltung der Zielgruppe,
+Karussell-Aufbau mit 20-Wörter-Grenze und Animationshinweis, Caption 50–150 Wörter, „[ZAHL]“-Platzhalter,
+erweiterte Verbotsliste, KI-Check als vorgemerkter Lead-Magnet. Ziel jedes Posts: speichern, teilen, folgen.
+Nicht übernommen, weil Daniel anders entschieden hat: Eingrenzung auf Kärnten/Österreich (bleibt DACH, 1–50 Mitarbeiter), Sie auf LinkedIn (bleibt Du), 7–10 Folien (bleibt 6–8),
+Voiceover, Musik, Bildschirmaufnahmen, reiner Textpost, Hook mit 8 Wörtern (bleibt 7), JSON-Ausgabe.
+
+## 14. Offene Entscheidungen von Daniel
 
 Derzeit keine. „flowkraft.at“ bleibt auf den Slides, weil die Homepage vor dem ersten Post online geht.
