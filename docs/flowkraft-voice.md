@@ -13,13 +13,13 @@ Der Leser soll nach jedem Post denken: „Der kennt meinen Alltag, und der sagt 
 
 ## 2. Zielgruppe
 
-- Inhaber und Geschäftsführer kleiner Betriebe, 35 bis 60 Jahre, im ganzen DACH-Raum: Österreich, Deutschland, Schweiz
+- Inhaber und Geschäftsführer von Klein- und Mittelbetrieben, 35 bis 60 Jahre, im ganzen DACH-Raum: Österreich, Deutschland, Schweiz
 - Sitz und Herkunft: Kärnten. Das ist Vertrauensanker, aber keine Eingrenzung der Zielgruppe.
-- Betriebsgröße: 5 bis 50 Mitarbeiter, auf allen Kanälen
+- Betriebsgröße: 1 bis 50 Mitarbeiter, auf allen Kanälen (Daniel, 19.11.2026). Auch Ein-Personen-Betriebe gehören dazu: „deine Leute“ passt dort nicht, also nicht in jedem Post voraussetzen, dass es ein Team gibt.
 - Typische Branchen: KFZ-Werkstätten, Friseursalons, Handwerk, Dienstleister
 - Alltag: beim Kunden stehen, das Telefon klingelt, am Abend noch Angebote schreiben
 - Wunsch: Kontrolle, Zeit für Familie und Strategie, Kosten runter ohne Leute zu kündigen
-- Einwände: „Das ist nur was für große Firmen“, „Zu teuer“, „Meine Leute machen da nicht mit“
+- Einwände: „Das ist nur was für große Firmen“, „Zu teuer“, „Meine Leute machen da nicht mit“. Diese Einwände regelmäßig aufgreifen und ehrlich beantworten, auch mit „lohnt sich nicht“.
 - Haltung: wenig Zeit, skeptisch gegenüber KI-Hype. Deshalb Alltag und Rechnung statt Versprechen.
 - Technik: Kein IT-Wissen voraussetzen. Der Leser will Ergebnisse, keine Werkzeuge.
 
@@ -157,7 +157,7 @@ Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich D
 Daniel, 19.11.2026: `docs/prompt-social-post.md` gilt zusätzlich. Übernommen sind oben: Haltung der Zielgruppe,
 Karussell-Aufbau mit 20-Wörter-Grenze und Animationshinweis, Caption 50–150 Wörter, „[ZAHL]“-Platzhalter,
 erweiterte Verbotsliste, KI-Check als vorgemerkter Lead-Magnet. Ziel jedes Posts: speichern, teilen, folgen.
-Nicht übernommen, weil Daniel anders entschieden hat: Sie auf LinkedIn (bleibt Du), 7–10 Folien (bleibt 6–8),
+Nicht übernommen, weil Daniel anders entschieden hat: Eingrenzung auf Kärnten/Österreich (bleibt DACH, 1–50 Mitarbeiter), Sie auf LinkedIn (bleibt Du), 7–10 Folien (bleibt 6–8),
 Voiceover, Musik, Bildschirmaufnahmen, reiner Textpost, Hook mit 8 Wörtern (bleibt 7), JSON-Ausgabe.
 
 ## 14. Offene Entscheidungen von Daniel

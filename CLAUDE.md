@@ -5,7 +5,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 ## Wer und für wen
 
 - **flowkraft**: Daniel, arbeitet allein, Sitz Kärnten. Büroautomatisierung mit KI.
-- **Zielgruppe**: Betriebe mit 5–50 Mitarbeitern im ganzen DACH-Raum.
+- **Zielgruppe** (19.11.2026): Klein- und Mittelbetriebe mit **1–50 Mitarbeitern** im ganzen DACH-Raum. Typische Einwände, die Posts aufgreifen: „Das ist nur was für große Firmen“, „Zu teuer“, „Meine Leute machen da nicht mit“.
 - **Ansprache**: Du. Kein Firmen-„Wir“, „ich“ sparsam. Stimme: `docs/flowkraft-voice.md`.
 - **Teamregel**: Agenten geben sich nicht gegenseitig recht, immer kritisch, analytisch, ehrlich (`docs/flowkraft-team-regeln.md`).
 - **Ziel** laut Fahrplan: 2.000 Follower und 60 Leads bis 30.06.2027. Start bei 0 Followern.

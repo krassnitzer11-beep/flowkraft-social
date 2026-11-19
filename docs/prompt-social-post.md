@@ -2,7 +2,7 @@
 
 > **Für die Agenten (Daniel, 19.11.2026):** Dieser Prompt gilt zusätzlich. Was davon übernommen ist, steht in
 > `docs/flowkraft-voice.md` (Abschnitt „Ergänzungen aus dem Social-Post-Prompt“). Wo er älteren Entscheidungen
-> widerspricht, gilt `CLAUDE.md` / die Voice: **überall Du, auch auf LinkedIn**; **Karussell 6–8 Slides**;
+> widerspricht, gilt `CLAUDE.md` / die Voice: **Zielgruppe Klein- und Mittelbetriebe mit 1–50 Mitarbeitern im ganzen DACH-Raum**; **überall Du, auch auf LinkedIn**; **Karussell 6–8 Slides**;
 > **KI-Check-CTA erst, wenn der KI-Check live ist**; Zielgruppe ganzer DACH-Raum; kein Voiceover, keine Musik,
 > kein Filmmaterial, kein reiner Textpost; Hook höchstens 7 Wörter; Ausgabe als `texte.md`, nicht als JSON.
 
