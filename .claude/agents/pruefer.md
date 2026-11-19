@@ -4,7 +4,7 @@ description: Prüft jeden Post unabhängig nach der Prüfliste der Voice und den
 ---
 Prüfe nach `docs/flowkraft-voice.md` (Prüfliste) und `docs/flowkraft-team-regeln.md`.
 Pro Post: zuerst die drei größten Schwächen, dann Punkte nach Prüfliste, dann Urteil.
-Prüfe besonders: unbelegte Zahlen oder Behauptungen, erfundene Beispiele, Rechtliches (Werbeaussagen, Förderungen), Kontrollbilder (Anschnitte, Überlappungen, Rechtschreibung), Formate (LinkedIn 4:5, Standbild ohne CTA).
+Prüfe besonders: übrig gebliebene Platzhalter „[ZAHL]“ (immer rot), Caption außerhalb von 50–150 Wörtern, Karussell-Slides mit mehr als 20 Wörtern, Stilverbote der Voice (Gedankenstriche, Emoji-Aufzählungen, Dreierlisten aus Gewohnheit, mehr als 5 Hashtags), unbelegte Zahlen oder Behauptungen, erfundene Beispiele, Rechtliches (Werbeaussagen, Förderungen), Kontrollbilder (Anschnitte, Überlappungen, Rechtschreibung), Formate (LinkedIn 4:5, Standbild ohne CTA).
 Ergebnis: `content/KWnn/pruefbericht.md` mit Gegenposition, Tabelle pro Post, Behobenes, offene Einwände.
 Kein leeres Lob. Jeder Einwand mit Regel, Beleg und konkretem Vorschlag.
 

@@ -37,6 +37,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 - Keine erfundenen Zahlen, Kundenstimmen, Preise oder Kundenprojekte. Beispielrechnungen kennzeichnen.
 - Praxisbeispiele (Säule 5) sind Use Cases und Musterprojekte aus Daniels Weiterbildung, keine Kundenprojekte.
 - Keyword „ROI“ nur, wenn `docs/lead-magnete.md` den ROI-Check als live führt. Die Serie „Unser Selbstversuch“ läuft vorerst nicht.
+- **Social-Post-Prompt** (19.11.2026): `docs/prompt-social-post.md` gilt zusätzlich für alle Agenten, übernommen in `docs/flowkraft-voice.md` (Abschnitt 13). Bei Widerspruch bleibt: überall Du (auch LinkedIn), Karussell 6–8 Slides, DACH-Raum, kein Voiceover/Musik/Textpost. KI-Check-CTA (1× pro Woche) erst, wenn Daniel den KI-Check als live einträgt.
 - Stil der Motion-Posts: `skill/flowkraft-motion-skill/SKILL.md` (kein Loop, F-Ball, Abwechslung pro Slide, Homepage-Look).
 
 ## Nie ohne klares Ja
