@@ -1,0 +1,31 @@
+{
+ "kw": 47,
+ "von": "2026-11-14",
+ "bis": "2026-11-21",
+ "follower": [
+  {
+   "kanal": "linkedin",
+   "aktuell": 2,
+   "zuwachs": 1
+  },
+  {
+   "kanal": "facebook",
+   "aktuell": 0,
+   "zuwachs": 0
+  }
+ ],
+ "posts": 0,
+ "summe": {
+  "impressionen": 0,
+  "reichweite": 0,
+  "aufrufe": 0,
+  "interaktionen": 0,
+  "speichern_teilen": 0
+ },
+ "top": null,
+ "flop": null,
+ "zeilen": [],
+ "ohne_zahlen": [],
+ "zu_wenig_daten": true,
+ "lernpunkt": ""
+}
