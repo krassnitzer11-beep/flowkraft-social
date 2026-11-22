@@ -1,0 +1,32 @@
+{
+  "kw": 48,
+  "jahr": 2026,
+  "theme_default": "dark",
+  "posts": [
+    {"tag": "Mo", "datum": "2026-11-23", "zeit": "18:00", "format": "reel", "saeule": "1 Zeitfresser",
+     "thema": "Zahlungserinnerungen: offenen Rechnungen hinterherlaufen",
+     "post": "posts/mo-reel-zahlungserinnerungen.js", "texte": "Mo 23.11.", "story": 1,
+     "linkedin": null},
+    {"tag": "Di", "datum": "2026-11-24", "zeit": "18:00", "format": "karussell", "saeule": "3 Haltung",
+     "thema": "Einwand „nur was für große Firmen“: Automatisieren ohne IT-Abteilung",
+     "post": "posts/di-karussell-ohne-it.js", "texte": "Di 24.11.", "story": 2,
+     "linkedin": {"datum": "2026-11-24", "zeit": "18:00", "typ": "video", "quelle": "Mo", "texte": "Di 24.11."}},
+    {"tag": "Mi", "datum": "2026-11-25", "zeit": "18:00", "format": "post", "saeule": "2 Vorher/Nachher",
+     "thema": "Stundenzettel: Arbeitszeiten vom Zettel abtippen",
+     "post": "posts/mi-post-stundenzettel.js", "texte": "Mi 25.11.", "story": 3,
+     "linkedin": null},
+    {"tag": "Do", "datum": "2026-11-26", "zeit": "18:00", "format": "reel", "saeule": "4 Rechnet sich das?",
+     "thema": "Abendbüro: was deine eigene Stunde am Schreibtisch kostet",
+     "post": "posts/do-reel-abendbuero.js", "texte": "Do 26.11.", "story": 4,
+     "linkedin": {"datum": "2026-11-26", "zeit": "18:00", "typ": "bild", "quelle": "Mi", "texte": "Do 26.11."}},
+    {"tag": "Fr", "datum": "2026-11-27", "zeit": "18:00", "format": "post", "saeule": "3 Haltung",
+     "thema": "Einwand „meine Leute machen da nicht mit“: das Team entscheidet mit",
+     "post": "posts/fr-post-team.js", "texte": "Fr 27.11.", "story": 5,
+     "linkedin": null},
+    {"tag": "Sa", "datum": "2026-11-28", "zeit": "18:00", "format": "karussell", "saeule": "5 Praxisbeispiel",
+     "thema": "Musterprojekt Fehlerwächter: wer merkt, wenn ein Ablauf hängen bleibt",
+     "post": "posts/sa-karussell-fehlerwaechter.js", "texte": "Sa 28.11.", "story": 6,
+     "linkedin": null}
+  ],
+  "storys": "posts/storys.js"
+}
