@@ -13,7 +13,7 @@ window.POST = {
       scene: 'folders', props: { out: 'Angekommen?' }, sceneScale: .85, dy: 40 },
     { layout: 'stack', num: '03', title: 'Er meldet sich bei einer', script: 'Person.', p: 'Welcher Schritt, seit wann, was fehlt. Nur an die Person, die zuständig ist.',
       scene: 'roiform', props: { title: 'Meldung', fields: ['Schritt', 'Seit wann', 'Was fehlt'], result: 'An die zuständige Person', value: '✓' }, sceneScale: .9, dy: 100 },
-    { layout: 'bottom', num: '04', title: 'Entscheiden tut ein', script: 'Mensch.', p: 'Neu starten, von Hand erledigen oder bewusst liegen lassen. Der Wächter repariert nichts selbst.', scene: 'none' },
+    { layout: 'bottom', num: '04', title: 'Die Entscheidung trifft ein', script: 'Mensch.', p: 'Neu starten, von Hand erledigen oder bewusst liegen lassen. Der Wächter repariert nichts selbst.', scene: 'none' },
     { layout: 'stack', title: 'Du erfährst es zuerst. Nicht dein', script: 'Kunde.', p: 'Ehrliche Grenze: Ein Wächter meldet Fehler. Verhindern kann er sie nicht.',
       scene: 'zuerst', props: { a: 'Meldung an dich', b: 'Kunde', icon: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2.5h-15Z"/><path d="M10 21h4"/><path d="M12 3v2"/>' } },
     { layout: 'center', title: 'Für das nächste Praxisbeispiel:', script: 'folgen.', p: 'Musterprojekt, kein Kundenprojekt.', cta: 'Folgen', scene: 'none' },

@@ -7,8 +7,8 @@ window.POST = {
       scene: 'hourglass', props: { text: 'Offen' }, dy: 60 },
     { layout: 'side', title: 'Zweimal nachschauen. Pro', script: 'Rechnung.', p: 'Angenommen: 30 Rechnungen im Monat, je 3 Minuten.',
       scene: 'mailscan', props: { tag: 'Bezahlt?', scans: 2 }, sceneScale: .9, dy: -40 },
-    { layout: 'bottom', title: 'Macht 54 Stunden im', script: 'Jahr.', p: 'Beispielrechnung, dazu 6 Erinnerungen à 15 Minuten im Monat.',
-      scene: 'yeargrid', props: { title: '12 Monate', value: 54, unit: 'Stunden', split: 2/3, legend: ['Nachschauen', 'Erinnern'] } },
+    { layout: 'bottom', title: 'Macht 51 Stunden im', script: 'Jahr.', p: 'Beispielrechnung, dazu 5 Erinnerungen à 15 Minuten im Monat.',
+      scene: 'yeargrid', props: { title: '12 Monate', value: 51, unit: 'Stunden', split: 180/255, legend: ['Nachschauen', 'Erinnern'] } },
     { layout: 'stack', title: 'Die Erinnerung liegt bereit. Du gibst sie', script: 'frei.', p: 'Der Zahlungseingang wird abgeglichen.',
       scene: 'flowpanel', props: { status: 'Erinnerung wartet auf dich', nodes: [
         ['<path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/>', 'Zahlungseingang'],

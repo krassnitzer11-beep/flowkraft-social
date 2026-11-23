@@ -173,7 +173,9 @@ function scene(rot) {
 }
 const GRAD = 'linear-gradient(120deg,#2878B5,#3F8FCD)';
 const HUB = 'radial-gradient(120% 120% at 30% 20%,#173552,#0A1826)';
-const FACE = V === 'mist' ? 'linear-gradient(160deg,#ffffff,#e4edf5)' : HUB, SIDE = V === 'mist' ? '#9fb7cc' : '#071320';   // Mist: Kacheln sichtbar vom hellen Grund abheben
+const CONTRAST = V === 'mist' && !!POST.contrast;   // Mist mit deutlicher abgesetzten Kacheln und Zetteln (KW 48)
+const FACE = CONTRAST ? 'linear-gradient(160deg,#eaf1f7,#c9d9e8)' : V === 'mist' ? 'linear-gradient(160deg,#ffffff,#e4edf5)' : HUB, SIDE = CONTRAST ? '#6f8eab' : V === 'mist' ? '#9fb7cc' : '#071320';   // Mist: Kacheln sichtbar vom hellen Grund abheben
+if (CONTRAST) el('style', '', '.pill{border:2px solid rgba(23,50,77,.3);box-shadow:0 10px 22px rgba(23,50,77,.35)}', document.head);
 const HINK = V === 'mist' ? '#17324d' : '#eaf0f5', HSUB = V === 'mist' ? '#5b7088' : '#8C9DB0';
 const hubStyle = f => { f.style.border = V === 'mist' ? '2px solid rgba(23,50,77,.28)' : '2px solid rgba(74,155,216,.35)'; f.style.boxShadow = V === 'mist' ? '0 30px 70px -22px rgba(23,50,77,.38)' : '0 0 90px -14px rgba(40,120,181,.75)'; };
 const lift = (t, s, d=.55, k=2) => backOut(prog(t, s, d), k);
@@ -406,7 +408,7 @@ const popIn = (t, list) => list.forEach(([e, s, k=2, d=.5]) => { vis(e, t >= s);
 const hitEvents = (TM, keys, f=540) => keys.map((k, i) => ({k:'pop', t: TM['h:' + k], x: 540, f: f + i*70}));
 const bars = (p, css, n, widths) => { const b = []; for (let i = 0; i < n; i++) b.push(abs(p, `${css};top:${i*30}px;width:${widths[i]}%;height:14px;border-radius:7px;background:${i ? HSUB : HINK};opacity:.7`)); return b; };
 const docHTML = (lines=4) => `<div style="position:absolute;inset:12% 12%;display:flex;flex-direction:column;gap:9%">${Array.from({length: lines}, (_, i) => `<i style="display:block;height:7%;border-radius:6px;width:${[60,100,85,70,92][i]}%;background:${i ? 'rgba(23,50,77,.22)' : '#2878B5'}"></i>`).join('')}</div>`;
-const paper = (g, x, y, w, h, depth=6, lines=4) => slab(g, {x, y, w, h, r: '16px', depth, face: '#ffffff', side: '#b9cbd9', html: docHTML(lines)});
+const paper = (g, x, y, w, h, depth=6, lines=4) => { const s = slab(g, {x, y, w, h, r: '16px', depth, face: '#ffffff', side: CONTRAST ? '#7f9bb5' : '#b9cbd9', html: docHTML(lines)}); if (CONTRAST) { s.face.style.border = '2px solid rgba(23,50,77,.35)'; s.face.style.boxShadow = '0 14px 30px -10px rgba(23,50,77,.45)'; } return s; };
 
 Object.assign(HEROES, {
   // ---- Dunkel 1: Sanduhr, die Stunden laufen ab ----
@@ -765,6 +767,7 @@ function buildSlide(sl, n) {
   else if (layout === 'side') html = head + num('margin-top:60px') + BOX(hh + chips, 'margin-top:auto') + para('margin-top:30px') + foot('margin-top:48px');
   else if (layout === 'center') html = head + BOX(num('align-self:center') + hh + chips, 'margin-top:auto;gap:18px') + para('margin-top:26px;text-align:center;align-self:center;text-wrap:balance') + foot('margin-top:46px');
   else html = head + BOX(num() + hh + chips, 'margin-top:32px') + para('margin-top:auto') + foot(sl.cta ? 'margin-top:40px' : 'margin-top:46px');
+  if (sl.middle) html = html.replace(/margin-top:auto;?/g, '');   // Textblock senkrecht mittig (reine Textstory)
   const has = k => k === 'num' ? !!sl.num : k === 'g1' ? !!sl.outline : k === 'script' ? !!sl.script : k === 'p' ? !!sl.p : k === 'cta' ? !!sl.cta : k === 'arrow' ? hook && !sl.cta && !story : true;
   let order = (ORDERS[sc] ?? ORDERS.none).flatMap(k => k === 'h:n*' ? (sl.props?.nodes ?? [0,0,0,0]).map((_, i) => 'h:n' + i) : [k]).filter(has);
   const FIRST = sl.first ?? (params.get('layer') === 'hero' ? 'scene' : null);   // im Flug: Szene und Schrift sauber getrennt
@@ -775,6 +778,7 @@ function buildSlide(sl, n) {
 const SL = POST.slides[SID - 1];
 const S = buildSlide(SL, SID);
 slide.innerHTML = S.html;
+if (SL.middle) slide.style.justifyContent = 'center';
 const stage = comp;
 const mark = document.getElementById('mark');
 const accent = document.getElementById('accent');
