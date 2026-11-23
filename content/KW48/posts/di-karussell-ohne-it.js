@@ -13,7 +13,7 @@ window.POST = {
       chips: ['@', 'Kal', 'Tab', 'Buch'], scene: 'dochub', sceneScale: .8, dy: 20 },
     { layout: 'stack', num: '03', size: 104, title: 'Ehrliche Grenze: erst einmal', script: 'festlegen.', p: 'Macht jeder den Ablauf jedes Mal anders, schreibst du zuerst auf, wie er laufen soll.',
       scene: 'ranking', props: { title: 'Ablauf', right: 'In fester Reihenfolge', bars: [34, 58, 82] }, sceneScale: .8, dy: 140 },
-    { layout: 'center', title: 'Kein eigener Server, keine IT-Abteilung. Auch wenn du allein', script: 'bist.', p: 'Die Größe deines Betriebs entscheidet nicht. Ein klarer Ablauf schon.', scene: 'none' },
+    { layout: 'center', title: 'Kein eigener Server, keine IT-Abteilung. Auch wenn du allein', script: 'bist.', p: 'Die Größe entscheidet nicht. Ein klarer Ablauf schon.', scene: 'none' },
     { layout: 'stack', title: 'Kennst du jemanden, der das', script: 'glaubt?', p: 'Schick ihm den Post weiter.', cta: 'Teilen',
       scene: 'comment', props: { word: 'Schau dir das an', title: 'Weitergeleitet', sub: 'an eine Person',
         icon: '<path d="M14 4l6 6-6 6"/><path d="M20 10h-9a6 6 0 0 0-6 6v4"/>' } },

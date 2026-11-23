@@ -9,7 +9,7 @@ window.POST = {
       scene: 'pile', props: { folder: 'Bestellung' }, sceneScale: .85, dy: -60 },
     { layout: 'stack', num: '01', title: 'Jeder Schritt hat ein', script: 'Ziel.', p: 'Bestellung erzeugt, verschickt, vom Lieferanten bestätigt. Bis wann, steht vorher fest.',
       scene: 'extract', props: { fields: ['Erzeugt', 'Verschickt', 'Bestätigt'], file: 'Frist je Schritt festgelegt' }, sceneScale: .9, dy: -40 },
-    { layout: 'center', num: '02', title: 'Der Wächter schaut nur', script: 'nach.', p: 'In festen Abständen prüft er, ob jeder Schritt angekommen ist. Mitarbeiten tut er nicht.',
+    { layout: 'center', num: '02', title: 'Der Wächter schaut nur', script: 'nach.', p: 'In festen Abständen prüft er, ob jeder Schritt angekommen ist. Selbst eingreifen kann er nicht.',
       scene: 'folders', props: { out: 'Angekommen?' }, sceneScale: .85, dy: 40 },
     { layout: 'stack', num: '03', title: 'Er meldet sich bei einer', script: 'Person.', p: 'Welcher Schritt, seit wann, was fehlt. Nur an die Person, die zuständig ist.',
       scene: 'roiform', props: { title: 'Meldung', fields: ['Schritt', 'Seit wann', 'Was fehlt'], result: 'An die zuständige Person', value: '✓' }, sceneScale: .9, dy: 100 },

@@ -62,7 +62,7 @@ A nimmt den Einwand direkt auf und endet auf „nicht.“ B ist die Lösung ohne
 3. num „01“, title „Ein Ablauf, nicht das ganze“, script „Büro.“, p „Du startest mit einer Aufgabe, die jede Woche gleich läuft.“ Szene `beforeafter`. Animation: Aus einem vollen Büro-Raster wird ein einzelner Strang hervorgehoben.
 4. num „02“, title „Deine Programme“, script „bleiben.“, p „Mail, Kalender, Tabelle, Buchhaltung. Verbunden wird, was schon da ist.“ Szene `dochub` mit Kürzel-Chips statt Logos („@“, „Kal“, „Tab“, „Buch“). Animation: Linien ziehen sich zwischen den Chips, kein Chip wird ausgetauscht.
 5. num „03“, title „Ehrliche Grenze: erst einmal“, script „festlegen.“, p „Macht jeder den Ablauf jedes Mal anders, schreibst du zuerst auf, wie er laufen soll.“ Szene `ranking`. Animation: Vier ungeordnete Schritte springen in eine feste Reihenfolge.
-6. Ergebnis. title „Kein eigener Server, keine“, script „IT-Abteilung.“, p „Auch wenn du allein bist. Die Größe deines Betriebs entscheidet nicht, ein klarer Ablauf schon.“ Szene `none`. Animation: Schrift baut sich Wort für Wort auf, F-Ball rollt unter „IT-Abteilung.“
+6. Ergebnis. title „Kein eigener Server, keine IT-Abteilung. Auch wenn du allein“, script „bist.“, p „Die Größe entscheidet nicht. Ein klarer Ablauf schon.“ Szene `none`. Animation: Schrift baut sich Wort für Wort auf, F-Ball rollt unter „bist.“
 7. Nächster Schritt. title „Kennst du jemanden, der das“, script „glaubt?“, p „Schick ihm den Post weiter.“ cta „Teilen“. Szene: Designer (eine noch freie Szene oder `none`). Animation: Pfeil-Bewegung nach rechts, ruhig.
 
 **Caption Instagram und Facebook**
@@ -233,7 +233,7 @@ A dreht die Sorge um: Nicht der Fehler ist das Problem, sondern der Stillstand. 
 1. Hook. title „Wer merkt, wenn nichts“, script „passiert?“ Szene `waechter` (neu). Animation: Eine Ablauf-Linie mit Punkten, ein Punkt bleibt grau, ein Auge über der Linie öffnet sich langsam.
 2. Problem. title „Stillstand sieht harmlos“, script „aus.“, p „Die Lieferantenbestellung soll automatisch raus. Sie bleibt hängen. Du merkst es, wenn Material fehlt.“ Szene `pile`. Animation: Stapel wird kleiner, bis ein leeres Fach bleibt.
 3. num „01“, title „Jeder Schritt hat ein“, script „Ziel.“, p „Bestellung erzeugt, verschickt, vom Lieferanten bestätigt. Bis wann, steht vorher fest.“ Szene `extract`. Animation: Drei Felder werden nacheinander mit einer Frist beschriftet.
-4. num „02“, title „Der Wächter schaut nur“, script „nach.“, p „In festen Abständen prüft er, ob jeder Schritt angekommen ist. Mitarbeiten tut er nicht.“ Szene `folders`. Animation: Lichtkegel wandert von Fach zu Fach, berührt nichts.
+4. num „02“, title „Der Wächter schaut nur“, script „nach.“, p „In festen Abständen prüft er, ob jeder Schritt angekommen ist. Selbst eingreifen kann er nicht.“ Szene `folders`. Animation: Lichtkegel wandert von Fach zu Fach, berührt nichts.
 5. num „03“, title „Er meldet sich bei einer“, script „Person.“, p „Welcher Schritt, seit wann, was fehlt. Nur an die Person, die zuständig ist.“ Szene: Designer (neue Szene oder `none`). Animation: Eine einzige Nachricht fliegt zu einer Figur, nicht an alle.
 6. num „04“, title „Die Entscheidung trifft ein“, script „Mensch.“, p „Neu starten, von Hand erledigen oder bewusst liegen lassen. Der Wächter repariert nichts selbst.“ Szene `none`. Animation: Drei Wege erscheinen nebeneinander, ruhig, keiner ist hervorgehoben.
 7. Ergebnis. title „Du erfährst es zuerst. Nicht dein“, script „Kunde.“, p „Ehrliche Grenze: Ein Wächter meldet Fehler. Verhindern kann er sie nicht.“ Szene: Designer (vierte neue Szene oder `none`). Animation: Der graue Punkt aus Slide 1 wird markiert, Linie läuft weiter.
@@ -243,7 +243,7 @@ A dreht die Sorge um: Nicht der Fehler ist das Problem, sondern der Stillstand. 
 
 Wer merkt, wenn nichts passiert?
 
-Ein Ablauf läuft automatisch, zum Beispiel die Bestellung beim Lieferanten. Eines Tages bleibt er hängen. Keine Fehlermeldung, nichts sieht kaputt aus. Auffallen tut es erst, wenn Material fehlt.
+Ein Ablauf läuft automatisch, zum Beispiel die Bestellung beim Lieferanten. Eines Tages bleibt er hängen. Keine Fehlermeldung, nichts sieht kaputt aus. Es fällt erst auf, wenn Material fehlt.
 
 Dafür gibt es den Fehlerwächter. Für jeden Schritt ist festgelegt, was bis wann da sein muss. Der Wächter schaut in festen Abständen nach. Fehlt etwas, bekommt die zuständige Person eine kurze Nachricht: welcher Schritt, seit wann, was fehlt. Die Entscheidung, was dann passiert, trifft ein Mensch.
 

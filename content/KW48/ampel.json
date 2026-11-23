@@ -1,15 +1,49 @@
 [
-  {"tag": "Mo", "thema": "Zahlungserinnerungen", "ampel": "gruen", "grund": ""},
-  {"tag": "Di", "thema": "Ohne IT-Abteilung", "ampel": "gelb", "grund": "Slide 6 hat ein Wort zu viel",
-   "punkte": [
-     {"was": "Slide 6 hat 21 Wörter, erlaubt sind 20.", "vorschlag": "Fließtext auf „Die Größe entscheidet nicht. Ein klarer Ablauf schon.“ kürzen."}
-   ]},
-  {"tag": "Mi", "thema": "Stundenzettel", "ampel": "gruen", "grund": ""},
-  {"tag": "Do", "thema": "Abendbüro", "ampel": "gruen", "grund": ""},
-  {"tag": "Fr", "thema": "Team entscheidet mit", "ampel": "gruen", "grund": ""},
-  {"tag": "Sa", "thema": "Fehlerwächter", "ampel": "gelb", "grund": "Beispiel braucht deine Bestätigung",
-   "punkte": [
-     {"was": "Die Lieferantenbestellung ist frei gewählt, nicht aus deinem Musterprojekt.", "vorschlag": "Bestätigen, dass der Ablauf deinem Fehlerwächter entspricht, sonst auf Slide 2 „Zum Beispiel:“ davorsetzen."},
-     {"was": "Slide 4 sagt noch „Mitarbeiten tut er nicht.“, das ist Umgangssprache.", "vorschlag": "Ersetzen durch „Selbst eingreifen kann er nicht.“"}
-   ]}
+ {
+  "tag": "Mo",
+  "thema": "Zahlungserinnerungen",
+  "ampel": "gruen",
+  "grund": ""
+ },
+ {
+  "tag": "Di",
+  "thema": "Ohne IT-Abteilung",
+  "ampel": "gruen",
+  "grund": "",
+  "punkte": []
+ },
+ {
+  "tag": "Mi",
+  "thema": "Stundenzettel",
+  "ampel": "gruen",
+  "grund": ""
+ },
+ {
+  "tag": "Do",
+  "thema": "Abendbüro",
+  "ampel": "gruen",
+  "grund": ""
+ },
+ {
+  "tag": "Fr",
+  "thema": "Team entscheidet mit",
+  "ampel": "gruen",
+  "grund": ""
+ },
+ {
+  "tag": "Sa",
+  "thema": "Fehlerwächter",
+  "ampel": "gelb",
+  "grund": "Beispiel braucht deine Bestätigung",
+  "punkte": [
+   {
+    "was": "Die Lieferantenbestellung ist frei gewählt, nicht aus deinem Musterprojekt.",
+    "vorschlag": "Bestätigen, dass der Ablauf deinem Fehlerwächter entspricht, sonst auf Slide 2 „Zum Beispiel:“ davorsetzen."
+   },
+   {
+    "was": "Slide 4 sagt noch „Mitarbeiten tut er nicht.“, das ist Umgangssprache.",
+    "vorschlag": "Ersetzen durch „Selbst eingreifen kann er nicht.“"
+   }
+  ]
+ }
 ]

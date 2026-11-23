@@ -149,3 +149,11 @@ Keiner ist mehr blockierend.
 | 4 | Woche | Keine Dreierlisten aus Gewohnheit | Di Slide 2 und Caption, Di Slide 3, Mo, Mi und Do Caption | Ab der nächsten Woche höchstens eine Aufzählung pro Caption, nur mit Grund. |
 | 5 | Mo, Mi | Abwechslung über die Wochen | Mo im gleichen Bogen wie KW 47 Montag, Mi wieder Abtippen | Nächste Rechen-Folge anders aufbauen, vier Wochen kein Abtipp-Thema. |
 | 6 | Storys | Abwechslung | Reine Textstorys lösen die Szenen-Regel diese Woche, aber 22 Szenen reichen für Posts und Storys nicht. | Für die nächsten Wochen neue Szenen bauen oder die Textstory als festes Format von Daniel bestätigen lassen. |
+
+## Entscheidung des Social-Media-Managers nach Runde 2
+
+Zwei Korrekturrunden sind ausgeschöpft. Die kleinen Punkte aus Runde 2 habe ich vor dem Rendern selbst übernommen:
+- Di Slide 6: Fließtext gekürzt auf „Die Größe entscheidet nicht. Ein klarer Ablauf schon.“ (jetzt 18 Wörter). Texte und Bild sagen jetzt dasselbe.
+- Sa Slide 4: „Selbst eingreifen kann er nicht.“ statt „Mitarbeiten tut er nicht.“; Caption: „Es fällt erst auf, wenn Material fehlt.“
+- Offen bleibt nur das Sa-Beispiel (Bestellung beim Lieferanten). Es ist frei gewählt, nicht aus Daniels Musterprojekt. Das entscheidet Daniel bei der Freigabe. Deshalb bleibt Sa gelb.
+- Story-Regel: Die Storys sind diese Woche reine Textstorys ohne Szene. Ob das als festes Format gilt oder neue Szenen gebaut werden, entscheidet Daniel.
