@@ -2,7 +2,7 @@
 
 Grundlage: `content/KW48/plan.json`, `content/KW48/gegenposition.md` (Aufträge pro Post, tabu-Formulierungen), `content/KW48/recherche.md`, `docs/flowkraft-voice.md` inkl. Abschnitt 13. Freigabe durch Daniel steht aus. KW 48 ist ein Testlauf, es wird nichts gepostet.
 
-Alle Posts Mo bis Sa um 18:00 Wien. Facebook übernimmt die Instagram-Caption, Karussells gehen dort als Bildergalerie raus. LinkedIn nur Di (Video 4:5 aus dem Mo-Reel) und Do (Standbild 4:5 aus dem Mi-Post), jeweils mit eigenem Text, ohne Link, höchstens 3 Hashtags. Storys ohne Sticker: Die Frage steht als Text, Antworten kommen per DM. Kein ROI, kein KI-Check, kein Link, jeder Post hat genau einen nächsten Schritt.
+Alle Posts Mo bis Sa um 18:00 Wien. Facebook übernimmt die Instagram-Caption, Karussells gehen dort als Bildergalerie raus. LinkedIn nur Di (Video 4:5 aus dem Mo-Reel) und Do (Standbild 4:5 aus dem Mi-Post), jeweils mit eigenem Text, ohne Link, höchstens 3 Hashtags. Storys ohne Sticker und ohne Szene (reine Textstorys): Die Frage steht als Text, Antworten kommen per DM. Kein ROI, kein KI-Check, kein Link, jeder Post hat genau einen nächsten Schritt.
 
 Zahlen: nur zwei Rechen-Posts (Mo in Stunden, Do in Euro und Stunden), beide als Beispielrechnung mit sichtbaren Annahmen. Die einzige belegte Zahl ist KSV1870 2025 (Österreich, jede 6. Rechnung zu spät, Original geöffnet). Keine Zahl aus KW 47.
 
@@ -23,7 +23,7 @@ A zeigt den Schmerz in zwei kurzen Sätzen und endet auf „nicht.“, ohne Zahl
 
 1. Hook. outline „Rechnung ist raus.“, title „Das Geld“, script „nicht.“ Szene `hourglass`. Animation: Rechnung gleitet aus dem Bild, die Sanduhr läuft leer, kein Eingang.
 2. title „Zweimal nachschauen. Pro“, script „Rechnung.“, p „Angenommen: 30 Rechnungen im Monat, je 3 Minuten.“ Szene `mailscan` mit Tag „Bezahlt?“. Animation: Scanlinie fährt zweimal über dieselbe Rechnung.
-3. title „Macht 54 Stunden im“, script „Jahr.“, p „Beispielrechnung, dazu 6 Erinnerungen à 15 Minuten im Monat.“ Szene `yeargrid` mit title „12 Monate“, value 54, unit „Stunden“. Animation: Kästchen füllen sich zu zwei Dritteln in einer Farbe (Nachschauen), ein Drittel in der zweiten (Erinnern). Kästchen nicht als Tage beschriften.
+3. title „Macht 51 Stunden im“, script „Jahr.“, p „Beispielrechnung, dazu 5 Erinnerungen à 15 Minuten im Monat.“ Szene `yeargrid` mit title „12 Monate“, value 51, unit „Stunden“. Animation: Kästchen füllen sich zu gut zwei Dritteln in einer Farbe (Nachschauen), der Rest in der zweiten (Erinnern). Kästchen nicht als Tage beschriften.
 4. title „Die Erinnerung liegt bereit. Du gibst sie“, script „frei.“, p „Der Zahlungseingang wird abgeglichen. Speichern.“ cta „Speichern“. Szene `flowpanel`, ein Knoten mit Tag „Bezahlt ✓“. Animation: Eingang wird abgehakt, die vorbereitete Erinnerung wartet auf einen Klick, sie fliegt nicht von selbst los.
 
 **Caption Instagram und Facebook**
@@ -32,7 +32,7 @@ Rechnung ist raus. Das Geld nicht.
 
 Und dann fängt das Nachschauen an. Konto öffnen, Rechnung suchen, vergleichen. Eine Woche später das Gleiche. Die Erinnerung schiebst du auf, weil du den Kunden nicht verärgern willst.
 
-Beispielrechnung mit angenommen 30 Rechnungen im Monat: Jede wird zweimal im Konto geprüft, je 3 Minuten. Dazu 6 Erinnerungen à 15 Minuten. Das sind 4,5 Stunden im Monat und 54 Stunden im Jahr. Zwei Drittel davon sind nur Nachschauen.
+Beispielrechnung mit angenommen 30 Rechnungen im Monat: Jede wird zweimal im Konto geprüft, je 3 Minuten. Dazu 5 Erinnerungen à 15 Minuten. Das sind 4,25 Stunden im Monat und 51 Stunden im Jahr. Mehr als zwei Drittel davon sind nur Nachschauen.
 
 Zum Vergleich: In Österreich wurde 2025 laut KSV1870 jede 6. Rechnung zu spät bezahlt.
 
@@ -62,7 +62,7 @@ A nimmt den Einwand direkt auf und endet auf „nicht.“ B ist die Lösung ohne
 3. num „01“, title „Ein Ablauf, nicht das ganze“, script „Büro.“, p „Du startest mit einer Aufgabe, die jede Woche gleich läuft.“ Szene `beforeafter`. Animation: Aus einem vollen Büro-Raster wird ein einzelner Strang hervorgehoben.
 4. num „02“, title „Deine Programme“, script „bleiben.“, p „Mail, Kalender, Tabelle, Buchhaltung. Verbunden wird, was schon da ist.“ Szene `dochub` mit Kürzel-Chips statt Logos („@“, „Kal“, „Tab“, „Buch“). Animation: Linien ziehen sich zwischen den Chips, kein Chip wird ausgetauscht.
 5. num „03“, title „Ehrliche Grenze: erst einmal“, script „festlegen.“, p „Macht jeder den Ablauf jedes Mal anders, schreibst du zuerst auf, wie er laufen soll.“ Szene `ranking`. Animation: Vier ungeordnete Schritte springen in eine feste Reihenfolge.
-6. Ergebnis. title „Kein Server, kein IT-Mensch. Auch wenn du allein“, script „bist.“, p „Die Größe deines Betriebs entscheidet nicht. Ein klarer Ablauf schon.“ Szene `none`. Animation: Schrift baut sich Wort für Wort auf, F-Ball rollt unter „bist.“
+6. Ergebnis. title „Kein eigener Server, keine“, script „IT-Abteilung.“, p „Auch wenn du allein bist. Die Größe deines Betriebs entscheidet nicht, ein klarer Ablauf schon.“ Szene `none`. Animation: Schrift baut sich Wort für Wort auf, F-Ball rollt unter „IT-Abteilung.“
 7. Nächster Schritt. title „Kennst du jemanden, der das“, script „glaubt?“, p „Schick ihm den Post weiter.“ cta „Teilen“. Szene: Designer (eine noch freie Szene oder `none`). Animation: Pfeil-Bewegung nach rechts, ruhig.
 
 **Caption Instagram und Facebook**
@@ -81,18 +81,18 @@ Kennst du jemanden, der sagt, das sei nur was für Große? Leite ihm den Post we
 
 **LinkedIn: Video am Di 24.11. um 18:00** (Mo-Reel Zahlungserinnerungen, Slides als 4:5-Videos hintereinander)
 
-54 Stunden im Jahr, um nachzuschauen, ob Rechnungen bezahlt sind, und an offene zu erinnern.
-Zwei Drittel davon sind reines Nachschauen.
+51 Stunden im Jahr, um nachzuschauen, ob Rechnungen bezahlt sind, und an offene zu erinnern.
+Mehr als zwei Drittel davon sind reines Nachschauen.
 
-Die Zahl ist eine Beispielrechnung mit angenommenen Werten: 30 Rechnungen im Monat. Jede wird im Schnitt zweimal im Konto geprüft, je 3 Minuten. 6 davon brauchen eine Erinnerung, je 15 Minuten. Das sind 4,5 Stunden im Monat, über 12 Monate 54 Stunden.
+Die Zahl ist eine Beispielrechnung mit angenommenen Werten: 30 Rechnungen im Monat, jede zweimal im Konto geprüft, je 3 Minuten. 5 davon brauchen eine Erinnerung, je 15 Minuten. Das sind 4,25 Stunden im Monat, über 12 Monate 51 Stunden.
 
 Zur Einordnung: In Österreich wurde 2025 laut KSV1870 jede 6. Rechnung zu spät bezahlt.
 
-Bei offenen Rechnungen denken die meisten ans Erinnern. Die meiste Zeit steckt aber im Abgleich davor. Den kann ein System übernehmen: Zahlungseingang erkannt, Rechnung abgehakt, offene Posten auf einer Liste.
+Bei offenen Rechnungen denken die meisten ans Erinnern. In dieser Beispielrechnung steckt die meiste Zeit aber im Abgleich davor. Den kann ein System übernehmen: Zahlungseingang erkannt, Rechnung abgehakt.
 
 Die Erinnerung selbst würde ich nicht automatisch verschicken lassen. Sie liegt vorbereitet bereit, und du entscheidest, ob und in welchem Ton sie rausgeht. Deinen Kunden kennst du besser als jedes Programm.
 
-Speichere den Post, wenn du die Rechnung mit deinen eigenen Zahlen machen willst.
+Speichere den Post und rechne mit deinen eigenen Zahlen.
 
 #automatisierung #kmu #buchhaltung
 
@@ -147,7 +147,7 @@ A rechnet in Euro, ohne schon eine Zahl zu nennen, und endet auf „gratis.“ B
 1. Hook. outline „Deine Abendstunde“, title „ist nicht“, script „gratis.“ Szene `calendar` mit items „Mo-Abend“, „Mi-Abend“, „Sa“. Animation: Drei Felder im Kalender färben sich nacheinander, keine Mails, keine Termine darin.
 2. title „6 Stunden pro“, script „Woche.“, p „Angenommen: 3 Abende à 2 Stunden Büro.“ Szene `chaos`. Animation: Belege und Listen wirbeln über den Schreibtisch und legen sich zu einem Stapel.
 3. title „276 Stunden im“, script „Jahr.“, p „Beispielrechnung: 6 h × 46 Wochen. Angenommen 60 € pro Stunde: 16.560 €.“ Szene `calculator`. Animation: Erst erscheinen die Stunden groß, die Euro kommen als zweite, kleinere Zeile nach.
-4. title „Rechne deinen“, script „Feierabend.“, p „Die Euro sind gedacht. Die Stunden nicht. Speichern.“ cta „Speichern“. Szene `feierabend` (neu). Animation: Schreibtischlampe geht aus, die Uhr bleibt stehen.
+4. title „Rechne deinen“, script „Feierabend.“, p „Die Euro sind gedacht. Deine Abende sind echt. Speichern.“ cta „Speichern“. Szene `feierabend` (neu). Animation: Schreibtischlampe geht aus, die Uhr bleibt stehen.
 
 **Caption Instagram und Facebook**
 
@@ -159,7 +159,7 @@ Beispielrechnung mit drei Annahmen: 6 Stunden Büro pro Woche am Abend, 46 Arbei
 
 Das sind 276 Stunden im Jahr, mehr als 34 Arbeitstage zu 8 Stunden. In Euro: 16.560.
 
-Ehrlich dazu: Die Euro sind ein gedachter Wert. Sie zählen nur, wenn du die Stunde wirklich verkaufen könntest. Die 276 Stunden Feierabend zählen in jedem Fall.
+Ehrlich dazu: Die Euro sind ein gedachter Wert. Sie zählen nur, wenn du die Stunde wirklich verkaufen könntest. Deine Abende sind echt: 276 Stunden Feierabend, in jedem Fall.
 
 Speichere den Post für den nächsten Abend am Schreibtisch.
 
@@ -207,7 +207,7 @@ Wer mitreden darf, macht eher mit.
 
 Es geht auch andersrum. Deine Leute sagen, was sie im Alltag am meisten aufhält, und entscheiden mit, womit angefangen wird. Bevor etwas rausgeht, das sie betrifft, schauen sie drüber.
 
-Dann ist es nicht dein Projekt, das sie mittragen sollen. Es ist auch ihres.
+Dann tragen sie etwas mit, das sie selbst ausgesucht haben.
 
 Eine Garantie ist das nicht. Aber wer gefragt wird, hat einen Grund, es auszuprobieren.
 
@@ -235,7 +235,7 @@ A dreht die Sorge um: Nicht der Fehler ist das Problem, sondern der Stillstand. 
 3. num „01“, title „Jeder Schritt hat ein“, script „Ziel.“, p „Bestellung erzeugt, verschickt, vom Lieferanten bestätigt. Bis wann, steht vorher fest.“ Szene `extract`. Animation: Drei Felder werden nacheinander mit einer Frist beschriftet.
 4. num „02“, title „Der Wächter schaut nur“, script „nach.“, p „In festen Abständen prüft er, ob jeder Schritt angekommen ist. Mitarbeiten tut er nicht.“ Szene `folders`. Animation: Lichtkegel wandert von Fach zu Fach, berührt nichts.
 5. num „03“, title „Er meldet sich bei einer“, script „Person.“, p „Welcher Schritt, seit wann, was fehlt. Nur an die Person, die zuständig ist.“ Szene: Designer (neue Szene oder `none`). Animation: Eine einzige Nachricht fliegt zu einer Figur, nicht an alle.
-6. num „04“, title „Entscheiden tut ein“, script „Mensch.“, p „Neu starten, von Hand erledigen oder bewusst liegen lassen. Der Wächter repariert nichts selbst.“ Szene `none`. Animation: Drei Wege erscheinen nebeneinander, ruhig, keiner ist hervorgehoben.
+6. num „04“, title „Die Entscheidung trifft ein“, script „Mensch.“, p „Neu starten, von Hand erledigen oder bewusst liegen lassen. Der Wächter repariert nichts selbst.“ Szene `none`. Animation: Drei Wege erscheinen nebeneinander, ruhig, keiner ist hervorgehoben.
 7. Ergebnis. title „Du erfährst es zuerst. Nicht dein“, script „Kunde.“, p „Ehrliche Grenze: Ein Wächter meldet Fehler. Verhindern kann er sie nicht.“ Szene: Designer (vierte neue Szene oder `none`). Animation: Der graue Punkt aus Slide 1 wird markiert, Linie läuft weiter.
 8. Nächster Schritt. title „Für das nächste Praxisbeispiel:“, script „folgen.“, p „Musterprojekt, kein Kundenprojekt.“ cta „Folgen“. Szene `none`. Animation: F-Ball rollt ein und bleibt unter „folgen.“ liegen.
 
@@ -245,7 +245,7 @@ Wer merkt, wenn nichts passiert?
 
 Ein Ablauf läuft automatisch, zum Beispiel die Bestellung beim Lieferanten. Eines Tages bleibt er hängen. Keine Fehlermeldung, nichts sieht kaputt aus. Auffallen tut es erst, wenn Material fehlt.
 
-Dafür gibt es den Fehlerwächter. Für jeden Schritt ist festgelegt, was bis wann da sein muss. Der Wächter schaut in festen Abständen nach. Fehlt etwas, bekommt die zuständige Person eine kurze Nachricht: welcher Schritt, seit wann, was fehlt. Was dann passiert, entscheidet ein Mensch.
+Dafür gibt es den Fehlerwächter. Für jeden Schritt ist festgelegt, was bis wann da sein muss. Der Wächter schaut in festen Abständen nach. Fehlt etwas, bekommt die zuständige Person eine kurze Nachricht: welcher Schritt, seit wann, was fehlt. Die Entscheidung, was dann passiert, trifft ein Mensch.
 
 Ehrliche Grenze: Er meldet Fehler, verhindern kann er sie nicht. Und er findet nur, was vorher als Erwartung festgelegt wurde.
 
@@ -262,7 +262,7 @@ Folge flowkraft, wenn du sehen willst, wie das nächste Musterprojekt aufgebaut 
 ## Offene Punkte für Prüfer und Daniel
 
 - Sa: Das Beispiel „Bestellung beim Lieferanten“ ist gewählt, nicht aus Daniels Musterprojekt. Daniel sollte vor der Freigabe sagen, ob es seinem Fehlerwächter nahekommt (`docs/praxisbeispiele.md` fehlt).
-- Mo: Die Annahme „6 Erinnerungen bei 30 Rechnungen“ ist an die KSV-Zahl 2026 angelehnt (nur zweite Hand). Im Post steht deshalb nur die belegte Zahl 2025, die 6 sind als Annahme gekennzeichnet.
+- Mo: Die Annahme „5 Erinnerungen bei 30 Rechnungen“ passt zur belegten KSV-Zahl 2025 („jede 6. zu spät“) und ist im Post als Annahme gekennzeichnet (Korrektur Runde 1).
 - Di: „Keine IT-Abteilung? Brauchst du nicht.“ ist Daniels fachliche Haltung, keine belegte Aussage. Slide 5 und die Caption nennen die Grenze.
 - Fr: Mi und Fr setzen ein Team voraus. Mi hat einen Satz für Einzelunternehmer, Fr nicht (beim Thema nicht sinnvoll).
 - Di Slide 7, Sa Slides 5 und 7: Szene offen, weil die 16 alten plus drei neuen Szenen in der Woche vergeben sind (Gegenposition Punkt 2).
