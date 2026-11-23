@@ -2,7 +2,7 @@
 
 Geprüft am 23.11.2026 vom Prüfer, unabhängig. Grundlage: Wochenplan, Texte, die sieben Post-Dateien, Recherche und die Kontrollbilder (jeweils die neueste Fassung, beim Samstag die zweite Fassung von Slide 4 und 5). Kriterien: Daniels Entscheidungen, die Voice mit Prüfliste, der Social-Post-Prompt und die Team-Regeln. Verglichen mit der Vorwoche KW 47 (Themen, Szenen, Aufbau). Die Begründung der Ersteller habe ich erst nach meinem Urteil gelesen, und nur zum Punkt Storys.
 
-Nichts habe ich selbst geändert. Videos habe ich nicht gerendert, bewertet sind die Standbilder der Slides.
+Nichts habe ich selbst geändert. Der Abschnitt „Behoben“ unten gilt für Runde 2; die Prüfung pro Post darüber beschreibt den Stand von Runde 1. Videos habe ich nicht gerendert, bewertet sind die Standbilder der Slides.
 
 ## Gegenposition: Warum diese Woche scheitern könnte
 
@@ -111,24 +111,41 @@ Prüfliste: 1 und 4 halb.
 
 Alle sechs ohne Sticker, Frage als Text, eine DM als nächster Schritt, Text nicht in den Randzonen. Aber: jede der sechs Storys nutzt ein Bild, das in einem Post derselben Woche steht (Mo: Felder vom Sa, Di: Ordner vom Sa, Mi: Stapel vom Sa, Do: Uhr vom Di, Fr: Pin vom Di, Sa: Balken vom Di). Der Fehler sitzt an einer Stelle und ist mit einer Änderung behoben. Die Bewertung steht deshalb bei jedem Tag.
 
-## Behoben
+## Behoben (Runde 2, nachgeprüft am 23.11.2026)
 
-Nichts. Auftrag dieser Runde: Der Prüfer korrigiert nicht selbst. Alle Punkte stehen unten offen.
+Geprüft an den geänderten Texten, Post-Dateien und den neuen Kontrollbildern. Korrigiert haben die Ersteller, nicht der Prüfer.
 
-## Offene Einwände
+1. **Storys:** Alle sechs sind jetzt reine Textstorys ohne Bild. Die Frage steht mittig und groß, darunter die DM-Zeile. Keine Szene kommt mehr doppelt vor, die Balken mit Statistik-Wirkung sind weg. Im Kontrollbild nichts angeschnitten, nichts in den Randzonen. Kleiner Schönheitsfehler: Story 1 hat wegen des langen Worts „Zahlungserinnerungen“ eine deutlich kleinere Schrift als die anderen fünf. Nicht blockierend.
+2. **Mo:** Gerechnet wird jetzt mit 5 Erinnerungen, also jeder 6. Rechnung, passend zur KSV-Zahl. 180 + 75 = 255 Minuten, 4,25 Stunden im Monat, 51 Stunden im Jahr. „Mehr als zwei Drittel Nachschauen“ stimmt (gut 70 Prozent), die Kästchen im Bild zeigen dieses Verhältnis. Slide 3, Caption und LinkedIn-Text sind gleichgezogen.
+3. **Di Slide 6:** Jetzt „Kein eigener Server, keine IT-Abteilung. Auch wenn du allein bist.“ Das absolute Versprechen ist weg. Neuer kleiner Punkt siehe unten (21 Wörter).
+4. **LinkedIn Di:** jetzt 144 Wörter, „In dieser Beispielrechnung steckt die meiste Zeit im Abgleich“. Erledigt.
+5. **Do Slide 4 und Caption:** „Die Euro sind gedacht. Deine Abende sind echt.“ Der Widerspruch ist weg.
+6. **Do helle Variante:** Kacheln, Kalenderkarte und Zettel sind jetzt graublau mit dunklerem Rand und heben sich klar vom hellen Grund ab. Schrift und Icons bleiben dunkel. Kein Weiß auf Weiß mehr.
+7. **Fr Caption:** Die Floskel ist ersetzt durch „Dann tragen sie etwas mit, das sie selbst ausgesucht haben.“ Erledigt.
+8. **Sa Slide 6:** „Die Entscheidung trifft ein Mensch.“ Erledigt.
 
-Blockierend heißt: vor der Freigabe ändern.
+Alle Captions liegen weiter zwischen 93 und 127 Wörtern, 4 bis 5 Hashtags.
 
-| Nr | Post | Blockierend | Regel | Beleg | Vorschlag |
-|---|---|---|---|---|---|
-| 1 | Storys (alle Tage) | ja | Daniel 16.11.: jede Szene einmal pro Woche, Storys zählen mit | Sechs Storys, sechs Bilder aus Posts derselben Woche. Die Planung hat die Regel selbst gelockert. | Alle sechs Storys als reine Textstory (ohne Bild, Frage mittig und größer) oder mit neuen Bildern. Daniel kann die Lockerung ausdrücklich erlauben, dann wird sie als neue Entscheidung eingetragen. |
-| 2 | Sa Story | ja | Keine Zahlen ohne Beleg, auch nicht als Grafik | Balken 1 bis 3 in drei Längen unter „Fällt zu spät auf“ | Mit Nr. 1 erledigt: ohne Balken. |
-| 3 | Mo Reel, Caption, LinkedIn Di | nein, aber vor einem echten Post ja | Rechnung nachvollziehbar | 6 Erinnerungen bei 30 Rechnungen ist jede 5., daneben „jede 6.“ | Mit 5 Erinnerungen rechnen: 4,25 Stunden im Monat, 51 Stunden im Jahr, Slide 3 und Texte gleichziehen. |
-| 4 | Di Slide 6 | nein | Keine absoluten Aussagen ohne Beleg | „Kein Server, kein IT-Mensch.“ | „Kein eigener Server, keine IT-Abteilung.“ |
-| 5 | LinkedIn Di | nein | Caption höchstens 150 Wörter, Zahlen nur belegt oder als Beispiel | 151 Wörter. „Die meiste Zeit steckt aber im Abgleich davor.“ als allgemeine Aussage | „In dieser Beispielrechnung steckt …“ und die doppelte Zwei-Drittel-Zeile streichen. |
-| 6 | Do Slide 4 und Caption | nein | Annahmen ehrlich | „Die Stunden nicht“ (gedacht), obwohl auch die Stunden angenommen sind | „Die Euro sind gedacht. Deine Abende sind echt.“ |
-| 7 | Do Reel | nein, Daniel entscheidet | Nie Weiß auf Weiß | Weiße Kacheln und fliegende Zettel auf hellem Grund, nur durch Schatten getrennt | Fertiges Reel ansehen, bei blassem Eindruck dunkle Kacheln oder dunkle Variante. |
-| 8 | Sa Slides 2, 4, 6 | nein | Säule 5 aus Daniels Musterprojekt, DACH-verständlich | Lieferantenbestellung frei gewählt. „Entscheiden tut ein Mensch.“ | Daniel bestätigt das Beispiel. „Die Entscheidung trifft ein Mensch.“ |
-| 9 | Fr Caption | nein | Keine KI-Floskeln | „Nicht dein Projekt … Es ist auch ihres.“ | „Dann tragen sie es mit, weil sie es mit ausgesucht haben.“ |
-| 10 | Woche | nein | Keine Dreierlisten aus Gewohnheit | Di Slide 2 und Caption, Di Slide 3, Mo, Mi und Do Caption haben je eine Dreierliste | In jeder Caption höchstens eine Aufzählung, und nur mit Grund. |
-| 11 | Mo Reel, Mi | nein, für die nächsten Wochen | Abwechslung über die Wochen | Mo im gleichen Bogen wie KW 47 Mo, Mi wieder Abtippen mit demselben Bild wie KW 47 Di | Nächste Rechen-Folge anders aufbauen, vier Wochen kein Abtipp-Thema. |
+## Ampel nach Runde 2
+
+| Tag | Urteil | Was bleibt |
+|---|---|---|
+| Mo | grün | Nichts Blockierendes. Hinweis für später: gleicher Bogen wie das Montags-Reel KW 47 |
+| Di | gelb | Slide 6 hat 21 Wörter, erlaubt sind 20 |
+| Mi | grün | Nichts Blockierendes. Hinweis für später: Abtippen war in KW 47 schon Thema |
+| Do | grün | Nichts offen |
+| Fr | grün | Nichts offen |
+| Sa | gelb | Daniel muss das Beispiel Lieferantenbestellung bestätigen. Slide 4 noch „Mitarbeiten tut er nicht.“ |
+
+## Offene Einwände (Stand Runde 2)
+
+Keiner ist mehr blockierend.
+
+| Nr | Post | Regel | Beleg | Vorschlag |
+|---|---|---|---|---|
+| 1 | Di Slide 6 | Karussell-Slide höchstens 20 Wörter | Headline 10 Wörter plus Fließtext 11 Wörter, zusammen 21. Außerdem steht die Slide in den Texten anders als im Bild (dort endet die Headline auf „IT-Abteilung.“). | Fließtext kürzen auf „Die Größe entscheidet nicht. Ein klarer Ablauf schon.“ (18 Wörter gesamt) und die Texte an das Bild angleichen. |
+| 2 | Sa | Säule 5 aus Daniels Musterprojekt | Die Lieferantenbestellung ist frei gewählt, gekennzeichnet nur in der Caption. | Daniel bestätigt das Beispiel, sonst auf Slide 2 „Zum Beispiel:“ davorsetzen. |
+| 3 | Sa Slide 4 und Caption | Für DACH verständlich, kein Dialekt in Headlines | „Mitarbeiten tut er nicht.“ (Slide 4, Fließtext), „Auffallen tut es erst“ (Caption) | „Selbst eingreifen kann er nicht.“ und „Es fällt erst auf, wenn Material fehlt.“ |
+| 4 | Woche | Keine Dreierlisten aus Gewohnheit | Di Slide 2 und Caption, Di Slide 3, Mo, Mi und Do Caption | Ab der nächsten Woche höchstens eine Aufzählung pro Caption, nur mit Grund. |
+| 5 | Mo, Mi | Abwechslung über die Wochen | Mo im gleichen Bogen wie KW 47 Montag, Mi wieder Abtippen | Nächste Rechen-Folge anders aufbauen, vier Wochen kein Abtipp-Thema. |
+| 6 | Storys | Abwechslung | Reine Textstorys lösen die Szenen-Regel diese Woche, aber 22 Szenen reichen für Posts und Storys nicht. | Für die nächsten Wochen neue Szenen bauen oder die Textstory als festes Format von Daniel bestätigen lassen. |
