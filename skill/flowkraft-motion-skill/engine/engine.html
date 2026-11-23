@@ -201,6 +201,7 @@ const HEROES = {
           const up = Math.pow(prog(t, s + .15, col - s - .35), 1.6), dn = inOut(prog(t, col, .7));
           const c = Math.round(99 * up * (1 - dn)), peak = up >= 1 && dn === 0, done = t >= col + .7;
           o.b.innerHTML = done ? icon('check', 64, '#ffffff', 3) : (peak ? '99+' : c);
+          if (P.count === false) vis(o.b, t >= s && done);   // ohne Zähler: nur der Haken am Ende
           o.b.style.background = done ? '#2878B5' : '#eaf0f5';
           const sh = 1 + .1*Math.sin(t*38)*up*(1 - dn);
           o.b.style.transform = `translateZ(40px) scale(${(lift(t, s + .12, .45, 2.4) * sh * (1 + .35*bump(t, col + .7, .3))).toFixed(4)})`;
@@ -370,7 +371,7 @@ const HEROES = {
     const send = el('div', `width:92px;height:92px;border-radius:50%;background:${GRAD};display:flex;align-items:center;justify-content:center;flex:none`, icon('send', 50, '#ffffff', 2), f.face);
     const d = slab(g, {x: 350, y: 812, w: 610, h: 144, r: '34px', depth: 24, face: FACE, side: SIDE});
     d.face.style.cssText += ';justify-content:flex-start;padding:0 26px;gap:22px'; hubStyle(d.face);
-    el('div', `width:92px;height:92px;border-radius:24px;background:${GRAD};display:flex;align-items:center;justify-content:center;flex:none`, icon('invoice', 56, '#ffffff', 1.8), d.face);
+    el('div', `width:92px;height:92px;border-radius:24px;background:${GRAD};display:flex;align-items:center;justify-content:center;flex:none`, icon(P.icon ?? 'invoice', 56, '#ffffff', 1.8), d.face);
     el('div', 'color:var(--hink);font-size:40px;font-weight:700;line-height:1.05', (P.title ?? 'Kurzguide') + '<br><span style="font-weight:400;font-size:30px;letter-spacing:.06em">' + (P.sub ?? 'KMU.DIGITAL') + '</span>', d.face);
     const ok = el('div', 'margin-left:auto;width:66px;height:66px;background:#2878B5;flex:none', icon('check', 42, '#ffffff', 3), d.face); ok.className = 'badge'; ok.style.position = 'relative';
     const WORD = P.word ?? 'FÖRDERUNG';
@@ -425,9 +426,9 @@ Object.assign(HEROES, {
         vis(tile.root, t >= s); tile.root.style.transform = `scale(${lift(t, s, .55, 1.8).toFixed(4)}) rotate(${(180*(1 - inOut(prog(t, s, .45)))).toFixed(1)}deg)`;
         st.setAttribute('y', 28 + 92*x); st.setAttribute('height', 92*(1 - x)); sb.setAttribute('y', 212 - 80*x); sb.setAttribute('height', 80*x);
         fl.setAttribute('stroke-dashoffset', (-t*90).toFixed(1)); fl.setAttribute('opacity', x > 0 && x < 1 ? 1 : 0);
-        popIn(t, [[cnt.root, c]]); v.textContent = Math.round((P.value ?? 40) * cubicOut(prog(t, c + .1, 1.7))) + ' ' + (P.unit ?? 'h'); },
+        popIn(t, [[cnt.root, c]]); v.textContent = P.text ?? (Math.round((P.value ?? 40) * cubicOut(prog(t, c + .1, 1.7))) + ' ' + (P.unit ?? 'h')); },
       events(TM) { const c = TM['h:cnt'], e = [{k:'thud', t: TM['h:glass'], x: 300}, {k:'pop', t: c, x: 740, f: 560}];
-        for (let i = 1; i <= 16; i++) e.push({k:'tick', t: c + .1 + 1.7*(1 - Math.pow(1 - i/16, 1/3)), x: 740, f: 1700 + i*40, v: .07}); return e; } };
+        if (!P.text) for (let i = 1; i <= 16; i++) e.push({k:'tick', t: c + .1 + 1.7*(1 - Math.pow(1 - i/16, 1/3)), x: 740, f: 1700 + i*40, v: .07}); return e; } };
   },
   // ---- Dunkel 2: 240 Arbeitstage füllen sich ----
   yeargrid(P) {
@@ -437,10 +438,11 @@ Object.assign(HEROES, {
     const cells = []; const gr = abs(p.face, 'left:34px;top:76px;display:grid;grid-template-columns:repeat(30,23px);gap:5px');
     for (let i = 0; i < 240; i++) cells.push(el('i', 'display:block;height:18px;border-radius:4px;background:rgba(var(--hrgb),.1)', '', gr));
     const res = abs(p.face, 'left:34px;bottom:22px;font-size:82px;font-weight:700;color:var(--hink)', '0');
-    abs(p.face, 'right:34px;bottom:40px;font-size:32px;color:var(--hsub)', P.note ?? '10 Minuten pro Tag');
+    const C2 = '#9CCBF0', SPLIT = P.split ?? 1;   // split: Anteil in der ersten Farbe, Rest in der zweiten
+    abs(p.face, 'right:34px;bottom:40px;font-size:32px;color:var(--hsub);display:flex;align-items:center;gap:14px', P.legend ? P.legend.map((l, i) => `<i style="display:block;width:22px;height:22px;border-radius:5px;background:${i ? C2 : '#2878B5'}"></i>${l}`).join('<span style="width:14px"></span>') : (P.note ?? '10 Minuten pro Tag'));
     return { anchors: {grid: gr, res},
       seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L); const s = TM['h:grid'], x = prog(t, s + .1, 2.1), n = Math.floor(240*inOut(x));
-        popIn(t, [[p.root, s, 1.4, .55]]); cells.forEach((c, i) => c.style.background = i < n ? (i === n-1 ? '#eaf0f5' : '#2878B5') : 'rgba(var(--hrgb),.1)');
+        popIn(t, [[p.root, s, 1.4, .55]]); cells.forEach((c, i) => c.style.background = i < n ? (i === n-1 && SPLIT === 1 ? '#eaf0f5' : i < 240*SPLIT ? '#2878B5' : C2) : 'rgba(var(--hrgb),.1)');
         res.textContent = Math.round((P.value ?? 40) * n/240) + ' ' + (P.unit ?? 'Stunden'); },
       events(TM) { const s = TM['h:grid'], e = [{k:'pop', t: s, x: 540, f: 500}]; for (let i = 0; i < 26; i++) e.push({k:'tick', t: s + .15 + i*.08, x: 200 + i*26, f: 1500 + i*40, v: .05}); return e; } };
   },
@@ -452,11 +454,15 @@ Object.assign(HEROES, {
     const rows = (p, full) => [0,1,2].map(i => { const r = abs(p.face, `left:28px;right:28px;top:${88 + i*72}px;height:54px;border-radius:12px;background:rgba(var(--hrgb),.07);border:2px solid rgba(var(--hrgb),.12);box-sizing:border-box`);
       return abs(r, `left:14px;top:17px;height:16px;border-radius:8px;background:${full ? '#9CCBF0' : 'var(--hink)'};width:${[70,52,80][i]}%`); });
     const a = rows(A, true), b = rows(B, false);
+    if (P.messy) a.forEach((e, i) => { const r = e.parentNode; r.style.transform = `rotate(${[-3, 2.5, -1.5][i]}deg) translateX(${[6, -8, 10][i]}px)`; r.style.borderStyle = 'dashed';
+      e.style.filter = i === 1 ? 'blur(3px)' : 'blur(1px)'; e.style.width = ['46%', '64%', '38%'][i]; if (i === 2) abs(r, 'left:58%;top:13px;width:22%;height:22px;border-radius:11px;background:#9CCBF0;opacity:.5;filter:blur(4px)'); });
+    const ok = P.checks ? b.map(e => abs(e.parentNode, `right:12px;top:7px;width:38px;height:38px;border-radius:50%;background:${GRAD};display:flex;align-items:center;justify-content:center`, icon('check', 26, '#fff', 3.2))) : [];
     const arrow = abs(g, 'left:490px;top:825px;width:100px;text-align:center;font-size:64px;color:#4A9BD8;font-weight:700', '→');
     return { anchors: {l: A.face, r: B.face},
       seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L); const l = TM['h:l'], r = TM['h:r'];
         popIn(t, [[A.root, l, 1.6], [B.root, r, 1.6]]); arrow.style.opacity = prog(t, l + .1, .3);
-        b.forEach((e, i) => { const x = prog(t, r + .15 + i*.45, .45); e.style.transformOrigin = 'left'; e.style.transform = `scaleX(${(Math.floor(x*9)/9).toFixed(3)})`; }); },
+        b.forEach((e, i) => { const x = prog(t, r + .15 + i*.45, .45); e.style.transformOrigin = 'left'; e.style.transform = `scaleX(${(Math.floor(x*9)/9).toFixed(3)})`; });
+        ok.forEach((o, i) => { const k = r + .15 + i*.45 + .5; vis(o, t >= k); o.style.transform = `scale(${lift(t, k, .4, 2.4).toFixed(4)})`; }); },
       events(TM) { const r = TM['h:r'], e = hitEvents(TM, ['l','r']); for (let i = 0; i < 27; i++) e.push({k:'tick', t: r + .15 + (i/9|0)*.45 + (i%9)*.05, x: 780, f: 1500 + (i%3)*170, v: .08}); return e; } };
   },
   // ---- Dunkel 4: Kalender und Mails von Hand ----
@@ -466,10 +472,10 @@ Object.assign(HEROES, {
     const hdr = abs(c.face, 'left:28px;top:22px;display:flex;gap:30px;font-size:26px;color:var(--hsub);font-weight:700', ['Mo','Di','Mi','Do','Fr'].map(d => `<span style="width:64px;text-align:center">${d}</span>`).join(''));
     const gr = abs(c.face, 'left:28px;top:76px;display:grid;grid-template-columns:repeat(5,64px);gap:14px 30px'); const cells = [];
     for (let i = 0; i < 20; i++) cells.push(el('i', 'display:block;height:62px;border-radius:12px;background:rgba(var(--hrgb),.07)', '', gr));
-    const hot = [6, 12, 17];
+    const hot = P.hot ?? [6, 12, 17];
     const labs = P.items ?? ['Bestätigung','Erinnerung','Verschiebung'];
     const mails = labs.map((l, i) => { const s = slab(g, {x: 590, y: 196 + i*128, w: 400, h: 112, r: '24px', depth: 16, face: FACE, side: SIDE,
-      html: `<span style="display:flex;align-items:center;gap:18px;font-size:36px;font-weight:700;color:var(--hink)">${icon('mail', 54, '#9CCBF0', 1.6)}${l}</span>`}); hubStyle(s.face); return s; });
+      html: `<span style="display:flex;align-items:center;gap:18px;font-size:36px;font-weight:700;color:var(--hink)">${icon(P.itemIcon ?? 'mail', 54, V === 'mist' ? '#2878B5' : '#9CCBF0', 1.6)}${l}</span>`}); hubStyle(s.face); return s; });
     return { anchors: {cal: c.face, m0: mails[0].face, m1: mails[1].face, m2: mails[2].face},
       seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L); popIn(t, [[c.root, TM['h:cal'], 1.6, .55]]);
         mails.forEach((m, i) => { const s = TM['h:m' + i]; vis(m.root, t >= s); m.root.style.transform = `translateX(${(120*(1 - lift(t, s, .5, 1.4))).toFixed(1)}px) scale(${(.8 + .2*lift(t, s, .5, 1.6)).toFixed(3)})`;
@@ -517,7 +523,7 @@ Object.assign(HEROES, {
     const hub = pn(g, 640, 112, 190, 190, '26%', 34, `<img src="${FMARK}" alt="" style="height:112px">`);
     const line = abs(g, `left:380px;top:202px;width:250px;height:8px;border-radius:4px;background:${GRAD};transform-origin:left`);
     const chips = $$('[data-chip]'), ars = $$('[data-ar]');
-    return { anchors: {doc: d.face, c0: chips[0], c1: chips[1], c2: chips[2]},
+    return { anchors: {doc: d.face, ...Object.fromEntries(chips.map((c, i) => ['c' + i, c]))},
       seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L); const s = TM['h:doc'];
         popIn(t, [[d.root, s, 1.8, .55], [hub.root, s + .35, 2, .5]]); line.style.transform = `scaleX(${inOut(prog(t, s + .15, .4)).toFixed(4)})`;
         chips.forEach((c, i) => { const k = TM['h:c' + i]; c.style.visibility = t >= k ? 'visible' : 'hidden'; c.style.display = 'inline-block'; c.style.transform = `scale(${lift(t, k, .5, 2.2).toFixed(4)})`; });
@@ -550,7 +556,7 @@ Object.assign(HEROES, {
       seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L); const s = TM['h:doc'];
         popIn(t, [[env.root, TM['h:env'], 1.7, .55]]); vis(tag.root, t >= TM['h:tag']); tag.root.style.transform = `translateZ(40px) scale(${lift(t, TM['h:tag'], .5, 2.2).toFixed(4)})`;
         const x = lift(t, s, .7, 1.2); vis(d.root, t >= s); d.root.style.transform = `translateY(${(230*(1 - x)).toFixed(1)}px) translateZ(${t >= s ? 6 : -40}px)`;
-        const sc = prog(t, s + .35, 1.1); scan.style.top = (sc*100) + '%'; scan.style.opacity = sc > 0 && sc < 1 ? 1 : 0; },
+        const NS_ = P.scans ?? 1, raw = prog(t, s + .35, 1.1*NS_) * NS_, sc = raw >= NS_ ? 1 : raw % 1; scan.style.top = (sc*100) + '%'; scan.style.opacity = raw > 0 && raw < NS_ ? 1 : 0; },
       events(TM) { return [{k:'thud', t: TM['h:env'], x: 700}, {k:'whoosh', t: TM['h:doc'], d: .6, x: 700}, {k:'ding', t: TM['h:tag'], x: 780}]; } };
   },
   // ---- Mist 4: Felder werden ausgelesen, Datei benannt ----
@@ -599,8 +605,129 @@ Object.assign(HEROES, {
     return { anchors: {f0: fs[0].f, f1: fs[1].f, f2: fs[2].f, res},
       seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L); popIn(t, [[p.root, TM.script + .2, 1.4, .55], [res, TM['h:res'], 1.8]]);
         fs.forEach((o, i) => o.b.style.transform = `scaleX(${inOut(prog(t, TM['h:f' + i], .4)).toFixed(4)})`);
-        const s = TM['h:res']; rv.textContent = t < s + 1 ? String(Math.floor(t*14)*7919 % 10000).padStart(4, '0') + ' €' : '€ ✓'; },
-      events(TM) { const s = TM['h:res'], e = hitEvents(TM, ['f0','f1','f2'], 500); for (let t = s + .05; t < s + 1; t += .071) e.push({k:'tick', t, x: 800, f: 2100, v: .05}); e.push({k:'ding', t: s + 1, x: 800}); return e; } };
+        const s = TM['h:res']; rv.textContent = P.value != null ? (t >= s + .15 ? P.value : '') : t < s + 1 ? String(Math.floor(t*14)*7919 % 10000).padStart(4, '0') + ' €' : '€ ✓'; },
+      events(TM) { const s = TM['h:res'], e = hitEvents(TM, ['f0','f1','f2'], 500); if (P.value != null) return [...e, {k:'ding', t: s + .15, x: 800}]; for (let t = s + .05; t < s + 1; t += .071) e.push({k:'tick', t, x: 800, f: 2100, v: .05}); e.push({k:'ding', t: s + 1, x: 800}); return e; } };
+  },
+  // ---- Neu KW 48: Feierabend. Uhr läuft, Ball hält sie an, Schalter: Schreibtischlampe geht aus ----
+  feierabend(P) {
+    const g = stageG('540px 420px');
+    const desk = slab(g, {x: 110, y: 610, w: 860, h: 44, r: '14px', depth: 34, face: FACE, side: SIDE}); hubStyle(desk.face);
+    const papers = [[430, 548, -6], [520, 556, 5]].map(([x, y, r]) => { const d = paper(g, x, y, 170, 58, 3, 2); d.root.style.transform = `rotate(${r}deg)`; return d; });
+    const CONE = V === 'mist' ? '40,120,181' : '156,203,240';
+    const lamp = abs(g, 'left:150px;top:150px;width:420px;height:480px');
+    lamp.innerHTML = `<svg viewBox="0 0 420 480" width="420" height="480" style="overflow:visible">
+      <defs><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgb(${CONE})" stop-opacity=".75"/><stop offset="1" stop-color="rgb(${CONE})" stop-opacity="0"/></linearGradient></defs>
+      <path id="beam" d="M270 150 L360 150 L470 460 L170 460 Z" fill="url(#cone)"/>
+      <ellipse id="glow" cx="320" cy="460" rx="160" ry="22" fill="rgb(${CONE})" opacity=".5"/>
+      <path d="M60 460 h120" stroke="var(--hink)" stroke-width="18" stroke-linecap="round"/>
+      <path d="M120 452 L80 260 L250 120" fill="none" stroke="var(--hink)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="80" cy="260" r="16" fill="var(--hink)"/><circle cx="250" cy="120" r="13" fill="var(--hink)"/>
+      <path d="M232 98 L300 72 L382 156 L250 186 Z" fill="var(--hink)"/>
+      <ellipse id="bulb" cx="318" cy="168" rx="34" ry="12" fill="#eaf0f5"/></svg>`;
+    const q = id => lamp.querySelector('#' + id), beam = q('beam'), glow = q('glow'), bulb = q('bulb');
+    const clk = pn(g, 680, 200, 250, 250, '50%', 30);
+    clk.face.innerHTML = `<svg viewBox="0 0 250 250" width="100%" height="100%" style="position:absolute;inset:0">${Array.from({length: 12}, (_, i) => { const a = i*30*Math.PI/180; return `<line x1="${125 + 92*Math.sin(a)}" y1="${125 - 92*Math.cos(a)}" x2="${125 + 104*Math.sin(a)}" y2="${125 - 104*Math.cos(a)}" stroke="var(--hink)" stroke-width="${i % 3 ? 3 : 7}" stroke-linecap="round" opacity=".8"/>`; }).join('')}
+      <line id="hh" x1="125" y1="132" x2="125" y2="72" stroke="var(--hink)" stroke-width="12" stroke-linecap="round"/><line id="mh" x1="125" y1="136" x2="125" y2="44" stroke="#4A9BD8" stroke-width="7" stroke-linecap="round"/><circle cx="125" cy="125" r="11" fill="var(--hink)"/></svg>`;
+    const hh = clk.face.querySelector('#hh'), mh = clk.face.querySelector('#mh');
+    const sw = pn(g, 790, 500, 96, 96, '22px', 20);
+    const knob = abs(sw.face, `left:34px;top:16px;width:28px;height:64px;border-radius:14px;background:rgba(var(--hrgb),.15)`);
+    const nub = abs(knob, `left:2px;top:2px;width:24px;height:30px;border-radius:12px;background:${GRAD}`);
+    return { anchors: {clock: clk.face, switch: sw.face},
+      seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L);
+        const c = TM['h:clock'], s = TM['h:switch'], on = prog(t, .35, .5);
+        popIn(t, [[desk.root, .25, 1.4, .5], [clk.root, .45, 1.8], [sw.root, .6, 1.8]]);
+        vis(lamp, t >= .3); lamp.style.transform = `translateY(${(40*(1 - lift(t, .3, .55, 1.4))).toFixed(1)}px)`; lamp.style.opacity = prog(t, .3, .3).toFixed(3);
+        papers.forEach((d, i) => { vis(d.root, t >= .4 + i*.1); });
+        const off = prog(t, s, .18), fl = t >= s - .05 && t < s + .2 ? .5 + .5*Math.sin(t*90) : 1, lit = on * (1 - off) * fl;
+        beam.setAttribute('opacity', (.9*lit).toFixed(3)); glow.setAttribute('opacity', (.5*lit).toFixed(3)); bulb.setAttribute('opacity', (.25 + .75*lit).toFixed(3));
+        const tm = Math.min(t, c) + .35*cubicOut(prog(t, c, .6)), mA = 300*tm, hA = 200 + mA/12;
+        mh.setAttribute('transform', `rotate(${mA.toFixed(2)} 125 125)`); hh.setAttribute('transform', `rotate(${hA.toFixed(2)} 125 125)`);
+        nub.style.transform = `translateY(${(30*inOut(prog(t, s, .2))).toFixed(1)}px)`; },
+      events(TM) { const c = TM['h:clock'], e = [{k:'pop', t: .45, x: 800, f: 480}]; for (let t = .6; t < c; t += .25) e.push({k:'tick', t, x: 800, f: 1600, v: .06});
+        e.push({k:'thud', t: c, x: 800}, {k:'click', t: TM['h:switch'], x: 840}); return e; } };
+  },
+  // ---- Neu KW 48: Team am Tisch. Alle sitzen dran, Zettel kommt in die Mitte, Linien zu allen, Haken ----
+  team(P) {
+    const g = stageG('540px 430px');
+    const tab = slab(g, {x: 290, y: 320, w: 500, h: 240, r: '50%', depth: 40, face: FACE, side: SIDE}); hubStyle(tab.face);
+    const ICON = P.icon ?? '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.4 2.9-5.4 6-5.4s5.4 2 6 5.4"/><path d="M15.5 3.5h5a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-2.2L16.4 11V9.5h-.9A1.5 1.5 0 0 1 14 8V5a1.5 1.5 0 0 1 1.5-1.5Z"/>';
+    const POS = P.seats ?? [[200, 260], [540, 150], [880, 260], [930, 560], [150, 560], [540, 720]];
+    const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', 1080); svg.setAttribute('height', 900); svg.style.cssText = 'position:absolute;left:0;top:0;overflow:visible'; g.appendChild(svg);
+    const C = [540, 440];
+    const wires = POS.map(([x, y]) => { const l = document.createElementNS(NS, 'line'); l.setAttribute('x1', x); l.setAttribute('y1', y); l.setAttribute('x2', C[0]); l.setAttribute('y2', C[1]);
+      l.setAttribute('stroke', '#4A9BD8'); l.setAttribute('stroke-width', 5); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('pathLength', 1); l.setAttribute('stroke-dasharray', '1 1'); svg.appendChild(l); return l; });
+    const seats = POS.map(([x, y]) => { const s = pn(g, x - 72, y - 72, 144, 144, '50%', 26, icon(ICON, 84, 'var(--hink)', 1.5)); return s; });
+    const note = paper(g, 470, 352, 140, 176, 6, 4);
+    const ok = abs(note.face, `right:-26px;bottom:-26px;width:76px;height:76px;border-radius:50%;background:${GRAD};display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(7,18,30,.4)`, icon('check', 46, '#fff', 3));
+    return { anchors: {s0: seats[0].face, note: note.face, ok},
+      seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L);
+        const s0 = TM['h:s0'], n = TM['h:note'], k = TM['h:ok'];
+        popIn(t, [[tab.root, Math.max(.3, s0 - .35), 1.4, .55]]);
+        seats.forEach((s, i) => { const st = s0 + i*.12; vis(s.root, t >= st); s.root.style.transform = `translateY(${(6*Math.sin(TAU*L*2 + i)).toFixed(2)}px) scale(${lift(t, st, .5, 2.2).toFixed(4)})`;
+          const hit = bump(t, n + .25 + i*.08, .5); s.face.style.boxShadow = hit > .01 ? `0 0 ${40*hit}px ${4*hit}px rgba(74,155,216,${.8*hit})` : (V === 'mist' ? '0 30px 70px -22px rgba(23,50,77,.38)' : '0 0 90px -14px rgba(40,120,181,.75)'); });
+        const x = prog(t, n - .4, .4); vis(note.root, t >= n - .4); note.root.style.transform = `translateY(${(-380*(1 - x*x)).toFixed(1)}px) rotate(${(14*(1 - x)).toFixed(1)}deg) scale(${(1 + .08*bump(t, n, .22)).toFixed(4)})`;
+        wires.forEach((w, i) => { const d = prog(t, n + .05 + i*.08, .45); w.setAttribute('stroke-dashoffset', (1 - d).toFixed(4)); w.setAttribute('opacity', d > .002 ? .8 : 0); });
+        vis(ok, t >= k); ok.style.transform = `scale(${lift(t, k, .45, 2.6).toFixed(4)})`; },
+      events(TM) { const s0 = TM['h:s0'], e = POS.map((_, i) => ({k:'pop', t: s0 + i*.12, x: POS[i][0], f: 480 + i*60}));
+        e.push({k:'thud', t: TM['h:note'], x: 540}, {k:'whoosh', t: TM['h:note'] + .05, d: .6, x: 540}, {k:'ding', t: TM['h:ok'], x: 600}); return e; } };
+  },
+  // ---- Neu KW 48: Wächter. Ablauf-Linie, ein Punkt bleibt grau, ein Auge öffnet sich ----
+  waechter(P) {
+    const g = stageG('540px 900px');
+    const p = pn(g, 88, 690, 904, 400, '30px', 18);
+    const N = P.steps ?? 5, GAPI = P.gap ?? 3, X = i => 110 + i*(684/(N - 1)), Y = 290;
+    const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', 904); svg.setAttribute('height', 400); svg.style.cssText = 'position:absolute;left:0;top:0;overflow:visible'; p.face.appendChild(svg);
+    const seg = Array.from({length: N - 1}, (_, i) => { const l = document.createElementNS(NS, 'line'); l.setAttribute('x1', X(i) + 40); l.setAttribute('x2', X(i + 1) - 40); l.setAttribute('y1', Y); l.setAttribute('y2', Y);
+      l.setAttribute('stroke', i < GAPI ? '#2878B5' : 'rgba(' + TH.inkRGB + ',.25)'); l.setAttribute('stroke-width', 8); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('pathLength', 1);
+      l.setAttribute('stroke-dasharray', i < GAPI ? '1 1' : '.04 .05'); svg.appendChild(l); return l; });
+    const dots = Array.from({length: N}, (_, i) => abs(p.face, `left:${X(i) - 36}px;top:${Y - 36}px;width:72px;height:72px;border-radius:50%;box-sizing:border-box;border:5px solid rgba(var(--hrgb),.3);background:transparent`));
+    const ring = abs(p.face, `left:${X(GAPI) - 36}px;top:${Y - 36}px;width:72px;height:72px;border-radius:50%;border:4px solid #4A9BD8;box-sizing:border-box;opacity:0`);
+    const eye = abs(p.face, 'left:302px;top:34px;width:300px;height:150px');
+    eye.innerHTML = `<svg viewBox="0 0 300 150" width="300" height="150" style="overflow:visible"><defs><clipPath id="lid"><path id="lidp" d="M20 75 Q150 75 280 75 Q150 75 20 75Z"/></clipPath></defs>
+      <path id="lidl" d="M20 75 Q150 75 280 75 Q150 75 20 75Z" fill="rgba(${TH.inkRGB},.08)" stroke="var(--hink)" stroke-width="9" stroke-linejoin="round"/>
+      <g clip-path="url(#lid)"><circle id="iris" cx="150" cy="75" r="42" fill="url(#fk)"/><circle id="pup" cx="150" cy="75" r="17" fill="${V === 'mist' ? '#17324d' : '#07121e'}"/></g></svg>`;
+    const lidp = eye.querySelector('#lidp'), lidl = eye.querySelector('#lidl'), iris = eye.querySelector('#iris'), pup = eye.querySelector('#pup');
+    return { anchors: {n0: dots[0], eye, gap: dots[GAPI]},
+      seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L);
+        const s = TM['h:n0'], e = TM['h:eye'], k = TM['h:gap'];
+        popIn(t, [[p.root, Math.max(.3, s - .4), 1.4, .55]]);
+        const run = prog(t, s, 1.4*GAPI/(N - 1) + .4);
+        dots.forEach((d, i) => { const lit = i < GAPI && run*(GAPI) >= i - .01, gap = i === GAPI;
+          d.style.background = lit ? GRAD : 'transparent'; d.style.borderColor = lit ? 'rgba(74,155,216,.9)' : gap && t >= k ? 'rgba(234,240,245,.0)' : `rgba(${TH.inkRGB},${gap ? .55 : .25})`;
+          if (gap) { d.style.borderStyle = 'dashed'; d.style.background = t >= k ? 'rgba(140,157,176,.45)' : 'transparent'; } });
+        seg.forEach((l, i) => { const d = i < GAPI ? clamp(run*GAPI - i) : prog(t, s + .2, .6); l.setAttribute('stroke-dashoffset', i < GAPI ? (1 - d).toFixed(4) : 0); l.setAttribute('opacity', i < GAPI ? (d > .002 ? 1 : 0) : (.6*d).toFixed(3)); });
+        const o = inOut(prog(t, e, 1.2)), h = 62*o, sq = 1 - .3*bump(t, e + 1.6, .25);
+        const d_ = `M20 75 Q150 ${(75 - h*1.15*sq).toFixed(1)} 280 75 Q150 ${(75 + h*1.15*sq).toFixed(1)} 20 75Z`; lidp.setAttribute('d', d_); lidl.setAttribute('d', d_);
+        vis(eye, t >= e - .4); eye.style.opacity = prog(t, e - .4, .3).toFixed(3);
+        const look = inOut(prog(t, k, .5)) * (X(GAPI) - 452) / 7, ly = inOut(prog(t, k, .5)) * 14; iris.setAttribute('cx', 150 + look); pup.setAttribute('cx', 150 + look); iris.setAttribute('cy', 75 + ly); pup.setAttribute('cy', 75 + ly);
+        const rx = t >= k ? ((t - k) % 1.4) / 1.4 : -1; ring.style.opacity = rx >= 0 ? (.9*(1 - rx)).toFixed(3) : 0; ring.style.transform = `scale(${(1 + 1.2*Math.max(0, rx)).toFixed(3)})`; },
+      events(TM) { const s = TM['h:n0'], e = [{k:'pop', t: s, x: 200, f: 520}]; for (let i = 1; i < GAPI; i++) e.push({k:'tick', t: s + i*1.4/(N - 1), x: 200 + i*170, f: 1800 + i*150, v: .1});
+        e.push({k:'whoosh', t: TM['h:eye'], d: 1, x: 540}, {k:'thud', t: TM['h:gap'], x: 700}); return e; } };
+  },
+  // ---- Neu KW 48: Zuerst. Zeitachse: Meldung kommt bei dir an, beim Kunden kommt nichts an ----
+  zuerst(P) {
+    const g = stageG('540px 800px');
+    const p = pn(g, 88, 640, 904, 330, '30px', 18);
+    const BELL = P.icon ?? '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2.5h-15Z"/><path d="M10 21h4"/><path d="M12 3v2"/>';
+    const trk = abs(p.face, 'left:60px;right:60px;top:210px;height:10px;border-radius:5px;background:rgba(var(--hrgb),.12)');
+    const fill = abs(trk, `left:0;top:0;bottom:0;width:100%;border-radius:5px;background:${GRAD};transform-origin:left`);
+    const mk = (x, lab, on) => { const tile = abs(p.face, `left:${x - 70}px;top:44px;width:140px;height:140px;border-radius:36px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:${on ? GRAD : 'var(--htile)'};border:2px ${on ? 'solid rgba(74,155,216,.5)' : 'dashed rgba(var(--hrgb),.35)'}`,
+        on ? icon(BELL, 78, '#ffffff', 1.7) : '');
+      const l = abs(p.face, `left:${x}px;top:250px;transform:translateX(-50%);font-size:34px;font-weight:700;letter-spacing:.04em;color:${on ? 'var(--hink)' : 'var(--hsub)'};white-space:nowrap`, lab);
+      const pin = abs(p.face, `left:${x - 12}px;top:203px;width:24px;height:24px;border-radius:50%;background:${on ? '#eaf0f5' : 'rgba(var(--hrgb),.3)'};box-shadow:${on ? '0 0 20px rgba(74,155,216,.9)' : 'none'}`); return {tile, l, pin}; };
+    const A = mk(250, P.a ?? 'Du', true), B = mk(654, P.b ?? 'Kunde', false);
+    const strike = abs(B.tile, 'left:22px;right:22px;top:66px;height:6px;border-radius:3px;background:var(--hsub);transform:rotate(-35deg) scaleX(0)');
+    return { anchors: {trk, a: A.tile, b: B.tile},
+      seek(t, TM, H0, L) { g.style.transform = tilt(TAU*L);
+        const s = TM['h:trk'], a = TM['h:a'], b = TM['h:b'];
+        popIn(t, [[p.root, TM.script + .2, 1.4, .55]]);
+        fill.style.transform = `scaleX(${(.3*inOut(prog(t, s, a - s)) + .7*inOut(prog(t, b + .3, 1.2))).toFixed(4)})`;
+        const sh = 8*Math.sin(t*40)*bump(t, a + .1, .5);
+        [[A, a], [B, b]].forEach(([o, k]) => { vis(o.tile, t >= k); vis(o.pin, t >= k - .1); o.l.style.opacity = prog(t, k + .1, .3).toFixed(3); });
+        A.tile.style.transform = `scale(${lift(t, a, .5, 2.4).toFixed(4)}) rotate(${sh.toFixed(2)}deg)`;
+        B.tile.style.transform = `scale(${lift(t, b, .5, 1.6).toFixed(4)})`; B.tile.style.opacity = '.7';
+        strike.style.transform = `rotate(-35deg) scaleX(${inOut(prog(t, b + .35, .4)).toFixed(3)})`; },
+      events(TM) { return [{k:'tick', t: TM['h:trk'], x: 200, f: 1800}, {k:'ding', t: TM['h:a'] + .05, x: 300}, {k:'pop', t: TM['h:b'], x: 760, f: 420}]; } };
   },
 });
 
@@ -613,9 +740,11 @@ const ORDERS = {
   hourglass: ['h:glass','h:cnt','num','g0','g1','script','p','arrow','cta'], yeargrid: ['h:grid','h:res','num','g0','g1','script','p','arrow','cta'],
   retype: ['num','g0','g1','script','h:l','h:r','p','arrow','cta'], calendar: ['h:cal','h:m0','h:m1','h:m2','num','g0','g1','script','p','arrow','cta'],
   pile: ['h:pile','h:lens','h:folder','num','g0','g1','script','p','arrow','cta'], ranking: ['num','g0','g1','script','h:r0','h:r1','h:r2','p','arrow','cta'],
-  dochub: ['h:doc','num','g0','g1','script','h:c0','h:c1','h:c2','p','arrow','cta'], beforeafter: ['num','g0','g1','script','h:a','h:b','h:c','h:n','p','arrow','cta'],
+  dochub: ['h:doc','num','g0','g1','script','h:c0','h:c1','h:c2','h:c3','p','arrow','cta'], beforeafter: ['num','g0','g1','script','h:a','h:b','h:c','h:n','p','arrow','cta'],
   mailscan: ['h:env','num','g0','g1','script','h:doc','h:tag','p','arrow','cta'], extract: ['num','g0','g1','script','h:doc','h:k0','h:k1','h:k2','h:file','p','arrow','cta'],
   folders: ['h:f0','h:f2','h:f1','h:out','num','g0','g1','script','p','arrow','cta'], roiform: ['num','g0','g1','script','h:f0','h:f1','h:f2','h:res','p','arrow','cta'],
+  feierabend: ['h:clock','h:switch','num','g0','g1','script','p','arrow','cta'], team: ['h:s0','h:note','h:ok','num','g0','g1','script','p','arrow','cta'],
+  waechter: ['h:n0','h:eye','h:gap','num','g0','g1','script','p','arrow','cta'], zuerst: ['num','g0','g1','script','h:trk','h:a','h:b','p','arrow','cta'],
 };
 const WAITS = {comment: {'h:send': .95}, retype: {'p': 1.1}};
 function buildSlide(sl, n) {
