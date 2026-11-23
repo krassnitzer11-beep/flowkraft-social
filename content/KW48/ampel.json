@@ -1,0 +1,36 @@
+[
+  {"tag": "Mo", "thema": "Zahlungserinnerungen", "ampel": "rot", "grund": "Story-Bild doppelt, Annahme passt nicht zur KSV-Zahl",
+   "punkte": [
+     {"was": "Die Story nutzt dasselbe Bild mit drei Feldern wie der Samstag auf Slide 3.", "vorschlag": "Story als reine Textstory ohne Bild oder mit einem neuen Bild."},
+     {"was": "Gerechnet wird mit 6 Erinnerungen bei 30 Rechnungen, also jeder 5., daneben steht „jede 6. Rechnung zu spät“.", "vorschlag": "Mit 5 Erinnerungen rechnen: 4,25 Stunden im Monat, 51 Stunden im Jahr, in Slide 3, Caption und LinkedIn-Text gleich."},
+     {"was": "Das Reel folgt demselben Bogen wie das Montags-Reel letzter Woche, mit Sanduhr am Anfang und Ablauf-Panel am Ende.", "vorschlag": "Für diese Woche lassen, die nächste Rechen-Folge anders aufbauen."}
+   ]},
+  {"tag": "Di", "thema": "Ohne IT-Abteilung", "ampel": "rot", "grund": "Story-Bild doppelt, Slide 6 verspricht zu viel",
+   "punkte": [
+     {"was": "Die Story nutzt dieselbe Ordner-Reihe wie der Samstag auf Slide 4.", "vorschlag": "Story als reine Textstory ohne Bild oder mit einem neuen Bild."},
+     {"was": "Slide 6 sagt „Kein Server, kein IT-Mensch“, das ist absolut und so nicht haltbar.", "vorschlag": "Slide 6 auf „Kein eigener Server, keine IT-Abteilung. Auch wenn du allein bist.“ ändern."},
+     {"was": "Der LinkedIn-Text hat 151 Wörter und stellt „die meiste Zeit steckt im Abgleich“ als allgemeine Tatsache hin.", "vorschlag": "„In dieser Beispielrechnung steckt die meiste Zeit im Abgleich“ schreiben und die doppelte Zwei-Drittel-Zeile oben streichen."}
+   ]},
+  {"tag": "Mi", "thema": "Stundenzettel", "ampel": "rot", "grund": "Post gut, Story wiederholt ein Bild",
+   "punkte": [
+     {"was": "Die Story nutzt denselben Papierstapel mit Lupe wie der Samstag auf Slide 2.", "vorschlag": "Story als reine Textstory ohne Bild oder mit einem neuen Bild."},
+     {"was": "Abtippen war letzte Woche schon zweimal Thema, mit demselben Bild links Zettel, rechts getippt.", "vorschlag": "Für diese Woche lassen, in den nächsten vier Wochen kein Abtipp-Thema mehr."}
+   ]},
+  {"tag": "Do", "thema": "Abendbüro", "ampel": "rot", "grund": "Story-Bild doppelt, Schlusssatz widerspricht der Rechnung",
+   "punkte": [
+     {"was": "Die Story nutzt dieselbe Uhr wie der Dienstag auf Slide 2.", "vorschlag": "Story als reine Textstory ohne Bild oder mit einem neuen Bild."},
+     {"was": "Slide 4 sagt „Die Euro sind gedacht. Die Stunden nicht.“, dabei sind die 6 Stunden pro Woche genauso angenommen.", "vorschlag": "Slide 4 auf „Die Euro sind gedacht. Deine Abende sind echt.“ ändern und die Caption gleich anpassen."},
+     {"was": "Kalender, Abend-Schilder und Kacheln sind fast weiß auf hellem Grund und nur über Schatten getrennt.", "vorschlag": "Fertiges Reel ansehen, wirkt es blass, die Kacheln dunkel machen oder das Reel in Dunkel."}
+   ]},
+  {"tag": "Fr", "thema": "Team entscheidet mit", "ampel": "rot", "grund": "Post gut, Story wiederholt ein Bild",
+   "punkte": [
+     {"was": "Die Story nutzt denselben Pin wie der Dienstag auf Slide 1.", "vorschlag": "Story als reine Textstory ohne Bild oder mit einem neuen Bild."},
+     {"was": "„Nicht dein Projekt … Es ist auch ihres.“ ist das bekannte Floskel-Muster „nicht X, sondern Y“.", "vorschlag": "Ersetzen durch „Dann tragen sie es mit, weil sie es mit ausgesucht haben.“"}
+   ]},
+  {"tag": "Sa", "thema": "Fehlerwächter", "ampel": "rot", "grund": "Story-Bild doppelt und sieht nach Statistik aus",
+   "punkte": [
+     {"was": "Die Story nutzt dieselben Balken wie der Dienstag auf Slide 5, verschieden lang unter „Fällt zu spät auf“, wie eine Statistik ohne Daten.", "vorschlag": "Story als reine Textstory ohne Balken oder mit einem neuen Bild."},
+     {"was": "Die Lieferantenbestellung ist frei gewählt, nicht aus deinem Musterprojekt.", "vorschlag": "Bestätigen, dass der Ablauf deinem Fehlerwächter entspricht, sonst auf Slide 2 „Zum Beispiel:“ davorsetzen."},
+     {"was": "„Entscheiden tut ein Mensch.“ und „Mitarbeiten tut er nicht.“ sind Umgangssprache auf den Slides.", "vorschlag": "„Die Entscheidung trifft ein Mensch.“ und „Selbst eingreifen kann er nicht.“"}
+   ]}
+]
