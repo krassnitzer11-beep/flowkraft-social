@@ -27,7 +27,7 @@ def read_wav(p):
         return a.reshape(-1, w.getnchannels())
 
 
-def scene_layers(b, post, n, tmp, theme, dsf):
+def scene_layers(b, post, n, tmp, theme, dsf, kanal=None):
     """Pro Station: transparente Bildfolge der Szene + Layout + Szenen-Ton."""
     lays = []
     for sid in range(1, n + 1):
@@ -35,7 +35,7 @@ def scene_layers(b, post, n, tmp, theme, dsf):
         pg.on("pageerror", lambda e: print("JS-FEHLER Szene", sid, e))
         lay = None
         for part in ("h", "t"):   # zwei getrennte Ebenen: Szene und Schrift, jeweils ganz (nichts angeschnitten)
-            pg.goto((HERE / "engine.html").as_uri() + f"?post={post.as_uri()}&s={sid}&f=story&layer=hero&part={part}" + (f"&v={theme}" if theme else ""))
+            pg.goto((HERE / "engine.html").as_uri() + f"?post={post.as_uri()}&s={sid}&f=story&layer=hero&part={part}" + (f"&v={theme}" if theme else "") + (f"&k={kanal}" if kanal else ""))
             pg.evaluate("window.ready")
             if lay is None: lay = pg.evaluate("window.LAYOUT"); sfx.render(pg.evaluate("window.TL"), tmp / f"s{sid}.wav")
             frames = int(math.ceil((lay["H0"] + .4) * 30))
@@ -85,6 +85,7 @@ def main():
     ap.add_argument("--stills", nargs="*", type=float); ap.add_argument("--pr", type=float, default=2)
     ap.add_argument("--mode", choices=["split", "pass", "front"], default="split", help="pass: Szenen seitlich, Vorbeiflug; front: frontal mit Halten")
     ap.add_argument("--keep", help="Szenen-Bildfolgen aus diesem Ordner wiederverwenden bzw. dort ablegen")
+    ap.add_argument("--kanal", help="Kanal-Fassung, z. B. instagram: nimmt cta_instagram statt cta (eigener --keep-Ordner!)")
     a = ap.parse_args()
     # Variante immer explizit an Szenen-Ebenen und Flug geben, damit beide gleich aussehen (Mist: dunkle Schrift und Icons)
     import re as _re
@@ -97,7 +98,7 @@ def main():
         if not (tmp / "layout.json").exists():
             pg = b.new_page(); pg.goto((HERE / "engine.html").as_uri() + f"?post={post.as_uri()}&s=1&f=story"); pg.evaluate("window.ready")
             n = pg.evaluate("POST.slides.length"); pg.close()
-            scene_layers(b, post, n, tmp, a.theme, a.pr)
+            scene_layers(b, post, n, tmp, a.theme, a.pr, a.kanal)
         pg = b.new_page(viewport={"width": 1080, "height": 1920}, device_scale_factor=2)   # Supersampling, danach scharf auf 1080 verkleinern
         pg.on("pageerror", lambda e: print("JS-FEHLER", e)); pg.on("console", lambda m: m.type == "error" and print("KONSOLE", m.text))
         pg.goto((HERE / "flight3d.html").as_uri() + f"?post={post.as_uri()}&pr={a.pr}&mode={a.mode}&frames={tmp.as_uri()}" + (f"&v={a.theme}" if a.theme else ""))

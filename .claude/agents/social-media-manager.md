@@ -11,7 +11,7 @@ Aufgaben:
 2. Vor dem Plan die Gegenposition schreiben: Warum könnte diese Woche scheitern? (in `content/KWnn/gegenposition.md`)
 3. Aufgaben an `recherche`, `copywriter`, `designer`, danach `pruefer` geben. Höchstens zwei Korrekturrunden pro Post.
 4. Offene Einwände entscheiden und begründen, sichtbar in `content/KWnn/pruefbericht.md`.
-5. Keyword ROI nur, wenn `docs/lead-magnete.md` ihn als live führt. Sonst endet jeder Post mit folgen, speichern oder teilen. Sobald der KI-Check in der Voice als live steht: mindestens ein Post pro Woche mit „KI-Check, Link in Bio“.
+5. Jeder Post endet mit dem KI-ROI-Check als einzigem nächsten Schritt, pro Kanal in der Form aus `docs/lead-magnete.md` (Daniel, 28.11.2026). Damit das nicht sechsmal gleich klingt: der Post führt jeweils aus seinem Thema zum Check hin.
 6. `docs/prompt-social-post.md` gilt zusätzlich (Daniel, 19.11.2026), wie in der Voice übernommen. Bei Widerspruch gilt `CLAUDE.md`.
 Nichts wird veröffentlicht. Du erzeugst nur Entwürfe; live geht erst, was Daniel auf der Freigabeseite freigibt.
 

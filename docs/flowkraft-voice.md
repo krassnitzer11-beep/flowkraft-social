@@ -98,16 +98,9 @@ Emojis: keine im Bild, höchstens eines in der Caption. Hashtags klein geschrieb
 
 ## 9. Nächster Schritt
 
-Jeder Post endet mit genau einem nächsten Schritt: folgen, speichern, teilen, oder ein Keyword kommentieren.
+**Ab 28.11.2026 (Daniel): Jeder Post endet mit dem KI-ROI-Check** (https://www.flowkraft.at/ki-check/) als einzigem nächsten Schritt. Die Homepage ist online, Links zu flowkraft.at sind erlaubt (LinkedIn trotzdem kein Link im Post).
 
-| Lead-Magnet | Keyword | Status |
-|---|---|---|
-| Kostenloser ROI-Check (Tool auf der Homepage) | ROI | **Nicht live.** Website und Tool fehlen noch |
-| Förder-PDF zu KMU.DIGITAL | FÖRDERUNG | **Nicht live.** Noch nicht erstellt |
-| Zeitfresser-Check | ZEIT | Vorerst gestrichen |
-| KI-Check („Link in Bio“) | – | **Nicht live.** Sobald live: mindestens ein Post pro Woche mit diesem nächsten Schritt |
-
-Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich Daniel. Vor dem ersten Post muss die Homepage online sein. Erst dann sind Links zu flowkraft.at erlaubt.
+Wie der Schritt pro Kanal aussieht (Instagram Keyword „ROI“, Facebook Link, LinkedIn „Link in meinem Profil“, Story „Schreib mir ROI“, letzte Slide auf Instagram „Kommentiere ROI“) und welche Lead-Magnete live sind: `docs/lead-magnete.md`. Den Status setzt ausschließlich Daniel.
 
 ## 10. Belegpflicht
 
@@ -148,7 +141,7 @@ Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich D
 3. Erkennt der Leser sich und seinen Alltag?
 4. Ist der Nutzen in Stunden, Euro oder Feierabend greifbar?
 5. Ist jede Zahl belegt oder als Beispiel gekennzeichnet?
-6. Steht genau ein nächster Schritt da, und ist er wirklich möglich?
+6. Steht genau ein nächster Schritt da, ist es der KI-ROI-Check in der richtigen Form für den Kanal (`docs/lead-magnete.md`), und ist er wirklich möglich?
 7. Ist nichts auf der Verbotsliste, auch nicht bei Stil (Gedankenstriche, Emoji-Aufzählungen, Dreierlisten, Hashtags)?
 8. Bleiben die Menschen im Betrieb vorne?
 
@@ -156,10 +149,10 @@ Nur Keywords mit Status „live“ verwenden. Den Status setzt ausschließlich D
 
 Daniel, 19.11.2026: `docs/prompt-social-post.md` gilt zusätzlich. Übernommen sind oben: Haltung der Zielgruppe,
 Karussell-Aufbau mit 20-Wörter-Grenze und Animationshinweis, Caption 50–150 Wörter, „[ZAHL]“-Platzhalter,
-erweiterte Verbotsliste, KI-Check als vorgemerkter Lead-Magnet. Ziel jedes Posts: speichern, teilen, folgen.
+erweiterte Verbotsliste. Der KI-Check aus dem Prompt ist der KI-ROI-Check; seit 28.11.2026 endet jeder Post damit (Abschnitt 9).
 Nicht übernommen, weil Daniel anders entschieden hat: Eingrenzung auf Kärnten/Österreich (bleibt DACH, 1–50 Mitarbeiter), Sie auf LinkedIn (bleibt Du), 7–10 Folien (bleibt 6–8),
 Voiceover, Musik, Bildschirmaufnahmen, reiner Textpost, Hook mit 8 Wörtern (bleibt 7), JSON-Ausgabe.
 
 ## 14. Offene Entscheidungen von Daniel
 
-Derzeit keine. „flowkraft.at“ bleibt auf den Slides, weil die Homepage vor dem ersten Post online geht.
+Derzeit keine. Die Homepage ist online (28.11.2026), „flowkraft.at“ bleibt auf den Slides.

@@ -47,11 +47,11 @@ def shrink(src, dst, w):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-vf", f"scale={w}:-1:flags=lanczos", str(dst)], check=True)
 
 
-def open_page(browser, post, sid, theme, fmt):
+def open_page(browser, post, sid, theme, fmt, kanal=None):
     size = {"width": 1080, "height": 1350 if fmt == "carousel" else 1920}
     page = browser.new_page(viewport=size, device_scale_factor=SS)   # Supersampling: doppelt rendern, scharf verkleinern
     page.on("pageerror", lambda e: print("JS-FEHLER", sid, e))
-    q = f"?post={post.as_uri()}&s={sid}&f={fmt}" + (f"&v={theme}" if theme else "")
+    q = f"?post={post.as_uri()}&s={sid}&f={fmt}" + (f"&v={theme}" if theme else "") + (f"&k={kanal}" if kanal else "")
     page.goto(ENGINE.as_uri() + q)
     page.evaluate("window.ready")
     return page
@@ -84,6 +84,7 @@ def main():
     ap.add_argument("--format", default="carousel", choices=["carousel", "story", "reel"])
     ap.add_argument("--theme", choices=["navy", "dark", "mist"])
     ap.add_argument("--slides", nargs="*", type=int)
+    ap.add_argument("--kanal", help="Kanal-Fassung, z. B. instagram: nimmt cta_instagram statt cta")
     ap.add_argument("--stills", action="store_true", help="nur Kontrollbilder")
     ap.add_argument("--hd", action="store_true", help="Standbilder in doppelter Auflösung (2160 breit) für LinkedIn und Facebook")
     ap.add_argument("--audio-only", action="store_true", help="Ton in fertige Videos neu einsetzen")
@@ -94,7 +95,7 @@ def main():
         pg = open_page(b, post, 1, a.theme, a.format); info = pg.evaluate("({n: POST.slides.length, name: POST.name, scenes: POST.slides.map(s => s.scene || 'text')})"); pg.close()
         ids = a.slides or list(range(1, info["n"] + 1)); done = []
         for sid in ids:
-            pg = open_page(b, post, sid, a.theme, a.format)
+            pg = open_page(b, post, sid, a.theme, a.format, a.kanal)
             name = f"{info['name']}-{sid}-{info['scenes'][sid-1]}" + ("" if a.format == "carousel" else "-9x16")
             if a.stills:
                 T = pg.evaluate("window.T")

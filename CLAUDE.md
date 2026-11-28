@@ -36,8 +36,8 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 **Inhalte**
 - Keine erfundenen Zahlen, Kundenstimmen, Preise oder Kundenprojekte. Beispielrechnungen kennzeichnen.
 - Praxisbeispiele (Säule 5) sind Use Cases und Musterprojekte aus Daniels Weiterbildung, keine Kundenprojekte.
-- Keyword „ROI“ nur, wenn `docs/lead-magnete.md` den ROI-Check als live führt. Die Serie „Unser Selbstversuch“ läuft vorerst nicht.
-- **Social-Post-Prompt** (19.11.2026): `docs/prompt-social-post.md` gilt zusätzlich für alle Agenten, übernommen in `docs/flowkraft-voice.md` (Abschnitt 13). Bei Widerspruch bleibt: überall Du (auch LinkedIn), Karussell 6–8 Slides, DACH-Raum, kein Voiceover/Musik/Textpost. KI-Check-CTA (1× pro Woche) erst, wenn Daniel den KI-Check als live einträgt.
+- **Nächster Schritt = KI-ROI-Check** (28.11.2026): Homepage ist online, das Formular https://www.flowkraft.at/ki-check/ funktioniert. **Jeder Post** endet damit: Instagram „Kommentiere ROI und du bekommst den Link zum kostenlosen KI-ROI-Check.“ (Link per DM), Facebook Link direkt, LinkedIn „Link in meinem Profil“ (kein Link im Post), Story „Schreib mir ROI“. Letzte Slide/Station: Instagram-Fassung zeigt „Kommentiere ROI“ (`cta_instagram`, `--kanal instagram`), Facebook-Galerie und LinkedIn „KI-ROI-Check auf flowkraft.at“ (`cta`); das Reel ist die Instagram-Fassung und läuft auch auf Facebook. Details: `docs/lead-magnete.md`. Die Serie „Unser Selbstversuch“ läuft vorerst nicht.
+- **Social-Post-Prompt** (19.11.2026): `docs/prompt-social-post.md` gilt zusätzlich für alle Agenten, übernommen in `docs/flowkraft-voice.md` (Abschnitt 13). Bei Widerspruch bleibt: überall Du (auch LinkedIn), Karussell 6–8 Slides, DACH-Raum, kein Voiceover/Musik/Textpost. Der KI-Check aus dem Prompt ist der KI-ROI-Check, seit 28.11.2026 in jedem Post.
 - Stil der Motion-Posts: `skill/flowkraft-motion-skill/SKILL.md` (kein Loop, F-Ball, Abwechslung pro Slide, Homepage-Look).
 
 ## Nie ohne klares Ja
@@ -74,6 +74,7 @@ Ablauf im Detail: `WOCHE.md`. Kurz:
 - Samstags-Analyse fragt Zernio-Kennzahlen jetzt nach (HTTP 202 = wird synchronisiert).
 - Vor dem Wiedereinschalten von „flowkraft Freigabe“: in Make die Webhook-Warteschlange von `flowkraft-freigabe` leeren. Ein ausgeschalteter Webhook sammelt Klicks und würde sie beim Einschalten ausführen. Einschalten nur auf Daniels ausdrückliches Ja.
 - Instagram wartet auf das Firmen-Bankkonto.
+- 28.11.2026: Homepage online, KI-ROI-Check live. Für „ROI“-Kommentare und -DMs gibt es noch keine Automatik: der Community-Agent entwirft die Antwort mit Link, Daniel schickt sie ab. Daniel trägt den Link noch im LinkedIn-Profil und in der Instagram-Bio ein.
 
 ## Geräte
 
