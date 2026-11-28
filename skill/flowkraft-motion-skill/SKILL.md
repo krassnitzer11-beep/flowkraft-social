@@ -78,6 +78,8 @@ window.POST = {
 
 Felder pro Slide: `layout`, `title` (Bold), `script` (letztes Wort in Aesthetic Romance), `outline` (eigene Zeile, startet gefüllt und wird zur Outline), `num` ('01', rollt wie ein Zählwerk), `p` (Fließtext), `cta` (Button statt Seitenzahl), `hook` (erste Slide: ohne Logo, Pfeil statt Seitenzahl), `chips` (Chip-Reihe unter der Headline), `size` (Headline-Größe), `scene`, `props`, `dy` (Szene in px verschieben), `sceneScale`.
 
+**Kanal-Fassung:** `cta_instagram` (z. B. `'Kommentiere ROI'`) ersetzt `cta`, wenn mit `--kanal instagram` gerendert wird (`render.py` und `flight.py`; beim Flug eigener `--keep`-Ordner pro Fassung). Ohne `--kanal` gilt `cta`.
+
 Layouts: `top` Text oben · `bottom` Text unten · `side` Zahl oben links, Headline unten, Platz rechts · `stack` Text oben, Fließtext unten, Platz dazwischen · `center` zentriert unten, Platz oben.
 
 Icons: Namen in `references/scenes.md`, oder eigener SVG-Inhalt im 24er-Raster als String (`'<path d="…"/>'`). Neue Namen kommen in das Objekt `I` in `engine/engine.html`.

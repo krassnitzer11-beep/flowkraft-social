@@ -72,6 +72,9 @@ body{width:1080px;height:1350px;overflow:hidden}
 let T = 9; const FPS = 30;
 const params = new URLSearchParams(location.search);
 const POST = window.POST;
+// Kanal-Fassung (?k=instagram): Slides mit cta_instagram zeigen diesen Button-Text statt cta (z. B. „Kommentiere ROI“)
+const KANAL = params.get('k');
+if (KANAL) POST.slides.forEach(s => { if (s['cta_' + KANAL]) s.cta = s['cta_' + KANAL]; });
 const V = params.get('v') || POST.theme || 'navy';
 const FMT = params.get('f') || 'carousel';            // carousel 1080x1350 | story 1080x1920 | reel 1080x1920
 const TALL = FMT !== 'carousel', STORY = FMT === 'story', REEL = FMT === 'reel';

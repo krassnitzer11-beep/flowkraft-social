@@ -100,7 +100,7 @@ Emojis: keine im Bild, höchstens eines in der Caption. Hashtags klein geschrieb
 
 **Ab 28.11.2026 (Daniel): Jeder Post endet mit dem KI-ROI-Check** (https://www.flowkraft.at/ki-check/) als einzigem nächsten Schritt. Die Homepage ist online, Links zu flowkraft.at sind erlaubt (LinkedIn trotzdem kein Link im Post).
 
-Wie der Schritt pro Kanal aussieht (Instagram Keyword „ROI“, Facebook Link, LinkedIn „Link in meinem Profil“, Story „Schreib mir ROI“, Slides kanalneutral) und welche Lead-Magnete live sind: `docs/lead-magnete.md`. Den Status setzt ausschließlich Daniel.
+Wie der Schritt pro Kanal aussieht (Instagram Keyword „ROI“, Facebook Link, LinkedIn „Link in meinem Profil“, Story „Schreib mir ROI“, letzte Slide auf Instagram „Kommentiere ROI“) und welche Lead-Magnete live sind: `docs/lead-magnete.md`. Den Status setzt ausschließlich Daniel.
 
 ## 10. Belegpflicht
 

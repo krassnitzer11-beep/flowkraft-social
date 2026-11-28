@@ -18,8 +18,8 @@ Den Status setzt ausschließlich Daniel. Agenten lesen hier, welcher nächste Sc
 | Facebook (Caption) | Link direkt: „Mach den kostenlosen KI-ROI-Check: https://www.flowkraft.at/ki-check/“ |
 | LinkedIn (Di, Do) | Kein Link im Post: „Den KI-ROI-Check findest du über den Link in meinem Profil.“ |
 | Story | Als Text, ohne Sticker: „Schreib mir ROI, dann schick ich dir den Link zum KI-ROI-Check.“ |
-| Karussell, letzte Slide | Kanalneutral, weil die Slides auf allen Kanälen laufen: „Kostenloser KI-ROI-Check auf flowkraft.at“. Die Caption sagt, wie man hinkommt. |
-| Reel, letzte Station | wie Karussell |
+| Karussell, letzte Slide | Button zweimal setzen: `cta_instagram: 'Kommentiere ROI'` (Instagram-Fassung) und `cta: 'KI-ROI-Check auf flowkraft.at'` (Facebook-Galerie, LinkedIn). `build.py` rendert Instagram mit `--kanal instagram`. |
+| Reel, letzte Station | wie Karussell. Das Drohnenflug-Reel ist die Instagram-Fassung und läuft auch auf Facebook (dort steht der Link in der Caption, ein „ROI“-Kommentar wird mit Link beantwortet). LinkedIn bekommt die neutrale 4:5-Fassung. |
 | Standbild-Post (`clean: true`) | im Bild kein CTA, nur in der Caption |
 
 Formulierungen dürfen variieren (außer dem festen Instagram-Satz), aber nicht von Woche zu Woche gleich klingen; der Inhalt (Keyword, Adresse) bleibt genau so.
