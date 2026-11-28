@@ -47,7 +47,7 @@ Daniel führt die Branches bei Gelegenheit in `main` zusammen.
 ## Regeln, die nie verletzt werden
 
 - Keine erfundenen Zahlen, Kundenstimmen, Preise. Beispielrechnungen kennzeichnen.
-- Keyword ROI nur, wenn `docs/lead-magnete.md` es als live führt.
+- Jeder Post endet mit dem KI-ROI-Check, in der Form pro Kanal aus `docs/lead-magnete.md`.
 - Alle Posts um 18:00 Uhr (Wien), Mo–Sa, auf allen Kanälen.
 - Storys automatisch, ohne Sticker (keine Umfrage, keine Frage-Box): die Frage steht als Text in der Story.
 - Reels nur als Drohnenflug. Einzel-Posts als Standbild. LinkedIn: Di Video 4:5, Do Standbild, kein PDF.
