@@ -14,7 +14,7 @@ Den Status setzt ausschließlich Daniel. Agenten lesen hier, welcher nächste Sc
 
 | Kanal | So steht der nächste Schritt da |
 |---|---|
-| Instagram (Caption) | Keyword: „Kommentiere ROI, dann schick ich dir den Link zum KI-ROI-Check.“ Kein Link in der Caption. |
+| Instagram (Caption) | Immer mit diesem Satz (Daniel, 28.11.2026): „Kommentiere ROI und du bekommst den Link zum kostenlosen KI-ROI-Check.“ Davor darf ein Satz aus dem Thema hinführen. Kein Link in der Caption. |
 | Facebook (Caption) | Link direkt: „Mach den kostenlosen KI-ROI-Check: https://www.flowkraft.at/ki-check/“ |
 | LinkedIn (Di, Do) | Kein Link im Post: „Den KI-ROI-Check findest du über den Link in meinem Profil.“ |
 | Story | Als Text, ohne Sticker: „Schreib mir ROI, dann schick ich dir den Link zum KI-ROI-Check.“ |
@@ -22,7 +22,7 @@ Den Status setzt ausschließlich Daniel. Agenten lesen hier, welcher nächste Sc
 | Reel, letzte Station | wie Karussell |
 | Standbild-Post (`clean: true`) | im Bild kein CTA, nur in der Caption |
 
-Formulierungen dürfen variieren, aber nicht von Woche zu Woche gleich klingen; der Inhalt (Keyword, Adresse) bleibt genau so.
+Formulierungen dürfen variieren (außer dem festen Instagram-Satz), aber nicht von Woche zu Woche gleich klingen; der Inhalt (Keyword, Adresse) bleibt genau so.
 Nie versprechen, was der Check nicht liefert (keine Ergebnis- oder Ersparnis-Garantie).
 
 ## Was Daniel dafür tun muss

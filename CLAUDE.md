@@ -36,7 +36,7 @@ Dieses Repository ist das ganze Social-Media-System von flowkraft. Jede Claude-S
 **Inhalte**
 - Keine erfundenen Zahlen, Kundenstimmen, Preise oder Kundenprojekte. Beispielrechnungen kennzeichnen.
 - Praxisbeispiele (Säule 5) sind Use Cases und Musterprojekte aus Daniels Weiterbildung, keine Kundenprojekte.
-- **Nächster Schritt = KI-ROI-Check** (28.11.2026): Homepage ist online, das Formular https://www.flowkraft.at/ki-check/ funktioniert. **Jeder Post** endet damit: Instagram Keyword „ROI“ kommentieren (Link per DM), Facebook Link direkt, LinkedIn „Link in meinem Profil“ (kein Link im Post), Story „Schreib mir ROI“, Slides kanalneutral „Kostenloser KI-ROI-Check auf flowkraft.at“. Details: `docs/lead-magnete.md`. Die Serie „Unser Selbstversuch“ läuft vorerst nicht.
+- **Nächster Schritt = KI-ROI-Check** (28.11.2026): Homepage ist online, das Formular https://www.flowkraft.at/ki-check/ funktioniert. **Jeder Post** endet damit: Instagram „Kommentiere ROI und du bekommst den Link zum kostenlosen KI-ROI-Check.“ (Link per DM), Facebook Link direkt, LinkedIn „Link in meinem Profil“ (kein Link im Post), Story „Schreib mir ROI“, Slides kanalneutral „Kostenloser KI-ROI-Check auf flowkraft.at“. Details: `docs/lead-magnete.md`. Die Serie „Unser Selbstversuch“ läuft vorerst nicht.
 - **Social-Post-Prompt** (19.11.2026): `docs/prompt-social-post.md` gilt zusätzlich für alle Agenten, übernommen in `docs/flowkraft-voice.md` (Abschnitt 13). Bei Widerspruch bleibt: überall Du (auch LinkedIn), Karussell 6–8 Slides, DACH-Raum, kein Voiceover/Musik/Textpost. Der KI-Check aus dem Prompt ist der KI-ROI-Check, seit 28.11.2026 in jedem Post.
 - Stil der Motion-Posts: `skill/flowkraft-motion-skill/SKILL.md` (kein Loop, F-Ball, Abwechslung pro Slide, Homepage-Look).
 
